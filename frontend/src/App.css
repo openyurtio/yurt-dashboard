@@ -1,0 +1,22 @@
+@import "~antd/dist/antd.css";
+
+#components-layout-demo-side {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout {
+  background: #fff;
+}
+
+.header {
+  padding: 10px 10px;
+  background: #fff;
+  border-bottom: inset;
+  height: 80px;
+}
+
+.logo {
+  width: 200px;
+}

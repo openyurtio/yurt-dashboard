@@ -1,0 +1,31 @@
+.cluster-status {
+  display: inline-block;
+  width: 1.5ex;
+  height: 1.5ex;
+  border-radius: 50%;
+  margin: 0 3px;
+}
+
+.cluster-card {
+  height: 320px;
+  display: inline-flex;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+pre code {
+  background-color: #333333;
+  display: block;
+  padding: 20px;
+  font-family: "Source Code Pro";
+  color: #e5e5e5;
+}
+
+.copy-button {
+  float: right;
+  top: 8px;
+  right: 8px;
+}
