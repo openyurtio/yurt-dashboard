@@ -1,0 +1,30 @@
+.content {
+  padding: 0 10px;
+}
+
+.form-card {
+  min-width: 375px;
+  margin: 10% 10px;
+  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 5%);
+  height: fit-content;
+}
+
+.login-form-register {
+  float: right;
+  color: #1890ff;
+}
+.login-form-button {
+  width: 100%;
+}
+
+.login-intro {
+  max-width: 100%;
+  margin: 30px 0;
+}
+
+.login-intro-word {
+  text-align: center;
+  font-family: Avenir-Heavy;
+  font-size: 30px;
+  margin: 20px 0;
+}
