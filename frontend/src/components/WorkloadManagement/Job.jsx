@@ -1,6 +1,5 @@
-import { Table } from "antd";
 import { getJobs } from "../../utils/request";
-import { renderDictCell, useResourceState } from "../../utils/utils";
+import { renderDictCell } from "../../utils/utils";
 import { Status } from "../Utils/Status";
 import Workload from "./WorkloadTemplate";
 
@@ -46,44 +45,39 @@ const columns = [
   // },
 ];
 
-const mockData = [
-  {
-    key: "1",
-    title: "dataset-controller",
-    tag: "control-plane:default-nodepool",
-    jobStatus: "正常",
-    podStatus: {
-      succeeded: 2,
-      failed: 0,
-      active: 1,
-    },
-    image:
-      "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
-    createTime: "2021-08-10 19:19:22",
-    completeTime: "2021-08-10 19:20:22",
-    operation: "",
-  },
-  {
-    key: "2",
-    title: "dataset-controller",
-    tag: "control-plane:default-nodepool",
-    jobStatus: "正常",
-    podStatus: "正常",
-    image:
-      "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
-    createTime: "2021-08-10 19:19:22",
-    completeTime: "2021-08-10 19:20:22",
-    operation: "",
-  },
-];
+// const mockData = [
+//   {
+//     key: "1",
+//     title: "dataset-controller",
+//     tag: "control-plane:default-nodepool",
+//     jobStatus: "正常",
+//     podStatus: {
+//       succeeded: 2,
+//       failed: 0,
+//       active: 1,
+//     },
+//     image:
+//       "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
+//     createTime: "2021-08-10 19:19:22",
+//     completeTime: "2021-08-10 19:20:22",
+//     operation: "",
+//   },
+//   {
+//     key: "2",
+//     title: "dataset-controller",
+//     tag: "control-plane:default-nodepool",
+//     jobStatus: "正常",
+//     podStatus: "正常",
+//     image:
+//       "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
+//     createTime: "2021-08-10 19:19:22",
+//     completeTime: "2021-08-10 19:20:22",
+//     operation: "",
+//   },
+// ];
 
 export default function Job() {
-  const [jobs, onRefresh] = useResourceState(getJobs);
-
   return (
-    <Workload
-      title="Job"
-      table={{ columns, data: jobs, onRefresh: onRefresh }}
-    ></Workload>
+    <Workload title="Job" table={{ columns, fetchData: getJobs }}></Workload>
   );
 }

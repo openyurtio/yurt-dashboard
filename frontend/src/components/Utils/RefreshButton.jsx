@@ -20,7 +20,12 @@ export function RefreshButton({ refreshCallback }) {
       <span style={{ marginRight: 8, color: "#919CA4" }}>
         上次更新: {lastUpdate}
       </span>
-      <Button loading={loading} size="small" onClick={handleClick}>
+      <Button
+        aria-label="refresh"
+        loading={loading}
+        size="small"
+        onClick={handleClick}
+      >
         刷新
       </Button>
     </div>

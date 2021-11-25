@@ -1,10 +1,10 @@
-import { baseURL, userProfile } from "../config";
+import { baseURL } from "../config";
 import { message } from "antd";
-import { toPercentagePresentation, formatTime } from "./utils";
+import { toPercentagePresentation, formatTime, getUserProfile } from "./utils";
 
 export function sendRequest(path, data) {
   return fetch(baseURL + path, {
-    body: JSON.stringify({ ...data, ...userProfile.spec }),
+    body: JSON.stringify({ ...data }),
     headers: {
       "content-type": "application/json",
     },
@@ -12,22 +12,39 @@ export function sendRequest(path, data) {
   })
     .then((res) => res.json())
     .then((res) => {
-      if ("status" in res) {
+      if ("status" in res && res.status === false) {
         // throw failed resp error
         throw new Error(res["msg"]);
       }
       return res;
-    })
+    });
+}
+
+// send request as a use (add user token in request body)
+export function sendUserRequest(path, data) {
+  let userProfile = getUserProfile();
+  if (!userProfile) {
+    // if userProfile is empty, redirect to login page
+    window.location.replace("/login");
+  }
+
+  return sendRequest(path, { ...data, ...userProfile.spec })
     .catch((err) => {
       // catch request error
       message.error(err.message);
+      console.log(err);
     })
     .then((res) => {
-      if (res && !("status" in res)) {
+      if (res && !("status" in res && res.status === false)) {
         return res;
       } else {
-        // return empty array to keep interface consistency
-        return { items: [], filter: () => [], status: "failed" };
+        // return empty obj to keep interface consistency
+        return {
+          items: [],
+          filter: () => [],
+          status: "error",
+          some: () => true,
+        };
       }
     });
 }
@@ -48,13 +65,13 @@ export function getNodepools(paras) {
       ...transformObject(rawNodePool, i),
       type: rawNodePool.spec.type,
       nodeStatus: {
-        ready: rawNodePool.status.readyNodeNum,
-        unready: rawNodePool.status.unreadyNodeNum,
+        ready: rawNodePool.status ? rawNodePool.status.readyNodeNum : 0,
+        unready: rawNodePool.status ? rawNodePool.status.unreadyNodeNum : 0,
       },
     };
   };
 
-  return sendRequest("/getNodepools", paras).then((nps) =>
+  return sendUserRequest("/getNodepools", paras).then((nps) =>
     nps.items.map(trasnform)
   );
 }
@@ -65,9 +82,7 @@ export function getNodes(paras) {
     const nodeRoleKey = "node-role.kubernetes.io/master";
     const getNodeCondition = (rawNode) =>
       rawNode.status.conditions
-        .filter((item) => item.status === "True")
-        .map((item) => item.type)
-        .join(",");
+        .filter((item) => item.type === "Ready")[0]
 
     return {
       ...transformObject(rawNode, i),
@@ -93,11 +108,11 @@ export function getNodes(paras) {
       status: {
         CPU: toPercentagePresentation(
           parseFloat(rawNode.status.allocatable.cpu) /
-            parseFloat(rawNode.status.capacity.cpu)
+          parseFloat(rawNode.status.capacity.cpu)
         ),
         Mem: toPercentagePresentation(
           parseFloat(rawNode.status.allocatable.memory) /
-            parseFloat(rawNode.status.capacity.memory)
+          parseFloat(rawNode.status.capacity.memory)
         ),
       },
       version: {
@@ -105,10 +120,19 @@ export function getNodes(paras) {
         Runtime: rawNode.status.nodeInfo.containerRuntimeVersion,
         OS: rawNode.status.nodeInfo.osImage,
       },
+      operations: {
+        NodeName: rawNode.metadata.name,
+        Autonomy:
+          "node.beta.alibabacloud.com/autonomy" in rawNode.metadata.annotations
+            ? rawNode.metadata.annotations[
+            "node.beta.alibabacloud.com/autonomy"
+            ]
+            : "false",
+      },
     };
   };
 
-  return sendRequest("/getNodes", paras).then((nodes) =>
+  return sendUserRequest("/getNodes", paras).then((nodes) =>
     nodes.items.map(transform)
   );
 }
@@ -122,13 +146,13 @@ const transformWorkload = (workload, i) => ({
 });
 
 export function getDeployments(paras) {
-  return sendRequest("/getDeployments", paras).then((dps) =>
+  return sendUserRequest("/getDeployments", paras).then((dps) =>
     dps.items.map(transformWorkload)
   );
 }
 
 export function getStatefulSets(paras) {
-  return sendRequest("/getStatefulsets", paras).then((ss) =>
+  return sendUserRequest("/getStatefulsets", paras).then((ss) =>
     ss.items.map(transformWorkload)
   );
 }
@@ -143,11 +167,11 @@ export function getJobs(paras) {
         failed: job.status.failed,
         active: job.status.active,
       },
-      jobStatus: job.status.failed == 0 ? "正常" : "异常",
+      jobStatus: job.status.failed === 0 ? "正常" : "异常",
     };
   };
 
-  return sendRequest("/getJobs", paras).then((jobs) =>
+  return sendUserRequest("/getJobs", paras).then((jobs) =>
     jobs.items.map(transform)
   );
 }
@@ -157,8 +181,8 @@ export function getPods(paras) {
     ...transformObject(pod, i),
     containers: pod.spec.containers.map((container) => container.image),
     node: {
-      Name: pod.spec.nodeName,
-      IP: pod.status.hostIP,
+      Name: pod.spec.nodeName ? pod.spec.nodeName : "无",
+      IP: pod.status.hostIP ? pod.status.hostIP : "无",
     },
     title: {
       Name: pod.metadata.name,
@@ -168,7 +192,7 @@ export function getPods(paras) {
     podStatus: pod.status.phase,
   });
 
-  return sendRequest("/getPods", paras).then((pods) =>
+  return sendUserRequest("/getPods", paras).then((pods) =>
     pods.items.map(transform)
   );
 }

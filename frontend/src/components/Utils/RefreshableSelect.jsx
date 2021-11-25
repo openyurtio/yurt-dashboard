@@ -7,29 +7,30 @@ const { Option } = Select;
 /**
  * a Select whose options can be refreshed
  * @param {Object} config.style
- * @param {Function} config.handleChange   called when selected option change
- * @param {Function} config.handleRefresh  called when refresh button change
  * @param {string} config.value
+ * @param {Function} handleChange   called when selected option change
+ * @param {Function} handleRefresh  called when refresh button change
  */
-export default function RSelect({ config }) {
+export default function RSelect({
+  config,
+  handleRefresh: getOptions,
+  handleChange,
+}) {
   const [spin, setSpin] = useState(false);
   const [options, setOptions] = useState([]);
 
-  useEffect(async () => {
+  useEffect(() => {
+    async function fetchOptions() {
+      setOptions(await getOptions());
+      setSpin(false);
+    }
     setSpin(true);
-    setOptions(await config.handleRefresh());
-    setSpin(false);
-  }, []);
+    fetchOptions();
+  }, [getOptions]);
 
   const resetSelect = (options) => {
     setOptions(options);
-    config.handleChange(options.length > 0 ? options[0] : config.value);
-  };
-
-  const handleSync = async () => {
-    setSpin(true);
-    resetSelect(await config.handleRefresh());
-    setTimeout(() => setSpin(false), 1000);
+    handleChange(options.length > 0 ? options[0] : config.value);
   };
 
   return (
@@ -37,7 +38,7 @@ export default function RSelect({ config }) {
       <Select
         value={config.value}
         style={config.style}
-        onChange={config.handleChange}
+        onChange={handleChange}
         disabled={spin}
       >
         {options.map((e, i) => (
@@ -49,7 +50,11 @@ export default function RSelect({ config }) {
       <SyncOutlined
         style={{ marginLeft: 5 }}
         spin={spin}
-        onClick={handleSync}
+        onClick={async () => {
+          setSpin(true);
+          resetSelect(await getOptions());
+          setTimeout(() => setSpin(false), 1000);
+        }}
       />
     </div>
   );

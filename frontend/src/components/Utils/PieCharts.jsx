@@ -29,6 +29,7 @@ const generateConfig = (data, extendConfig) => {
     data: data,
     angleField: "value",
     colorField: "type",
+    color: ["#3e90ff", "#F74336"], // succ, fail
     label: {
       type: "inner",
       offset: "-50%",

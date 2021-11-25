@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: wordpress
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-wordpress
+  labels:
+    app: WordPress
+    type: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: WordPress
+  template:
+    metadata:
+      name: wordpress
+      namespace: "18321778186"
+      labels:
+        app: WordPress
+    spec:
+      containers:
+        - name: wordpress
+          image: wordpress
+          ports:
+            - containerPort: 80
+              name: wdport
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: localhost:3306
+            - name: WORDPRESS_DB_USER
+              value: wordpress
+            - name: WORDPRESS_DB_PASSWORD
+              value: wordpress
+        - name: mysql
+          image: mysql:5.7
+          imagePullPolicy: IfNotPresent
+          args: # 新版本镜像有更新，需要使用下面的认证插件环境变量配置才会生效
+            - --default_authentication_plugin=mysql_native_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          ports:
+            - containerPort: 3306
+              name: dbport
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootPassW0rd
+            - name: MYSQL_DATABASE
+              value: wordpress
+            - name: MYSQL_USER
+              value: wordpress
+            - name: MYSQL_PASSWORD
+              value: wordpress
+          volumeMounts:
+            - name: db
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db
+          emptyDir: {}

@@ -1,7 +1,7 @@
 import Workload from "./WorkloadTemplate";
 import { Status } from "../Utils/Status";
 import { getPods } from "../../utils/request";
-import { renderDictCell, useResourceState } from "../../utils/utils";
+import { renderDictCell } from "../../utils/utils";
 
 const columns = [
   {
@@ -43,15 +43,12 @@ const columns = [
 ];
 
 export default function Pod() {
-  const [pods, onRefresh] = useResourceState(getPods);
-
   return (
     <Workload
       title="Pod"
       table={{
-        data: pods,
         columns,
-        onRefresh: onRefresh,
+        fetchData: getPods,
       }}
     />
   );

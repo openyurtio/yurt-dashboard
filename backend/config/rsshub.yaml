@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-rsshub
+  namespace: "18321778186"
+  labels:
+    app: RSSHub
+    type: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: RSSHub
+  template:
+    metadata:
+      name: rsshub
+      labels:
+        app: RSSHub
+    spec:
+      containers:
+        - name: rsshub
+          image: diygod/rsshub
+          ports:
+            - containerPort: 1200

@@ -3,6 +3,7 @@ import { Input } from "antd";
 import { renderDictCell } from "../../utils/utils";
 import { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
+import { useResourceState } from "../../utils/hooks";
 
 const columns = [
   {
@@ -20,7 +21,7 @@ const columns = [
     render: (status) => {
       return (
         <div>
-          {status.readyReplicas}/{status.replicas}
+          {status.readyReplicas ? status.readyReplicas : 0}/{status.replicas}
         </div>
       );
     },
@@ -44,14 +45,17 @@ const columns = [
   // },
 ];
 
+/**
+ * Workload is a template component for all workload management panels
+ * @param {String} title: display title
+ * @param {Object}    table.columns: if not specified use default columns
+ * @param {Function}  table.fetchData: called when component is constructed or refresh button is clicked
+ */
 export default function Workload({ title, table }) {
-  const tableData = table && table.data ? table.data : null;
-  const [inputVal, setInput] = useState("");
-  const onRefresh = () => {
-    setInput("");
-    table && table.onRefresh && table.onRefresh();
-  };
+  const [tableData, onRefresh] = useResourceState(table && table.fetchData);
 
+  // filter components
+  const [inputVal, setInput] = useState("");
   const filterComponents = (
     <div style={{ display: "inline-block" }}>
       <Input
@@ -81,7 +85,10 @@ export default function Workload({ title, table }) {
                 : JSON.stringify(row.title).indexOf(inputVal) >= 0
             ),
           filterComponents,
-          onRefresh: onRefresh,
+          onRefresh: () => {
+            setInput("");
+            onRefresh();
+          },
         }}
       />
     </div>
