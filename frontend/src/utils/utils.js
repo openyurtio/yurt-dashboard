@@ -1,37 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
 import { message } from "antd";
-
-// use sessionStorage to cache state
-export function useCacheState(cache_key, default_val) {
-  const cache_val = sessionStorage.getItem(cache_key);
-  const [state, setState] = useState(
-    cache_val ? JSON.parse(cache_val) : default_val
-  );
-  return [
-    state,
-    (new_val) => {
-      setState(new_val);
-      sessionStorage.setItem(cache_key, JSON.stringify(new_val));
-    },
-  ];
-}
-
-// reource components state
-export function useResourceState(fetchData) {
-  // rows contains the table data
-  const [rows, setRows] = useState(null);
-  // onRefresh used when page refresh or refresh button is clicked
-  const onRefresh = useCallback(
-    () => fetchData().then((res) => setRows(res)),
-    [fetchData]
-  );
-
-  useEffect(() => {
-    onRefresh();
-  }, [onRefresh]);
-
-  return [rows, onRefresh];
-}
 
 export function tableData2txt(
   columns,
@@ -122,4 +89,50 @@ export function formatTime(ISOString) {
     const date = new Date(timestamp);
     return date.toLocaleString("zh-cn");
   }
+}
+
+const msPerDay = 1000 * 24 * 3600;
+// Calculate how much time this user have left
+export function getUserLastTime(effectiveTime) {
+  return 7 - Math.floor((Date.now() - Date.parse(effectiveTime)) / (msPerDay));
+}
+
+export function getUserExpireTime(effectiveTime, days) {
+  const timestamp = Date.parse(effectiveTime) + days * msPerDay;
+  return new Date(timestamp).toLocaleString("zh-cn");
+}
+
+// noTip turns off the message popup
+export function getUserProfile(noTip = false) {
+  let userStr = sessionStorage.getItem("user");
+  if (!userStr) {
+    userStr = localStorage.getItem("user");
+  }
+
+  // check if user exist in cache
+  if (userStr) {
+    let user = JSON.parse(userStr);
+    // check if user is valid
+    if (getUserLastTime(user.status.effectiveTime) > 0) {
+      return user;
+    }
+    if (noTip)
+      message.error("对不起，您的试用账号已过期！")
+  }
+
+  return null;
+}
+
+export function setUserProfile(isRemember, userObj) {
+  let userStr = JSON.stringify(userObj);
+  sessionStorage.setItem("user", userStr);
+  if (isRemember) {
+    localStorage.setItem("user", userStr);
+  }
+}
+
+// used when log out
+export function clearUserProfile() {
+  sessionStorage.removeItem('user');
+  localStorage.removeItem('user');
 }

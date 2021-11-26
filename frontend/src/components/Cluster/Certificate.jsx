@@ -6,8 +6,16 @@ export default function Certificate({ content, time }) {
 
   return (
     <div>
-      <div>将以下内容复制到计算机 $HOME/.kube/config 文件下</div>
-      <div>凭证过期时间： {time}</div>
+      <div
+        style={{
+          marginBottom: 5,
+        }}
+      >
+        将以下内容复制到计算机 $HOME/.kube/config 文件下
+        <span style={{ float: "right" }}>
+          凭证过期时间： <b>{time}</b>
+        </span>
+      </div>
       <pre>
         <Button
           type="primary"

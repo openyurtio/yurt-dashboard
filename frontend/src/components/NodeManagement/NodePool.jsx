@@ -1,6 +1,6 @@
 import { Table } from "antd";
 import { getNodepools } from "../../utils/request";
-import { useResourceState } from "../../utils/utils";
+import { useResourceState } from "../../utils/hooks";
 import { RefreshButton } from "../Utils/RefreshButton";
 
 const columns = [
@@ -43,18 +43,18 @@ const columns = [
   // },
 ];
 
-const mockDataItem = {
-  name: "default-nodepool",
-  type: "默认节点池",
-  state: "已激活",
-  nodeStatus: {
-    ready: 1,
-    unready: 0,
-  },
-  os: "AliyunLinux",
-  updateTime: "2021-08-10 19:19:22",
-  operations: "",
-};
+// const mockDataItem = {
+//   name: "default-nodepool",
+//   type: "默认节点池",
+//   state: "已激活",
+//   nodeStatus: {
+//     ready: 1,
+//     unready: 0,
+//   },
+//   os: "AliyunLinux",
+//   updateTime: "2021-08-10 19:19:22",
+//   operations: "",
+// };
 
 const NodePool = () => {
   const [nps, handleRefresh] = useResourceState(getNodepools);

@@ -4,17 +4,17 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
-	client "yurt_console_backend/k8s_client"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-func parseParas(c *gin.Context) (kubeConfig, namespace string, err error) {
-	requestParas := User{}
+func parseResourceParas(c *gin.Context) (kubeConfig, namespace string, err error) {
+	requestParas := &User{}
 
 	// request body format not allowed
-	if err := c.BindJSON(&requestParas); err != nil {
-		return "", "", fmt.Errorf("parse Paras Error")
+	if err := c.BindJSON(requestParas); err != nil {
+		return "", "", fmt.Errorf("parse Paras Error: %w", err)
 	}
 
 	return requestParas.KubeConfig, requestParas.Namespace, nil
@@ -25,9 +25,10 @@ type K8sRequest func(string, string) ([]byte, error)
 // use original k8s request results to construct HTTP resp
 func proxyRequest(c *gin.Context, fn K8sRequest) {
 
-	kubeConfig, namespace, err := parseParas(c)
+	kubeConfig, namespace, err := parseResourceParas(c)
 	if err != nil {
 		JSONErr(c, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	// use k8s apiserver's raw resp body as proxy server resp body
@@ -37,13 +38,8 @@ func proxyRequest(c *gin.Context, fn K8sRequest) {
 		return
 	}
 
-	// ! assert content-type is "application/json" for client requst
+	// assert content-type is "application/json" for client requst
 	c.DataFromReader(http.StatusOK, int64(len(resBody)), "application/json", bytes.NewReader(resBody), nil)
-}
-
-// used for testing localy
-func getFakeKubeConfig() string {
-	return client.GetKubeConfigString("../k8s_client/kubeconfig.conf")
 }
 
 func JSONErr(c *gin.Context, code int, msg string) {
@@ -51,4 +47,17 @@ func JSONErr(c *gin.Context, code int, msg string) {
 		"msg":    msg,
 		"status": false,
 	})
+}
+
+func JSONSuccess(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		"msg":    msg,
+		"status": true,
+	})
+}
+
+func int32Ptr(i int32) *int32 { return &i }
+
+func getAppServiceName(appName string) string {
+	return fmt.Sprintf("%s-service", strings.ToLower(appName))
 }
