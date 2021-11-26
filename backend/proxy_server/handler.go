@@ -132,7 +132,7 @@ func setNodeAutonomyHandler(c *gin.Context) {
 
 	resBody, err := client.PatchNode(requestParas.KubeConfig,
 		requestParas.NodeName, map[string]interface{}{"metadata": map[string]map[string]string{"annotations": {
-			"node.beta.alibabacloud.com/autonomy": requestParas.Autonomy,
+			"node.beta.openyurt.io/autonomy": requestParas.Autonomy,
 		}}})
 	if err != nil {
 		JSONErr(c, http.StatusServiceUnavailable, err.Error())
