@@ -16,12 +16,12 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 > Note: Since yurt-dashboard is essentially a web interface of an customized OpenYurt cluster, you need some extra work to run this project locally.
 
-1. Prepare environment locally
+1. Prepare local development environment
    1. Create an OpenYurt Cluster. (You can setup the OpenYurt cluster [manually](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/manually-setup.md), but we recommend to start OpenYurt by using the [yurtctl](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/yurtctl.md) CLI tool.)
    2. Install User Controller. (yurt-dashboard's user management module depends on this User Controller)
       1. install User CRD, `cd ./config && kubectl apply -f ./user_crd.yaml`
       2. install yurt-user-controller, `cd ./config && kubectl apply -f ./user_controller.yaml` (Note: the yurt-user-controller image is still in progress, will be updated at any time, mainly for the convenience of daily debugging.)
-      3. you can use `cd ./config && kubectl apply -f user_test.yaml` to test if your user CRD has been set properly
+      3. you can run `cd ./config && kubectl apply -f user_test.yaml` to test if your user CRD has been set up properly
    3. install yurt-dashboard dependencies
       - [Golang](https://go.dev/)
       - [Node.js](https://nodejs.dev/)
@@ -48,14 +48,14 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 | Task                                                  | Description                                                                                    | Assigned to | Current Status | priority (1-3) |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------- | -------------- | -------------- |
 | More friendly (error) alert messages                  | frontend                                                                                       | @luc99hen   | in progress    | 1              |
-| Node status monitor                                   | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
-| User feedback entrance                                | frontend                                                                                       |             | not assigned   | 1              |
-| Batch delete resource                                 |                                                                                                |             | not assigned   | 2              |
-| GitHub OAuth login                                    |                                                                                                |             | not assigned   | 2              |
-| User experience optimization                          | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
-| Create resource from yaml                             |                                                                                                |             | not assigned   | 2              |
-| Lab page refactor                                     | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |
-| Front-end buried points to collect user behavior data |                                                                                                |             | not assigned   | 3              |
+| [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)     | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
+| [User feedback entrance](https://github.com/openyurtio/yurt-dashboard/issues/5)                                | frontend                                                                                       |             | not assigned   | 1              |
+| [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6)                                 |                                                                                                |             | not assigned   | 2              |
+| [Mobile UI Adaption](https://github.com/openyurtio/yurt-dashboard/issues/11)                                    |                                                                                                |             | not assigned   | 2              |
+| [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                                    |                                                                                                |             | not assigned   | 2              |
+| [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)                          | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
+| [Lab page refactor](https://github.com/openyurtio/yurt-dashboard/issues/9)                                     | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |
+| [Front-end buried points to collect user behavior data](https://github.com/openyurtio/yurt-dashboard/issues/10) |                                                                                                |             | not assigned   | 3              |
 
 ### Documentation
 
@@ -66,7 +66,7 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 
 ## Contribute
 
-You can pick any feature in which you are interested and create an issue in this repository to let us know your interest. After that, you can follow the instructions from `Get Started` section to set up your local development environment.
+You can pick any unassigned task in which you are interested and find the corresponding issue in this repository to let us know your interests. After that, you can follow the instructions from `Get Started` section to set up your local development environment.
 
 By the way, we highly recommend to read the [contributing guide](https://github.com/openyurtio/openyurt/blob/master/CONTRIBUTING.md) through before making contributions.
 
