@@ -1,17 +1,18 @@
+/*
+ resource_handler.go contains resource CRUD APIs
+*/
+
 package main
 
 import (
 	"bytes"
 	"fmt"
 	"net/http"
-	"strings"
-	"time"
 	client "yurt_console_backend/k8s_client"
 
 	"github.com/gin-gonic/gin"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func getNodeHandler(c *gin.Context) {
@@ -55,69 +56,6 @@ func getClusterOverviewHandler(c *gin.Context) {
 
 }
 
-func loginHandler(c *gin.Context) {
-
-	submitUser := &struct {
-		MobilePhone string
-		Token       string
-	}{}
-	if err := c.BindJSON(submitUser); err != nil {
-		return // parse failed, then abort
-	}
-
-	fetchUser, err := client.GetUser(adminKubeConfig, submitUser.MobilePhone)
-	if err != nil { // fetch user failed
-		JSONErr(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	// test if user token is valid
-	if strings.TrimSpace(fetchUser.Spec.Token) != strings.TrimSpace(submitUser.Token) {
-		JSONErr(c, http.StatusBadRequest, "username or password is invalid")
-		return
-	}
-
-	c.JSON(http.StatusOK, fetchUser)
-}
-
-func registerHandler(c *gin.Context) {
-
-	userProfile := &client.UserSpec{}
-	if err := c.BindJSON(userProfile); err != nil {
-		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("register: parse form data fail: %v", err))
-		return // parse failed, then abort
-	}
-
-	// create user obj
-	err := client.CreateUser(adminKubeConfig, userProfile)
-	if err != nil {
-		JSONErr(c, http.StatusInternalServerError, fmt.Sprintf("register: create user fail: %v", err))
-		return
-	}
-
-	// get created user and check its status
-	// return only when User resources is all prepared (User.Status.EffectiveTime is not null)
-	maxRetry := 30
-	for i := 1; i <= maxRetry; i++ {
-		createdUser, err := client.GetUser(adminKubeConfig, userProfile.Mobilephone)
-		if err != nil {
-			JSONErr(c, http.StatusInternalServerError, fmt.Sprintf("register: get created user fail: %v", err))
-			return
-		}
-
-		// all resources has been created, return success
-		if createdUser.Status.EffectiveTime != (v1.Time{}) {
-			c.JSON(http.StatusOK, createdUser)
-			return
-		}
-
-		time.Sleep(time.Duration(2) * time.Second)
-	}
-
-	JSONErr(c, http.StatusInternalServerError, "register: get created user fail: exceed maxretry")
-
-}
-
 func setNodeAutonomyHandler(c *gin.Context) {
 	requestParas := &struct {
 		User
@@ -142,6 +80,9 @@ func setNodeAutonomyHandler(c *gin.Context) {
 	// assert content-type is "application/json" for client requst
 	c.DataFromReader(http.StatusOK, int64(len(resBody)), "application/json", bytes.NewReader(resBody), nil)
 }
+
+// "App" is a concept from Lab Page.
+// An App contains a Deploy and a Service if enabled
 
 func getAppHandler(c *gin.Context) {
 	kubeConfig, namespace, err := parseResourceParas(c)

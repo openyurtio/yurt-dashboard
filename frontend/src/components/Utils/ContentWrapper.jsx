@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Button, Dropdown, Card, Divider } from "antd";
+import { Layout, Menu, Button, Dropdown, Card, Divider, message } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../../assets/OpenYurt.png";
 import { useSessionState } from "../../utils/hooks";
@@ -86,7 +86,14 @@ const ContentWithSider = ({ content, history }) => {
   const userProfile = getUserProfile();
   // if there is no userProfile (not logged in)
   if (userProfile === null) {
-    history.push("/login");
+    history.push({
+      pathname: "/login",
+      state: {
+        type: "error",
+        msg: "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
+        duration: 6,
+      },
+    });
   }
 
   const userManager = (
