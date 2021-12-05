@@ -45,16 +45,15 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 
 ### Development
 
-| Task                                                  | Description                                                                                    | Assigned to | Current Status | priority (1-3) |
-| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------- | -------------- | -------------- |
-| More friendly (error) alert messages                  | frontend                                                                                       | @luc99hen   | in progress    | 1              |
-| [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)     | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
-| [User feedback entrance](https://github.com/openyurtio/yurt-dashboard/issues/5)                                | frontend                                                                                       |             | not assigned   | 1              |
-| [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6)                                 |                                                                                                |             | not assigned   | 2              |
+| Task                                                                                                            | Description                                                                                    | Assigned to | Current Status | priority (1-3) |
+| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------- | -------------- | -------------- |
+| [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)                                    | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
+| [User feedback entrance](https://github.com/openyurtio/yurt-dashboard/issues/5)                                 | frontend                                                                                       |             | not assigned   | 1              |
+| [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6)              |                                                                                                |             | not assigned   | 2              |
 | [Mobile UI Adaption](https://github.com/openyurtio/yurt-dashboard/issues/11)                                    |                                                                                                |             | not assigned   | 2              |
-| [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                                    |                                                                                                |             | not assigned   | 2              |
-| [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)                          | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
-| [Lab page refactor](https://github.com/openyurtio/yurt-dashboard/issues/9)                                     | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |
+| [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                                     |                                                                                                |             | not assigned   | 2              |
+| [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)                           | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
+| [Lab page refactor](https://github.com/openyurtio/yurt-dashboard/issues/9)                                      | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |
 | [Front-end buried points to collect user behavior data](https://github.com/openyurtio/yurt-dashboard/issues/10) |                                                                                                |             | not assigned   | 3              |
 
 ### Documentation

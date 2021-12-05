@@ -5,10 +5,14 @@ import { Dashboard } from "./Dashborad";
 import { Status } from "../Utils/Status";
 import { useCallback, useState } from "react";
 import { getUserProfile } from "../../utils/utils";
+import { useLocationMsg } from "../../utils/hooks";
 
 const { Option } = Select;
 
 export default function ClusterOverview() {
+  // display welcome msg while entering
+  useLocationMsg();
+
   const [connStatus, setStatus] = useState("Loading");
   const setConnStatus = useCallback((res) => {
     // if any res item is in False Status

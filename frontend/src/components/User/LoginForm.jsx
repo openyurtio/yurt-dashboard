@@ -19,7 +19,14 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
     sendRequest("/login", values).then(
       (res) => {
         setUserProfile(values.remember, res);
-        history.push("/clusterInfo");
+        history.push({
+          pathname: "/clusterInfo",
+          state: {
+            msg: "恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。",
+            type: "info",
+            duration: 3,
+          },
+        });
       },
       (err) => {
         setTips(err.toString());
@@ -35,8 +42,9 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           remember: true,
           // used when redirect from register success page
           // auto fill the mobilephone and token field
-          mobilephone: initState && initState.spec.mobilephone,
-          token: initState && initState.spec.token,
+          mobilephone:
+            initState && initState.spec && initState.spec.mobilephone,
+          token: initState && initState.spec && initState.spec.token,
         }}
         onFinish={onFinish}
       >

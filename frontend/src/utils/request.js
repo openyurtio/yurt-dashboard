@@ -10,9 +10,14 @@ export function sendRequest(path, data) {
     },
     method: "POST",
   })
-    .then((res) => res.json())
+    .then(
+      (res) => res.json(),
+      () => {
+        throw new Error("网络问题，请检查您的网络连接");
+      }
+    )
     .then((res) => {
-      if ("status" in res && res.status === false) {
+      if (res && "status" in res && res.status === false) {
         // throw failed resp error
         throw new Error(res["msg"]);
       }
@@ -20,31 +25,33 @@ export function sendRequest(path, data) {
     });
 }
 
+// an empty obj to keep interface consistency
+const emptyObj = {
+  items: [],
+  filter: () => [],
+  status: "error",
+  some: () => true,
+};
+
 // send request as a use (add user token in request body)
 export function sendUserRequest(path, data) {
   let userProfile = getUserProfile();
   if (!userProfile) {
-    // if userProfile is empty, redirect to login page
-    window.location.replace("/login");
+    // if userProfile is empty, return emyty obj
+    return new Promise(() => emptyObj);
   }
 
   return sendRequest(path, { ...data, ...userProfile.spec })
     .catch((err) => {
-      // catch request error
+      // handling thrown error from sendRequest
       message.error(err.message);
-      console.log(err);
+      console.error(err);
     })
     .then((res) => {
       if (res && !("status" in res && res.status === false)) {
         return res;
       } else {
-        // return empty obj to keep interface consistency
-        return {
-          items: [],
-          filter: () => [],
-          status: "error",
-          some: () => true,
-        };
+        return emptyObj;
       }
     });
 }
@@ -81,8 +88,7 @@ export function getNodes(paras) {
     const nodePoolKey = "apps.openyurt.io/nodepool";
     const nodeRoleKey = "node-role.kubernetes.io/master";
     const getNodeCondition = (rawNode) =>
-      rawNode.status.conditions
-        .filter((item) => item.type === "Ready")[0]
+      rawNode.status.conditions.filter((item) => item.type === "Ready")[0];
 
     return {
       ...transformObject(rawNode, i),
@@ -108,11 +114,11 @@ export function getNodes(paras) {
       status: {
         CPU: toPercentagePresentation(
           parseFloat(rawNode.status.allocatable.cpu) /
-          parseFloat(rawNode.status.capacity.cpu)
+            parseFloat(rawNode.status.capacity.cpu)
         ),
         Mem: toPercentagePresentation(
           parseFloat(rawNode.status.allocatable.memory) /
-          parseFloat(rawNode.status.capacity.memory)
+            parseFloat(rawNode.status.capacity.memory)
         ),
       },
       version: {
@@ -123,10 +129,8 @@ export function getNodes(paras) {
       operations: {
         NodeName: rawNode.metadata.name,
         Autonomy:
-          "node.beta.alibabacloud.com/autonomy" in rawNode.metadata.annotations
-            ? rawNode.metadata.annotations[
-            "node.beta.alibabacloud.com/autonomy"
-            ]
+          "node.beta.openyurt.io/autonomy" in rawNode.metadata.annotations
+            ? rawNode.metadata.annotations["node.beta.openyurt.io/autonomy"]
             : "false",
       },
     };

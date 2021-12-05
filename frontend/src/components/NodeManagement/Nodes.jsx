@@ -218,7 +218,7 @@ export default function Nodes() {
   const userProfile = getUserProfile();
   const nodeAddScript = userProfile
     ? userProfile.spec.nodeAddScript
-    : "出现了一些问题";
+    : "获取接入脚本失败，出现了一些问题";
   const onCancel = () => {
     setVisible(false);
   };

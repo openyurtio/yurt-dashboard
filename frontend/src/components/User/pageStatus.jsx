@@ -171,7 +171,7 @@ export function CompleteBlock({ res }) {
       subTitle={info.subTitle}
       style={{ margin: "auto", maxWidth: "800px" }}
       extra={[
-        <Button type="primary" onClick={info.buttonFn}>
+        <Button type="primary" key="1" onClick={info.buttonFn}>
           {info.buttonTxt}
         </Button>,
       ]}

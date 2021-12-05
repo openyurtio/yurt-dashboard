@@ -1,18 +1,29 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import { sendRequest } from "../../utils/request";
+import { useLocationMsg } from "../../utils/hooks";
 
-// the whole /login page
+// the /login page
 // pageStatus ?
 //  = loading: waiting for registering
 //  = complete: register success or fail
 //  = login: login form
 //  = register: register form
 export default function LoginPage() {
+  // display expiration msg while entering
+  useLocationMsg();
+
   const [pageStatus, setStatus] = useState("login");
-  const [requestRes, setRes] = useState(null);
+
+  // completeBlockInfo struct definition
+  //  .rstatus    "error"/"success"
+  //  .msg        errMsg
+  //  .buttonFn   clickBtn callback fn
+  const [completeBlockInfo, setComplete] = useState(null);
 
   const doRegist = (formData) => {
     setStatus("loading");
@@ -24,11 +35,11 @@ export default function LoginPage() {
           res.buttonFn = () => {
             setStatus("login");
           };
-          setRes(res);
+          setComplete(res);
         },
         (err) => {
           // err callback
-          setRes({
+          setComplete({
             rstatus: "error",
             msg: err.message,
             buttonFn: () => {
@@ -45,7 +56,7 @@ export default function LoginPage() {
       {pageStatus === "loading" ? (
         <LoadingBlock />
       ) : pageStatus === "complete" ? (
-        <CompleteBlock res={requestRes} />
+        <CompleteBlock res={completeBlockInfo} />
       ) : pageStatus === "register" ? (
         <div className="login">
           <IntroBlock />
@@ -59,7 +70,7 @@ export default function LoginPage() {
           <IntroBlock />
           <LoginForm
             gotoRegister={() => setStatus("register")}
-            initState={requestRes}
+            initState={completeBlockInfo}
           />
         </div>
       )}
