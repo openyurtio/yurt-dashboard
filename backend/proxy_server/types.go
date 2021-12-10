@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	client "yurt_console_backend/k8s_client"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -17,55 +18,37 @@ type User struct {
 
 var adminKubeConfig = client.GetAdminKubeConfig()
 
-func getWorkPressDeploymentConfig(name, namespace string, replicas int) interface{} {
+// the wordpress APP contains 2 parts (each has a deployment &  a service)
+// - MySQL database, storage service
+// - WordPress Web app, wordpress web app needs mysql database service to run
+
+const wordpress_mysql_delpoy_name string = "wordpress-mysql"
+
+// get wordpress mysql deployment
+func getWordPressMysqlDeployConfig(namespace string) interface{} {
 	return &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: namespace,
-			Name:      name,
+			Name:      wordpress_mysql_delpoy_name,
 			Labels: map[string]string{
-				"app":  "WordPress",
+				"app":  wordpress_mysql_delpoy_name,
 				"type": "lab",
 			},
 		},
 		Spec: appsv1.DeploymentSpec{
-			Replicas: int32Ptr(int32(replicas)),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app": "WordPress",
+					"app": wordpress_mysql_delpoy_name,
 				},
 			},
 			Template: apiv1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"app": "WordPress",
+						"app": wordpress_mysql_delpoy_name,
 					},
 				},
 				Spec: apiv1.PodSpec{
 					Containers: []apiv1.Container{
-						{
-							Name:  "wordpress",
-							Image: "wordpress",
-							Ports: []apiv1.ContainerPort{
-								{
-									Name:          "wdport",
-									ContainerPort: 80,
-								},
-							},
-							Env: []apiv1.EnvVar{
-								{
-									Name:  "WORDPRESS_DB_HOST",
-									Value: "localhost:3306",
-								},
-								{
-									Name:  "WORDPRESS_DB_USER",
-									Value: "wordpress",
-								},
-								{
-									Name:  "WORDPRESS_DB_PASSWORD",
-									Value: "wordpress",
-								},
-							},
-						},
 						{
 							Name:            "mysql",
 							Image:           "mysql:5.7",
@@ -121,6 +104,76 @@ func getWorkPressDeploymentConfig(name, namespace string, replicas int) interfac
 	}
 }
 
+// get wordpress web app deployment
+func getWordPressDeploymentConfig(name, namespace string, replicas int) interface{} {
+	return &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Namespace: namespace,
+			Name:      name,
+			Labels: map[string]string{
+				"app":  "WordPress",
+				"type": "lab",
+			},
+		},
+		Spec: appsv1.DeploymentSpec{
+			Replicas: int32Ptr(int32(replicas)),
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"app": "WordPress",
+				},
+			},
+			Template: apiv1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"app": "WordPress",
+					},
+				},
+				Spec: apiv1.PodSpec{
+					InitContainers: []apiv1.Container{
+						{
+							Name:  "init-db",
+							Image: "busybox",
+							Command: []string{
+								"sh",
+								"-c",
+								fmt.Sprintf("until nslookup %s; do echo waiting for mysql service; sleep 2; done;", getAppServiceName(wordpress_mysql_delpoy_name)),
+							},
+						},
+					},
+					Containers: []apiv1.Container{
+						{
+							Name:  "wordpress",
+							Image: "wordpress",
+							Ports: []apiv1.ContainerPort{
+								{
+									Name:          "wdport",
+									ContainerPort: 80,
+								},
+							},
+							Env: []apiv1.EnvVar{
+								{
+									Name:  "WORDPRESS_DB_HOST",
+									Value: fmt.Sprintf("%s:3306", getAppServiceName(wordpress_mysql_delpoy_name)),
+								},
+								{
+									Name:  "WORDPRESS_DB_USER",
+									Value: "wordpress",
+								},
+								{
+									Name:  "WORDPRESS_DB_PASSWORD",
+									Value: "wordpress",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+// RSSHub app contains only one deployment & service
+
 func getRsshubDeploymentConfig(name, namespace string, replicas int) interface{} {
 	return &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -162,13 +215,8 @@ func getRsshubDeploymentConfig(name, namespace string, replicas int) interface{}
 	}
 }
 
-func getServiceConfig(appName, namespace string, port int) interface{} {
-
-	var targetPort = 80
-
-	if appName == "RSSHub" {
-		targetPort = 1200
-	}
+// create a ClusterIP service based on the Lab appName
+func getServiceConfig(appName, namespace string, port, targetPort int) interface{} {
 
 	return &apiv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
@@ -182,102 +230,15 @@ func getServiceConfig(appName, namespace string, port int) interface{} {
 		Spec: apiv1.ServiceSpec{
 			Ports: []apiv1.ServicePort{{
 				Name: "http",
-				Port: 80,
+				Port: int32(port),
 				TargetPort: intstr.IntOrString{
 					Type:   intstr.Int,
 					IntVal: int32(targetPort),
 				},
-				NodePort: int32(port),
+				Protocol: apiv1.ProtocolTCP,
 			}},
 			Selector: map[string]string{
 				"app": appName,
-			},
-			Type: apiv1.ServiceTypeNodePort,
-		},
-	}
-}
-
-func getTTRssDeploymentConifg(name, namespace string, replicas int) interface{} {
-	return &appsv1.Deployment{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: namespace,
-			Name:      name,
-			Labels: map[string]string{
-				"app":  "TinyTinyRSS",
-				"type": "lab",
-			},
-		},
-		Spec: appsv1.DeploymentSpec{
-			Replicas: int32Ptr(int32(replicas)),
-			Selector: &metav1.LabelSelector{
-				MatchLabels: map[string]string{
-					"app": "TinyTinyRSS",
-				},
-			},
-			Template: apiv1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						"app": "TinyTinyRSS",
-					},
-				},
-				Spec: apiv1.PodSpec{
-					Containers: []apiv1.Container{
-						{
-							Name:  "ttrss",
-							Image: "wangqiru/ttrss:latest",
-							Ports: []apiv1.ContainerPort{
-								{
-									ContainerPort: 80,
-									HostPort:      181,
-								},
-							},
-							Env: []apiv1.EnvVar{
-								{
-									Name:  "DB_PASS",
-									Value: "ttrss",
-								},
-								{
-									Name:  "PUID",
-									Value: "1000",
-								},
-								{
-									Name:  "PGID",
-									Value: "1000",
-								},
-								{
-									Name:  "SELF_URL_PATH",
-									Value: "http://localhost:181/",
-								},
-							},
-							Stdin: true,
-							TTY:   true,
-						},
-						{
-							Name:  "postgres",
-							Image: "postgres:13-alpine",
-							Env: []apiv1.EnvVar{
-								{
-									Name:  "POSTGRES_PASSWORD",
-									Value: "ttrss",
-								},
-							},
-							VolumeMounts: []apiv1.VolumeMount{
-								{
-									Name:      "db",
-									MountPath: "/var/lib/postgresql/data",
-								},
-							},
-						},
-					},
-					Volumes: []apiv1.Volume{
-						{
-							Name: "db",
-							VolumeSource: v1.VolumeSource{
-								EmptyDir: &v1.EmptyDirVolumeSource{},
-							},
-						},
-					},
-				},
 			},
 		},
 	}
