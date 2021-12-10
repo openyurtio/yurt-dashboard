@@ -101,7 +101,9 @@ export default function Nodes() {
                         message.info("节点自治设置失败：刷新Node列表");
                         onRefresh();
                       } else {
-                        message.info("节点自治设置成功");
+                        message.info(
+                          `节点自治设置成功: ${checked ? "ON" : "OFF"}`
+                        );
                       }
                     });
                   }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Button, Dropdown, Card, Divider, message } from "antd";
+import { Layout, Menu, Button, Dropdown, Card, Divider } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../../assets/OpenYurt.png";
 import { useSessionState } from "../../utils/hooks";
