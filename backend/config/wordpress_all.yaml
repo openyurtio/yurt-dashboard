@@ -1,0 +1,113 @@
+# This sample is from https://www.qikqiak.com/k8s-book/docs/31.%E9%83%A8%E7%BD%B2%20Wordpress%20%E7%A4%BA%E4%BE%8B.html
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: "18321778186"
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          args:
+            - --default_authentication_plugin=mysql_native_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          ports:
+            - containerPort: 3306
+              name: dbport
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootPassW0rd
+            - name: MYSQL_DATABASE
+              value: wordpress
+            - name: MYSQL_USER
+              value: wordpress
+            - name: MYSQL_PASSWORD
+              value: wordpress
+          volumeMounts:
+            - name: db
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql-service
+  namespace: "18321778186"
+spec:
+  selector:
+    app: mysql
+  ports:
+    - name: mysqlport
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: "18321778186"
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      initContainers:
+        - name: init-db
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup wordpress-mysql-service; do echo waiting for mysql service; sleep 2; done;",
+            ]
+      containers:
+        - name: wordpress
+          image: wordpress
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: wdport
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: wordpress-mysql-service:3306
+            - name: WORDPRESS_DB_USER
+              value: wordpress
+            - name: WORDPRESS_DB_PASSWORD
+              value: wordpress
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  namespace: "18321778186"
+spec:
+  selector:
+    app: wordpress
+  ports:
+    - name: wordpressport
+      protocol: TCP
+      port: 80
+      targetPort: wdport

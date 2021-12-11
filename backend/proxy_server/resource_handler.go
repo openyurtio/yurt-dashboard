@@ -148,13 +148,19 @@ func installAppHandler(c *gin.Context) {
 	}
 
 	var deployment interface{}
+	var targetPort int
 	switch requestParas.App {
 	case "RSSHub":
 		deployment = getRsshubDeploymentConfig(requestParas.DeploymentName, requestParas.Namespace, requestParas.Replicas)
+		targetPort = 1200
 	case "WordPress":
-		deployment = getWorkPressDeploymentConfig(requestParas.DeploymentName, requestParas.Namespace, requestParas.Replicas)
+		// prepare mysql service in advance
+		// #todo, this will be refactored when create resource from yaml interface has been prepared
+		client.CreateDeployment(requestParas.KubeConfig, requestParas.Namespace, getWordPressMysqlDeployConfig(requestParas.Namespace))
+		client.CreateService(requestParas.KubeConfig, requestParas.Namespace, getServiceConfig(wordpress_mysql_delpoy_name, requestParas.Namespace, 3306, 3306))
+		deployment = getWordPressDeploymentConfig(requestParas.DeploymentName, requestParas.Namespace, requestParas.Replicas)
+		targetPort = 80
 	case "EdgeXFoundry":
-		deployment = getTTRssDeploymentConifg(requestParas.DeploymentName, requestParas.Namespace, requestParas.Replicas)
 	default:
 		JSONErr(c, http.StatusBadRequest, "Unknown APP type")
 		return
@@ -168,7 +174,7 @@ func installAppHandler(c *gin.Context) {
 
 	// if has service options has been set
 	if requestParas.Service {
-		service := getServiceConfig(requestParas.App, requestParas.Namespace, requestParas.Port)
+		service := getServiceConfig(requestParas.App, requestParas.Namespace, requestParas.Port, targetPort)
 		err = client.CreateService(requestParas.KubeConfig, requestParas.Namespace, service)
 		if err != nil {
 			JSONErr(c, http.StatusServiceUnavailable, err.Error())
@@ -191,6 +197,12 @@ func uninstallAppHandler(c *gin.Context) {
 	if err := c.BindJSON(requestParas); err != nil {
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("createDeployment: parse parameters fail: %v", err))
 		return // parse failed, then abort
+	}
+
+	// remove supporting mysql deploy&service, if app is WordPress
+	if requestParas.App == "WordPress" {
+		client.DeleteDeployment(requestParas.KubeConfig, requestParas.Namespace, wordpress_mysql_delpoy_name)
+		client.DeleteService(requestParas.KubeConfig, requestParas.Namespace, getAppServiceName(wordpress_mysql_delpoy_name))
 	}
 
 	// delete app's deployment

@@ -128,6 +128,10 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# test snap shot files
+__snapshots__/
+*.snap
+
 ## Golang
 
 # Binaries for programs and plugins
@@ -147,3 +151,4 @@ dist
 # vendor/
 
 __debug_bin
+

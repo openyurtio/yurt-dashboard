@@ -31,7 +31,7 @@ function useModalConfig(refreshConfigList) {
       info: appInfo["RSSHub"],
       dpName: "lab-rsshub-dp",
       service: true,
-      port: 30001,
+      port: 80,
       replicas: 1,
     },
     {
@@ -40,7 +40,7 @@ function useModalConfig(refreshConfigList) {
       info: appInfo["WordPress"],
       dpName: "lab-wordpress-dp",
       service: true,
-      port: 30002,
+      port: 80,
       replicas: 1,
     },
   ];
@@ -217,7 +217,7 @@ function Lab({ history }) {
 
           <Form.Item
             label="Service"
-            tooltip="是否通过Service将应用以NodePort的形式暴露出来（即可以通过节点IP访问该服务）"
+            tooltip="是否通过Service将应用以ClusterIP的形式暴露出来"
           >
             <Switch
               disabled={modalConfig.created}
@@ -229,7 +229,7 @@ function Lab({ history }) {
               }
             />
           </Form.Item>
-          <Form.Item label="Port" tooltip="请注意不要使用可能引起冲突的端口">
+          <Form.Item label="Port" tooltip="Service将使用的端口">
             <InputNumber
               disabled={modalConfig.created || !modalConfig.service}
               value={modalConfig.port}
@@ -282,9 +282,9 @@ function Lab({ history }) {
     }
     if (
       modalConfig.service &&
-      (modalConfig.port < 30000 || modalConfig.port > 32767)
+      (modalConfig.port <= 0 || modalConfig.port > 65535)
     ) {
-      setTip("Tips: 端口范围需要在30000-32767之间");
+      setTip("Tips: 端口范围需要在1-65535之间");
       return;
     }
 

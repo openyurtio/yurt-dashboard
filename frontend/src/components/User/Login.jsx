@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 
 import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
 import RegisterForm from "./RegisterForm";
