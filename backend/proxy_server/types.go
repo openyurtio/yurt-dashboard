@@ -16,9 +16,13 @@ type User struct {
 	Namespace  string `json:"namespace"`
 }
 
+func (user *User) String() string {
+	return fmt.Sprintf("kubeconfig: %s, namespace: %s", user.KubeConfig, user.Namespace)
+}
+
 var adminKubeConfig = client.GetAdminKubeConfig()
 
-// the wordpress APP contains 2 parts (each has a deployment &  a service)
+// the wordpress APP contains 2 parts (each has one deployment & one service)
 // - MySQL database, storage service
 // - WordPress Web app, wordpress web app needs mysql database service to run
 

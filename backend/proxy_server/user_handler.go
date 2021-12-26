@@ -23,21 +23,26 @@ func loginHandler(c *gin.Context) {
 		Token       string
 	}{}
 	if err := c.BindJSON(submitUser); err != nil {
+		logger.Warn(c.ClientIP(), "login parse paras fail", err.Error())
+		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("login: parse form data fail: %v", err))
 		return // parse failed, then abort
 	}
 
 	fetchUser, err := client.GetUser(adminKubeConfig, submitUser.MobilePhone)
 	if err != nil { // fetch user failed
+		logger.Warn(submitUser.MobilePhone, "login get user fail", err.Error())
 		JSONErr(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// test if user token is valid
 	if strings.TrimSpace(fetchUser.Spec.Token) != strings.TrimSpace(submitUser.Token) {
+		logger.Warn(submitUser.MobilePhone, "login check password fail", err.Error())
 		JSONErr(c, http.StatusBadRequest, "username or password is invalid")
 		return
 	}
 
+	logger.Info(submitUser.MobilePhone, "login successfully")
 	c.JSON(http.StatusOK, fetchUser)
 }
 
@@ -45,6 +50,7 @@ func registerHandler(c *gin.Context) {
 
 	userProfile := &client.UserSpec{}
 	if err := c.BindJSON(userProfile); err != nil {
+		logger.Warn(c.ClientIP(), "register fail: parse paras", err.Error())
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("register: parse form data fail: %v", err))
 		return // parse failed, then abort
 	}
@@ -54,10 +60,11 @@ func registerHandler(c *gin.Context) {
 	if err != nil {
 		var err_msg string
 		if kerrors.IsAlreadyExists(err) {
-			err_msg = "register: user already exist, please use another phonenumber"
+			err_msg = fmt.Sprintf("register: user %s already exist, please use another phonenumber", userProfile.Mobilephone)
 		} else {
 			err_msg = fmt.Sprintf("register: create user fail: %v", err)
 		}
+		logger.Warn(userProfile.Mobilephone, "register fail: create user", err_msg)
 		JSONErr(c, http.StatusInternalServerError, err_msg)
 		return
 	}
@@ -68,12 +75,14 @@ func registerHandler(c *gin.Context) {
 	for i := 1; i <= maxRetry; i++ {
 		createdUser, err := client.GetUser(adminKubeConfig, userProfile.Mobilephone)
 		if err != nil {
+			logger.Warn(userProfile.Mobilephone, "register fail: check uses status get user fail", err.Error())
 			JSONErr(c, http.StatusInternalServerError, fmt.Sprintf("register: get created user fail: %v", err))
 			return
 		}
 
 		// all resources has been created, return success
 		if createdUser.Status.EffectiveTime != (v1.Time{}) {
+			logger.Info(userProfile.Mobilephone, "regist successfully")
 			c.JSON(http.StatusOK, createdUser)
 			return
 		}
@@ -81,6 +90,7 @@ func registerHandler(c *gin.Context) {
 		time.Sleep(time.Duration(2) * time.Second)
 	}
 
+	logger.Warn(userProfile.Mobilephone, "register fail", "check user status exceed maxretry")
 	JSONErr(c, http.StatusInternalServerError, "register: get created user fail: exceed maxretry")
 
 }
