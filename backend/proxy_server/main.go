@@ -1,6 +1,9 @@
 package main
 
 import (
+	"io"
+	"os"
+
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 
@@ -10,6 +13,7 @@ import (
 func main() {
 	// Set the router as the default one shipped with Gin
 	router := gin.Default()
+	// allow CORS request for frontend dev server request
 	router.Use(cors.Default())
 
 	// Serve frontend static files
@@ -18,6 +22,8 @@ func main() {
 	router.NoRoute(func(c *gin.Context) { c.File("../../frontend/build/index.html") })
 	// setup route group for the API
 	setAPIGroup(router)
+	// setup logger output to stdout
+	setLogger(os.Stdout)
 
 	// Start and run the server
 	if err := router.Run(":8001"); err != nil {
@@ -42,4 +48,10 @@ func setAPIGroup(router *gin.Engine) {
 		api.POST("/installApp", installAppHandler)
 		api.POST("/uninstallApp", uninstallAppHandler)
 	}
+}
+
+var logger baseLogger
+
+func setLogger(output io.Writer) {
+	logger.Init(output)
 }
