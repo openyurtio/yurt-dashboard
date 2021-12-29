@@ -26,7 +26,7 @@ func main() {
 	setLogger(os.Stdout)
 
 	// Start and run the server
-	if err := router.Run(":8001"); err != nil {
+	if err := router.Run(":80"); err != nil {
 		panic("gin server fail to start")
 	}
 }

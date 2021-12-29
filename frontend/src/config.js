@@ -47,4 +47,4 @@ export const routes = [
   },
 ];
 
-export const baseURL = "http://139.224.236.157:8001/api";
+export const baseURL = "http://139.224.236.157:80/api";
