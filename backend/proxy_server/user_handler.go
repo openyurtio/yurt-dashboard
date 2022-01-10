@@ -37,7 +37,7 @@ func loginHandler(c *gin.Context) {
 
 	// test if user token is valid
 	if strings.TrimSpace(fetchUser.Spec.Token) != strings.TrimSpace(submitUser.Token) {
-		logger.Warn(submitUser.MobilePhone, "login check password fail", err.Error())
+		logger.Warn(submitUser.MobilePhone, "login check password fail", "")
 		JSONErr(c, http.StatusBadRequest, "username or password is invalid")
 		return
 	}

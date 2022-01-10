@@ -40,7 +40,7 @@ export function IntroBlock() {
   return (
     <Animate transitionName="fade">
       <div className="login-intro">
-        <img src={arch} alt="openyurt-arch"></img>
+        <img src={arch} style={{ maxWidth: "100%" }} alt="openyurt-arch"></img>
         <div className="login-intro-word">
           Extending Kubernetes to Edge
           <a

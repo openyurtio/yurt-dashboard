@@ -24,11 +24,15 @@ export function Dashboard({ setConnStatus }) {
   }, [setConnStatus]);
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+      }}
+    >
       <Card
         className="cluster-card"
-        style={{ width: "73%" }}
-        bodyStyle={{ width: "100%" }}
+        style={{ maxWidth: 800, minWidth: 500 }}
         loading={clusterStatus == null}
       >
         <h3>应用状态</h3>
@@ -37,6 +41,7 @@ export function Dashboard({ setConnStatus }) {
             marginTop: 18,
             display: "flex",
             justifyContent: "space-around",
+            flexWrap: "wrap",
           }}
         >
           <PieChart
@@ -56,7 +61,7 @@ export function Dashboard({ setConnStatus }) {
       </Card>
       <Card
         className="cluster-card"
-        style={{ width: "25%", marginLeft: "2%" }}
+        style={{ minWidth: 210 }}
         bodyStyle={{ width: "100%" }}
         loading={clusterStatus == null}
       >

@@ -43,10 +43,10 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 ## Documentation
 
-- [ ] OpenYurt Experience Center overall introduction
-- [x] [How to create an account in the experience center and get an out-of-box OpenYurt cluster](./doc/help/user.md)
-- [x] [How to join an user's node to the cluster and quickly deploy an app with one click](./doc/help/web_console.md)
-- [x] [How to use `kubeconfig` to experience OpenYurt capabilities](./doc/help/kubeconfig.md)
+- [x] [OpenYurt Experience Center overall introduction](https://openyurt.io/docs/next/installation/openyurt-experience-center/overview)
+- [x] [How to create an account in the experience center and get an out-of-box OpenYurt cluster](https://openyurt.io/docs/next/installation/openyurt-experience-center/user)
+- [x] [How to join an user's node to the cluster and quickly deploy an app with one click](https://openyurt.io/docs/next/installation/openyurt-experience-center/web_console)
+- [x] [How to use `kubeconfig` to experience OpenYurt capabilities](https://openyurt.io/docs/next/installation/openyurt-experience-center/kubeconfig)
 
 ## Todo List
 
@@ -55,10 +55,9 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 | Task                                                                                               | Description                                                                                    | Assigned to | Current Status | priority (1-3) |
 | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------- | -------------- | -------------- |
 | [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)                       | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
-| [A better logging system](https://github.com/openyurtio/yurt-dashboard/issues/10)                  |                                                                                                |   @luc99hen         |  in progress   | 1              |
+| [A better logging system](https://github.com/openyurtio/yurt-dashboard/issues/10)                  |                                                                                                | @luc99hen   | in progress    | 1              |
 | [User feedback entrance](https://github.com/openyurtio/yurt-dashboard/issues/5)                    | frontend                                                                                       |             | not assigned   | 1              |
 | [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6) |                                                                                                |             | not assigned   | 2              |
-| [Mobile UI Adaption](https://github.com/openyurtio/yurt-dashboard/issues/11)                       |                                                                                                |             | not assigned   | 2              |
 | [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                        |                                                                                                |             | not assigned   | 2              |
 | [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)              | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
 | [Lab page refactor](https://github.com/openyurtio/yurt-dashboard/issues/9)                         | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |

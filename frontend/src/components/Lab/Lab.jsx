@@ -145,7 +145,10 @@ function Lab({ history }) {
       </div>
 
       <Modal
-        width="45%"
+        style={{
+          minWidth: "600px",
+          maxWidth: "45%",
+        }}
         title={modalConfig.app}
         visible={isModalVisible}
         onCancel={closeModal}
