@@ -126,7 +126,7 @@ const ContentWithSider = ({ content, history }) => {
     <Layout>
       <Header className="header">
         <img src={logo} alt="logo" className="logo"></img>
-        <Dropdown overlay={userManager}>
+        <Dropdown overlay={userManager} trigger={["click", "hover"]}>
           <Button
             type="text"
             style={{

@@ -8,7 +8,7 @@ export default function Certificate({ content, time }) {
     <div>
       <div
         style={{
-          marginBottom: 5,
+          marginBottom: 25,
         }}
       >
         将以下内容复制到计算机 $HOME/.kube/config 文件下
@@ -17,15 +17,17 @@ export default function Certificate({ content, time }) {
         </span>
       </div>
       <pre>
-        <Button
-          type="primary"
-          size="small"
-          className="copy-button"
-          onClick={handleClick}
-        >
-          Copy
-        </Button>
-        <code>{content}</code>
+        <code>
+          <Button
+            type="primary"
+            size="small"
+            className="copy-button"
+            onClick={handleClick}
+          >
+            copy
+          </Button>
+          {content}
+        </code>
       </pre>
     </div>
   );

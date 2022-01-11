@@ -7,8 +7,8 @@
 }
 
 .cluster-card {
-  height: 320px;
-  display: inline-flex;
+  min-height: 320px;
+  margin: 5px 10px;
 }
 
 pre {
@@ -26,6 +26,4 @@ pre code {
 
 .copy-button {
   float: right;
-  top: 8px;
-  right: 8px;
 }

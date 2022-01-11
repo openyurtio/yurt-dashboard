@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./login.css";
 import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
