@@ -20,6 +20,7 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 1. Prepare local development environment
    1. Create an OpenYurt Cluster. (You can setup the OpenYurt cluster [manually](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/manually-setup.md), but we recommend to start OpenYurt by using the [yurtctl](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/yurtctl.md) CLI tool.)
+      - OpenYurt version needs to be **0.6.0+**
    2. Install User Controller. (yurt-dashboard's user management module depends on this User Controller)
       1. install User CRD, `cd ./config && kubectl apply -f ./user_crd.yaml`
       2. install yurt-user-controller, `cd ./config && kubectl apply -f ./user_controller.yaml` (Note: the yurt-user-controller image is still in progress, will be updated at any time, mainly for the convenience of daily debugging.)
@@ -38,8 +39,6 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
         - if you want to modify frontend behavior (start a frontend dev server) `npm run start`
         - if you just want a web interface (don't need to debug frontend code), use
           `npm run build` to generate frontend files
-
-> Currently, this project is still very much work-in-progress and there are still some issues with the add node function. If you want to use the add node script to join a Node, please use the provided [`yurtctl` executable file](./config/yurtctl) and [`yurthub-test.tar` image](./config/yurthub-test.tar) for a workaround. This will be fixed soon.
 
 ## Documentation
 

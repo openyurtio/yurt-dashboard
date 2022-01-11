@@ -1,12 +1,12 @@
 apiVersion: user.openyurt.io/v1alpha1
 kind: User
 metadata:
-  # 注意此处的user name格式需要自己设置为 user-手机号
+  # Note that the user name format here, it should be `user-[mobilephone]`
   name: user-19818831111
 spec:
-  # 组织名
+  # The name of organization
   organization: "openyurt"
-  # email
+  # The email of user
   email: "1111111@163.com"
-  # 手机号
+  # The mobilephone of user
   mobilephone: "19818831111"

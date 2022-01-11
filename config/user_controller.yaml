@@ -21,13 +21,27 @@ spec:
       labels:
         control-plane: controller-manager
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: master1
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: openyurt.io/is-edge-worker
+                    operator: In
+                    values: [ "false" ]
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+          key: node-role.kubernetes.io/master
       containers:
         - args:
             - --health-probe-bind-address=:8081
             - --metrics-bind-address=127.0.0.1:8080
             - --leader-elect
+            # period for clearing expired users(in minutes)
+            - --user-sync-period=30
+            # user's validity period (in days)
+            - --user-valid-period=7
           command:
             - /manager
           image: openyurt/yurt-user-controller:test
