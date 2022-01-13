@@ -20,7 +20,7 @@
 
 ![](../imgs/web_node_script.png)
 
-3. 用户在自己的节点上执行复制的脚本（注意：需要节点已经安装`yurtctl`工具）
+3. 用户在自己的节点上执行复制的脚本 （注意：如果yurtctl下载较慢，也可通过 [此方法](https://openyurt.io/docs/next/installation/yurtctl-init-join/#21%E7%BC%96%E8%AF%91-yurtctl) 自己编译 v0.6.0+ 的`yurtctl`, 之后执行节点加入脚本的`./yurtctl join ...` 部分即可）
 
 ![](../imgs/cmd_add_node.png)
 
