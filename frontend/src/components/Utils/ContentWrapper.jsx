@@ -82,17 +82,18 @@ const MySider = () => {
   );
 };
 
+const contentFooter = (
+  <Footer style={{ textAlign: "center" }}>
+    OpenYurt Experience Center ©2021-2022
+  </Footer>
+);
+
 const ContentWithSider = ({ content, history }) => {
   const userProfile = getUserProfile();
   // if there is no userProfile (not logged in)
   if (userProfile === null) {
     history.push({
       pathname: "/login",
-      state: {
-        type: "error",
-        msg: "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
-        duration: 6,
-      },
     });
   }
 
@@ -154,7 +155,7 @@ const ContentWithSider = ({ content, history }) => {
               {content}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>OpenYurt ©2021</Footer>
+          {contentFooter}
         </Layout>
       </Layout>
     </Layout>
@@ -170,7 +171,7 @@ const ContentWithoutSider = ({ content }) => {
       }}
     >
       {content}
-      <Footer style={{ textAlign: "center" }}>OpenYurt ©2021</Footer>
+      {contentFooter}
     </Layout>
   );
 };
