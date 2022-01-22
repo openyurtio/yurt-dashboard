@@ -3,7 +3,7 @@ import Certificate from "./Certificate";
 import { getUserExpireTime, getUserProfile } from "../../utils/utils";
 
 export default function ConnectionInfo() {
-  const userProfile = getUserProfile(false);
+  const userProfile = getUserProfile();
   const kubeConfig = userProfile ? userProfile.spec.kubeConfig : "NULL";
   const effectiveTime = userProfile ? userProfile.status.effectiveTime : 0;
 

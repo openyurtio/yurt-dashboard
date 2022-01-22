@@ -1,10 +1,12 @@
 import App from "./App";
-import { Modal, Form, message } from "antd";
+import { Modal, Form, message, Typography } from "antd";
 import { Input, Button, InputNumber, Switch } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getNodes, sendUserRequest } from "../../utils/request";
 import { withRouter } from "react-router";
+
+const { Paragraph, Link } = Typography;
 
 const appInfo = {
   RSSHub: {
@@ -121,7 +123,19 @@ function Lab({ history }) {
     <div>
       <div>
         <h2>OpenYurt Lab</h2>
-        <h4>通过OpenYurt一键部署下列样例程序到你的服务器。</h4>
+        <Paragraph>
+          <blockquote>
+            一键部署样例程序到你的OpenYurt集群。不知道如何部署？请参考
+            <Link
+              href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
+              target="_blank"
+            >
+              文档➡️
+            </Link>
+            <br></br>
+            更多样例程序即将上线，敬请期待😁！
+          </blockquote>
+        </Paragraph>
       </div>
 
       <div

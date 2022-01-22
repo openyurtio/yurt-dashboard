@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Button, Dropdown, Card, Divider } from "antd";
+import { Layout, Menu, Button, Dropdown, Card, Divider, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../../assets/OpenYurt.png";
 import { useSessionState } from "../../utils/hooks";
@@ -10,6 +10,7 @@ import {
   ExperimentOutlined,
   DownOutlined,
   LogoutOutlined,
+  QuestionOutlined,
 } from "@ant-design/icons";
 import {
   clearUserProfile,
@@ -82,17 +83,61 @@ const MySider = () => {
   );
 };
 
+const contentFooter = (
+  <Footer style={{ textAlign: "center" }}>
+    OpenYurt Experience Center ©2021-2022
+  </Footer>
+);
+
+const helpEntrance = (
+  <div
+    style={{ position: "fixed", right: "3%", bottom: "10%", cursor: "pointer" }}
+  >
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={1}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/openyurtio/yurt-dashboard#contact"
+            >
+              反馈入口
+            </a>
+          </Menu.Item>
+          <Menu.Item key={2}>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://openyurt.io/docs/installation/openyurt-experience-center/overview/#/"
+            >
+              帮助文档
+            </a>
+          </Menu.Item>
+        </Menu>
+      }
+      placement="topCenter"
+      arrow
+    >
+      <Avatar
+        icon={<QuestionOutlined />}
+        style={{
+          color: "#000",
+          backgroundColor: "#fff",
+          boxShadow:
+            "0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d",
+        }}
+      />
+    </Dropdown>
+  </div>
+);
+
 const ContentWithSider = ({ content, history }) => {
   const userProfile = getUserProfile();
   // if there is no userProfile (not logged in)
   if (userProfile === null) {
     history.push({
       pathname: "/login",
-      state: {
-        type: "error",
-        msg: "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
-        duration: 6,
-      },
     });
   }
 
@@ -154,7 +199,8 @@ const ContentWithSider = ({ content, history }) => {
               {content}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>OpenYurt ©2021</Footer>
+          {helpEntrance}
+          {contentFooter}
         </Layout>
       </Layout>
     </Layout>
@@ -170,7 +216,7 @@ const ContentWithoutSider = ({ content }) => {
       }}
     >
       {content}
-      <Footer style={{ textAlign: "center" }}>OpenYurt ©2021</Footer>
+      {contentFooter}
     </Layout>
   );
 };

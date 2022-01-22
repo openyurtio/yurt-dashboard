@@ -4,7 +4,6 @@ import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import { sendRequest } from "../../utils/request";
-import { useLocationMsg } from "../../utils/hooks";
 
 // the /login page
 // pageStatus ?
@@ -13,9 +12,6 @@ import { useLocationMsg } from "../../utils/hooks";
 //  = login: login form
 //  = register: register form
 export default function LoginPage() {
-  // display expiration msg while entering
-  useLocationMsg();
-
   const [pageStatus, setStatus] = useState("login");
 
   // completeBlockInfo struct definition

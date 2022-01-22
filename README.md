@@ -55,7 +55,6 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------- | -------------- | -------------- |
 | [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)                       | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
 | [A better logging system](https://github.com/openyurtio/yurt-dashboard/issues/10)                  |                                                                                                | @luc99hen   | in progress    | 1              |
-| [User feedback entrance](https://github.com/openyurtio/yurt-dashboard/issues/5)                    | frontend                                                                                       |             | not assigned   | 1              |
 | [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6) |                                                                                                |             | not assigned   | 2              |
 | [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                        |                                                                                                |             | not assigned   | 2              |
 | [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)              | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
@@ -68,6 +67,8 @@ You can pick any unassigned task in which you are interested and find the corres
 By the way, we highly recommend to read the [contributing guide](https://github.com/openyurtio/openyurt/blob/master/CONTRIBUTING.md) through before making contributions.
 
 ## Contact
+
+You can directly create an issue here or find the developer in the following group:
 
 - Mailing List: openyurt@googlegroups.com
 - Slack: [channel](https://join.slack.com/t/openyurt/shared_invite/zt-iw2lvjzm-MxLcBHWm01y1t2fiTD15Gw)

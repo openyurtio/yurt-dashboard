@@ -4,14 +4,17 @@ import { Dashboard } from "./Dashborad";
 // import { EventTable } from "./EventTable";
 import { Status } from "../Utils/Status";
 import { useCallback, useState } from "react";
-import { getUserProfile } from "../../utils/utils";
 import { useLocationMsg } from "../../utils/hooks";
+import { getUserProfile } from "../../utils/utils";
 
 const { Option } = Select;
 
 export default function ClusterOverview() {
-  // display welcome msg while entering
+  // display welcome msg if it's the first entrance
   useLocationMsg();
+
+  const userProfile = getUserProfile();
+  const namespace = userProfile ? userProfile.spec.namespace : "NULL";
 
   const [connStatus, setStatus] = useState("Loading");
   const setConnStatus = useCallback((res) => {
@@ -21,9 +24,6 @@ export default function ClusterOverview() {
       setStatus("Fail");
     } else setStatus("Ready");
   }, []);
-
-  const userProfile = getUserProfile(true);
-  const namespace = userProfile ? userProfile.spec.namespace : "NULL";
 
   return (
     <div>

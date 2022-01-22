@@ -1,7 +1,9 @@
-import { Table } from "antd";
+import { Table, Typography } from "antd";
 import { getNodepools } from "../../utils/request";
 import { useResourceState } from "../../utils/hooks";
 import { RefreshButton } from "../Utils/RefreshButton";
+
+const { Paragraph, Link } = Typography;
 
 const columns = [
   { title: "名称", dataIndex: "title" },
@@ -30,7 +32,6 @@ const columns = [
       </div>
     ),
   },
-  // { title: "操作系统", dataIndex: "os" },
   { title: "创建时间", dataIndex: "createTime" },
   // {
   //   title: "操作",
@@ -62,6 +63,48 @@ const NodePool = () => {
   return (
     <div>
       <h2>NodePool</h2>
+      <Paragraph>
+        节点池是OpenYurt为边缘资源管理场景设计的能力。边缘站点资源可以根据地域分布进行分类，划分到不同的节点池中。
+        <br />
+        在应用管理层面，OpenYurt围绕节点池设计了一整套应用部署模型，例如：
+        <ul>
+          <li>
+            单元化部署：
+            <Link
+              href="https://github.com/openyurtio/openyurt/blob/master/docs/enhancements/20201211-nodepool_uniteddeployment.md"
+              target="_blank"
+            >
+              YurtAppSet
+            </Link>
+          </li>
+          <li>
+            单元化DaemonSet：
+            <Link
+              href="https://github.com/openyurtio/openyurt/blob/master/docs/enhancements/20210729-yurtappdaemon.md"
+              target="_blank"
+            >
+              YurtAppDaemon
+            </Link>
+          </li>
+          <li>
+            边缘Ingress：
+            <Link
+              href="https://github.com/openyurtio/openyurt/blob/master/docs/proposals/20210628-nodepool-ingress-support.md"
+              target="_blank"
+            >
+              YurtIngress
+            </Link>
+          </li>
+        </ul>
+        体验中心提供了一个简单的
+        <Link
+          href="https://openyurt.io/docs/installation/openyurt-experience-center/kubeconfig/#/"
+          target="_blank"
+        >
+          示例
+        </Link>
+        ，展示如何使用节点池来进行单元化部署。
+      </Paragraph>
       <RefreshButton refreshCallback={handleRefresh} />
       <Table
         loading={nps === null}
