@@ -7,6 +7,7 @@ import {
   Dropdown,
   Switch,
   message,
+  Typography,
 } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { useCallback, useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import { Status } from "../Utils/Status";
 
 const { Option } = Select;
 const { Search } = Input;
+const { Paragraph, Link } = Typography;
 
 // the Node panel
 export default function Nodes() {
@@ -238,6 +240,23 @@ export default function Nodes() {
         >
           添加已有节点
         </Button>
+        {
+          // display help information for users has no nodes joined
+          allNodes && allNodes.length === 0 ? (
+            <Paragraph>
+              <blockquote>
+                不知道如何添加节点😕?参考
+                <Link
+                  href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
+                  target="_blank"
+                >
+                  文档➡️
+                </Link>
+                快速上手体验中心
+              </blockquote>
+            </Paragraph>
+          ) : null
+        }
       </div>
 
       <Modal

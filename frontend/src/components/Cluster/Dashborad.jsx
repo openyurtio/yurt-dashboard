@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { sendUserRequest } from "../../utils/request";
 import { PieChart, HalfPieChart } from "../Utils/PieCharts";
-import { Card } from "antd";
+import { Card, message, Typography } from "antd";
+
+const { Link } = Typography;
 
 function getResourceStatus(clusterStatus, resourceName) {
   if (clusterStatus) {
@@ -20,6 +22,15 @@ export function Dashboard({ setConnStatus }) {
     sendUserRequest("/getOverview").then((res) => {
       setClusterStatus(res);
       setConnStatus(res);
+      const nodeStatus = getResourceStatus(res, "nodes");
+      if (nodeStatus && nodeStatus.TotalNum === 0) {
+        message.info(
+          <span>
+            集群还空空如也？不如马上去<Link href="/nodes">添加一个节点</Link>吧
+          </span>,
+          5
+        );
+      }
     });
   }, [setConnStatus]);
 
