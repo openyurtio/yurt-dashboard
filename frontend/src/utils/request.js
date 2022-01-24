@@ -35,6 +35,7 @@ const emptyObj = {
 
 // send request as a use (add user token in request body)
 export function sendUserRequest(path, data) {
+  // `useUserProfile` is better, `getUserProfile` is used here for simplicity
   let userProfile = getUserProfile();
   if (!userProfile) {
     // if userProfile is empty, return emyty obj
