@@ -1,9 +1,10 @@
 import { Tabs } from "antd";
 import Certificate from "./Certificate";
-import { getUserExpireTime, getUserProfile } from "../../utils/utils";
+import { getUserExpireTime } from "../../utils/utils";
+import { useUserProfile } from "../../utils/hooks";
 
 export default function ConnectionInfo() {
-  const userProfile = getUserProfile();
+  const [userProfile] = useUserProfile();
   const kubeConfig = userProfile ? userProfile.spec.kubeConfig : "NULL";
   const effectiveTime = userProfile ? userProfile.status.effectiveTime : 0;
 

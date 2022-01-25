@@ -102,7 +102,6 @@ export function getUserExpireTime(effectiveTime, days) {
   return new Date(timestamp).toLocaleString("zh-cn");
 }
 
-let firstUse = true; // in case same prompt message show up several times
 export function getUserProfile() {
   let userStr = sessionStorage.getItem("user");
   if (!userStr) {
@@ -114,34 +113,13 @@ export function getUserProfile() {
     return null;
   }
 
-  const user = JSON.parse(userStr);
-  const lastTime = getUserLastTime(user.status.effectiveTime);
-
-  // if account has expired
-  if (firstUse && lastTime <= 0) {
-    firstUse = false;
-    const delayMsg = message.error(
-      "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
-      0
-    );
-    // Dismiss manually and asynchronously
-    setTimeout(delayMsg, 5000);
-    return null;
-  }
-
-  // if the account is about to expire
-  if (firstUse && lastTime <= 3) {
-    message.warn(`您的账户将在${lastTime}日后过期`, 5);
-    firstUse = false;
-  }
-
-  return user;
+  return JSON.parse(userStr);
 }
 
-export function setUserProfile(isRemember, userObj) {
+export function setUserProfile(userObj) {
   let userStr = JSON.stringify(userObj);
   sessionStorage.setItem("user", userStr);
-  if (isRemember) {
+  if (localStorage.getItem("user")) {
     localStorage.setItem("user", userStr);
   }
 }

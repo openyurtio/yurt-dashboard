@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Menu, Button, Dropdown, Card, Divider, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../../assets/OpenYurt.png";
-import { useSessionState } from "../../utils/hooks";
+import { useSessionState, useUserProfile } from "../../utils/hooks";
 import {
   InfoCircleOutlined,
   AppstoreOutlined,
@@ -12,11 +12,7 @@ import {
   LogoutOutlined,
   QuestionOutlined,
 } from "@ant-design/icons";
-import {
-  clearUserProfile,
-  getUserLastTime,
-  getUserProfile,
-} from "../../utils/utils";
+import { getUserLastTime } from "../../utils/utils";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -133,7 +129,7 @@ const helpEntrance = (
 );
 
 const ContentWithSider = ({ content, history }) => {
-  const userProfile = getUserProfile();
+  const [userProfile, setUserProfile] = useUserProfile();
   // if there is no userProfile (not logged in)
   if (userProfile === null) {
     history.push({
@@ -157,7 +153,7 @@ const ContentWithSider = ({ content, history }) => {
           width: "100%",
         }}
         onClick={() => {
-          clearUserProfile();
+          setUserProfile(null);
           history.push("/login");
         }}
       >
