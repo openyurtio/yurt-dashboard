@@ -14,12 +14,9 @@ import { useCallback, useEffect, useState } from "react";
 import { getNodes, getNodepools, sendUserRequest } from "../../utils/request";
 import RSelect from "../Utils/RefreshableSelect";
 import STable from "../Utils/SelectableTable";
-import {
-  getUserProfile,
-  renderDictCell,
-  copy2clipboard,
-} from "../../utils/utils";
+import { renderDictCell, copy2clipboard } from "../../utils/utils";
 import { Status } from "../Utils/Status";
+import { useUserProfile } from "../../utils/hooks";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -219,7 +216,7 @@ export default function Nodes() {
 
   // nodeaddscript modal
   const [visible, setVisible] = useState(false);
-  const userProfile = getUserProfile();
+  const [userProfile] = useUserProfile();
   const nodeAddScript = userProfile
     ? userProfile.spec.nodeAddScript
     : "获取接入脚本失败，出现了一些问题";
@@ -265,6 +262,7 @@ export default function Nodes() {
         onCancel={onCancel}
         footer={[
           <Button
+            key="copy"
             onClick={() => {
               copy2clipboard(nodeAddScript);
               setVisible(false);
@@ -272,7 +270,7 @@ export default function Nodes() {
           >
             复制并关闭
           </Button>,
-          <Button type="primary" onClick={onCancel}>
+          <Button key="close" type="primary" onClick={onCancel}>
             关闭
           </Button>,
         ]}
