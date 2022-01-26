@@ -57,7 +57,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             },
             {
               type: "string",
-              pattern: /^1[3456789]\d{9}$/,
+              // pattern: /^1[3456789]\d{9}$/,
               message: "This is not a valid phone number!",
             },
           ]}
@@ -98,6 +98,18 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           </Button>
         </Form.Item>
 
+        <Form.Item>
+          <Button
+            type="primary"
+            onClick={() => {
+              window.location.href =
+                "https://github.com/login/oauth/authorize?client_id=4e5058f5e68e11b91193&scope=user";
+            }}
+            className="login-form-button"
+          >
+            Log in by github
+          </Button>
+        </Form.Item>
         <Form.Item>
           <Button
             type="primary"

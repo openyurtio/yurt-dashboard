@@ -16,6 +16,14 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const (
+	UserCreateSuccess = iota
+	UserCreated
+	UserCreateFailed
+	UserGetFailed
+	UserGetTimeOut
+)
+
 func loginHandler(c *gin.Context) {
 
 	submitUser := &struct {
@@ -55,18 +63,37 @@ func registerHandler(c *gin.Context) {
 		return // parse failed, then abort
 	}
 
+	// status represents the results of execution
+	// backInfo: success->user object; fail->error message
+	status, backInfo := registerUser(userProfile)
+	if status != UserCreateSuccess {
+		if errMsg, isErr := backInfo.(string); isErr {
+			JSONErr(c, http.StatusInternalServerError, string(errMsg))
+		}
+	} else {
+		if createdUser, isUser := backInfo.(*client.User); isUser {
+			c.JSON(http.StatusOK, createdUser)
+		}
+	}
+}
+
+// extract `registerUser function` which can be reused by githubLogin module
+func registerUser(userProfile *client.UserSpec) (int, interface{}) {
+
 	// create user obj
 	err := client.CreateUser(adminKubeConfig, userProfile)
 	if err != nil {
-		var err_msg string
+		var errMsg string
+		var registerStatus int
 		if kerrors.IsAlreadyExists(err) {
-			err_msg = fmt.Sprintf("register: user %s already exist, please use another phonenumber", userProfile.Mobilephone)
+			errMsg = fmt.Sprintf("register: user %s already exist, please use another phonenumber", userProfile.Mobilephone)
+			registerStatus = UserCreated
 		} else {
-			err_msg = fmt.Sprintf("register: create user fail: %v", err)
+			errMsg = fmt.Sprintf("register: create user fail: %v", err)
+			registerStatus = UserCreateFailed
 		}
-		logger.Warn(userProfile.Mobilephone, "register fail: create user", err_msg)
-		JSONErr(c, http.StatusInternalServerError, err_msg)
-		return
+		logger.Warn(userProfile.Mobilephone, "register fail: create user", errMsg)
+		return registerStatus, errMsg
 	}
 
 	// get created user and check its status
@@ -76,21 +103,19 @@ func registerHandler(c *gin.Context) {
 		createdUser, err := client.GetUser(adminKubeConfig, userProfile.Mobilephone)
 		if err != nil {
 			logger.Warn(userProfile.Mobilephone, "register fail: check uses status get user fail", err.Error())
-			JSONErr(c, http.StatusInternalServerError, fmt.Sprintf("register: get created user fail: %v", err))
-			return
+			return UserGetFailed, fmt.Sprintf("register: get created user fail: %v", err)
 		}
 
 		// all resources has been created, return success
 		if createdUser.Status.EffectiveTime != (v1.Time{}) {
 			logger.Info(userProfile.Mobilephone, "regist successfully")
-			c.JSON(http.StatusOK, createdUser)
-			return
+			return UserCreateSuccess, createdUser
 		}
 
 		time.Sleep(time.Duration(2) * time.Second)
 	}
 
 	logger.Warn(userProfile.Mobilephone, "register fail", "check user status exceed maxretry")
-	JSONErr(c, http.StatusInternalServerError, "register: get created user fail: exceed maxretry")
+	return UserGetTimeOut, "register: get created user fail: exceed maxretry"
 
 }
