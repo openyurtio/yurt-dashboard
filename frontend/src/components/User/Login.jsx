@@ -59,17 +59,10 @@ export default function LoginPage() {
     sendRequest("/github", value)
       .then(
         (user) => {
-          setUserProfile(true, user);
+          setUserProfile(user);
         },
         (err) => {
           alert(err);
-          // setComplete({
-          //   rstatus: "error",
-          //   msg: err.message,
-          //   buttonFn: () => {
-          //     setStatus("login");
-          //   },
-          // });
         }
       )
       .then(() => setStatus("githubAuth"));
