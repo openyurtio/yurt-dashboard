@@ -15,7 +15,8 @@ func main() {
 	router := gin.Default()
 	// allow CORS request for frontend dev server request
 	router.Use(cors.Default())
-
+	// setup oauth2 client
+	setOauthClient()
 	// Serve frontend static files
 	router.Use(static.Serve("/", static.LocalFile("../../frontend/build", true)))
 	// if no match route found, take it to index.html for front-end routing
@@ -47,6 +48,7 @@ func setAPIGroup(router *gin.Engine) {
 		api.POST("/getApps", getAppHandler)
 		api.POST("/installApp", installAppHandler)
 		api.POST("/uninstallApp", uninstallAppHandler)
+		api.POST("/github", githubLoginHandler)
 	}
 }
 
