@@ -3,13 +3,13 @@ import { PhoneOutlined, LockOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import { sendRequest } from "../../utils/request";
 import { useState } from "react";
-import { getUserProfile, setUserProfile } from "../../utils/utils";
+import { useUserProfile } from "../../utils/hooks";
 
 const LoginForm = ({ gotoRegister, initState, history }) => {
   const [tips, setTips] = useState("");
 
   // check if user state has already been saved
-  let user = getUserProfile();
+  let [user, setUserProfile] = useUserProfile();
   if (user) {
     history.push("/clusterInfo");
   }
@@ -18,7 +18,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
   const onFinish = (values) => {
     sendRequest("/login", values).then(
       (res) => {
-        setUserProfile(values.remember, res);
+        setUserProfile(res);
         history.push({
           pathname: "/clusterInfo",
           state: {
@@ -57,7 +57,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             },
             {
               type: "string",
-              pattern: /^1[3456789]\d{9}$/,
+              // pattern: /^1[3456789]\d{9}$/,
               message: "This is not a valid phone number!",
             },
           ]}
@@ -98,6 +98,18 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           </Button>
         </Form.Item>
 
+        <Form.Item>
+          <Button
+            type="primary"
+            onClick={() => {
+              window.location.href =
+                "https://github.com/login/oauth/authorize?client_id=4e5058f5e68e11b91193&scope=user";
+            }}
+            className="login-form-button"
+          >
+            Log in by github
+          </Button>
+        </Form.Item>
         <Form.Item>
           <Button
             type="primary"

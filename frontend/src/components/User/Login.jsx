@@ -3,7 +3,10 @@ import "./login.css";
 import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
+import GithubLoginFinish from "./AuthLogin";
 import { sendRequest } from "../../utils/request";
+import { useLocation } from "react-router-dom";
+import { setUserProfile } from "../../utils/utils";
 
 // the /login page
 // pageStatus ?
@@ -11,6 +14,7 @@ import { sendRequest } from "../../utils/request";
 //  = complete: register success or fail
 //  = login: login form
 //  = register: register form
+//  = githubAuth: waiting for github authorization login
 export default function LoginPage() {
   const [pageStatus, setStatus] = useState("login");
 
@@ -19,6 +23,9 @@ export default function LoginPage() {
   //  .msg        errMsg
   //  .buttonFn   clickBtn callback fn
   const [completeBlockInfo, setComplete] = useState(null);
+
+  // the authorization code from github redirect url
+  const code = useLocation().search.split("=")[1];
 
   const doRegist = (formData) => {
     setStatus("loading");
@@ -46,12 +53,37 @@ export default function LoginPage() {
       .then(() => setStatus("complete"));
   };
 
+  const doGithubLogin = (code) => {
+    setStatus("loading");
+    var value = { code: code };
+    sendRequest("/github", value).then(
+      (user) => {
+        setUserProfile(user);
+        setStatus("githubAuth");
+      },
+      (err) => {
+        setComplete({
+          rstatus: "error",
+          msg: err.message,
+          buttonFn: () => {
+            setStatus("githubAuth");
+          },
+        });
+        setStatus("complete");
+      }
+    );
+  };
+
   return (
     <div style={{ margin: "auto 0" }}>
-      {pageStatus === "loading" ? (
+      {code !== undefined && pageStatus === "login" ? (
+        doGithubLogin(code)
+      ) : pageStatus === "loading" ? (
         <LoadingBlock />
       ) : pageStatus === "complete" ? (
         <CompleteBlock res={completeBlockInfo} />
+      ) : pageStatus === "githubAuth" ? (
+        <GithubLoginFinish />
       ) : pageStatus === "register" ? (
         <div className="login">
           <IntroBlock />
