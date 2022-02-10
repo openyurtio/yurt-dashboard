@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -61,23 +62,23 @@ func githubLoginHandler(c *gin.Context) {
 		return
 	}
 
-	token, errMsg := getOauthToken(githubConfig, postCode.Code)
+	token, err := getOauthToken(githubConfig, postCode.Code)
 	if token == nil || token.AccessToken == "" {
-		logger.Warn("", "get token fail", errMsg)
-		JSONErr(c, http.StatusInternalServerError, errMsg)
+		logger.Warn(c.ClientIP(), "get token fail", err.Error())
+		JSONErr(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	githubUserInfo, errMsg := getUserGithubInfo(token)
+	githubUserInfo, err := getUserGithubInfo(token)
 	if githubUserInfo == nil {
-		logger.Warn("", "get github user info fail", errMsg)
+		logger.Warn("", "get github user info fail", err.Error())
 		JSONErr(c, http.StatusInternalServerError, "get github user info fail")
 		return
 	}
 
-	localUser, errMsg := getLocalUser(githubUserInfo)
+	localUser, err := getLocalUser(githubUserInfo)
 	if localUser == nil {
-		logger.Warn("", "get local user info fail", errMsg)
+		logger.Warn("", "get local user info fail", err.Error())
 		JSONErr(c, http.StatusInternalServerError, "get local user info fail")
 		return
 	}
@@ -85,7 +86,7 @@ func githubLoginHandler(c *gin.Context) {
 }
 
 // exchange authorization code to token
-func getOauthToken(githubconfig *oauth2.Config, code string) (*oauth2.Token, string) {
+func getOauthToken(githubconfig *oauth2.Config, code string) (*oauth2.Token, error) {
 
 	var token *oauth2.Token
 
@@ -94,64 +95,56 @@ func getOauthToken(githubconfig *oauth2.Config, code string) (*oauth2.Token, str
 		"&code=" + code
 	req, err := http.NewRequest(http.MethodPost, reqURL, nil)
 	if err != nil {
-		return nil, "internal error, please try again"
+		return nil, errors.New("internal error, please try again")
 	}
 	req.Header.Set("accept", "application/json")
 
 	httpClient := http.Client{Timeout: 5 * time.Second}
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		return nil, "get token failed, please try again"
+		return nil, errors.New("get token failed, please try again")
 	}
 
-	err = json.NewDecoder(resp.Body).Decode(&token)
+	err = json.NewDecoder(resp.Body).Decode(token)
 	if err != nil {
-		return nil, "get token failed, please try again"
+		return nil, errors.New("get token failed, please try again")
 	}
-	return token, "exchange token success"
+	return token, errors.New("exchange token success")
 
 }
 
 // get userinfo from api.github.com/user
-func getUserGithubInfo(token *oauth2.Token) (*githubUser, string) {
+func getUserGithubInfo(token *oauth2.Token) (*githubUser, error) {
 
 	httpClient := githubConfig.Client(context.TODO(), token)
 	userInfo, err := httpClient.Get("https://api.github.com/user")
 
 	if err != nil {
-		return nil, err.Error()
+		return nil, err
 	}
 
 	defer userInfo.Body.Close()
 
 	info, err := ioutil.ReadAll(userInfo.Body)
 	if err != nil {
-		return nil, err.Error()
+		return nil, err
 	}
 
 	var githubUserInfo githubUser
 	err = json.Unmarshal(info, &githubUserInfo)
 	if err != nil {
-		return nil, err.Error()
+		return nil, err
 	}
 
-	return &githubUserInfo, "get github user info success"
+	return &githubUserInfo, errors.New("get github user info success")
 }
 
 // get local user info: if user does not exist then register, otherwise get user info
-func getLocalUser(githubUser *githubUser) (*client.User, string) {
+func getLocalUser(githubUser *githubUser) (*client.User, error) {
 
 	userProfile := &client.UserSpec{}
-	if githubUser.Email != "" {
-		userProfile.Email = githubUser.Email
-	} else {
-		userProfile.Email = "Null Email"
-	}
-	if githubUser.Company != "" {
-		userProfile.Organization = githubUser.Company
-	} else {
-		userProfile.Organization = "Null organization"
-	}
+	userProfile.Email = githubUser.Email
+	userProfile.Organization = githubUser.Company
 	userProfile.Mobilephone = strconv.Itoa(githubUser.ID)
 
 	status, backInfo := registerUser(userProfile)
@@ -161,14 +154,14 @@ func getLocalUser(githubUser *githubUser) (*client.User, string) {
 
 	if status != UserCreated && status != UserCreateSuccess {
 		if errMsg, isErr := backInfo.(string); isErr {
-			return nil, string(errMsg)
+			return nil, errors.New(errMsg)
 		}
 	} else {
 		fetchUser, err = client.GetUser(adminKubeConfig, userProfile.Mobilephone)
 		if err != nil {
-			return nil, err.Error()
+			return nil, err
 		}
 	}
 
-	return fetchUser, "get local user success"
+	return fetchUser, errors.New("get local user success")
 }

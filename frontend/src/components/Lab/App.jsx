@@ -1,5 +1,5 @@
 import { Card, Avatar } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import { Status } from "../Utils/Status";
 
 const { Meta } = Card;
@@ -19,8 +19,12 @@ export default function App({
       hoverable={true}
       bordered={true}
       actions={[
-        <Status status={status ? "ON" : "OFF"} />,
-        <SettingOutlined key="setting" onClick={openModal} />, // setting modals
+        <Status key="status" status={status ? "ON" : "OFF"} />,
+        <EllipsisOutlined
+          style={{ fontSize: 20 }}
+          key="setting"
+          onClick={openModal}
+        />, // setting modals
       ]}
     >
       <Meta avatar={<Avatar src={avatar} />} title={title} description={desc} />

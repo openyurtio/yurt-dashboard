@@ -4,8 +4,7 @@ import { Dashboard } from "./Dashborad";
 // import { EventTable } from "./EventTable";
 import { Status } from "../Utils/Status";
 import { useCallback, useState } from "react";
-import { useLocationMsg } from "../../utils/hooks";
-import { getUserProfile } from "../../utils/utils";
+import { useLocationMsg, useUserProfile } from "../../utils/hooks";
 
 const { Option } = Select;
 
@@ -13,7 +12,7 @@ export default function ClusterOverview() {
   // display welcome msg if it's the first entrance
   useLocationMsg();
 
-  const userProfile = getUserProfile();
+  const [userProfile] = useUserProfile();
   const namespace = userProfile ? userProfile.spec.namespace : "NULL";
 
   const [connStatus, setStatus] = useState("Loading");

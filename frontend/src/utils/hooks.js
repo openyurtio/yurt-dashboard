@@ -2,6 +2,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { message } from "antd";
+import {
+  getUserLastTime,
+  getUserProfile,
+  clearUserProfile,
+  setUserProfile,
+} from "./utils";
 
 // use sessionStorage to cache state
 export function useSessionState(cache_key, default_val) {
@@ -51,9 +57,54 @@ export function useResourceState(fetchData) {
 // display information passed by router from last page
 export function useLocationMsg() {
   const location = useLocation();
-  if (location.state && location.state.msg) {
-    message[location.state.type](location.state.msg, location.state.duration);
-    location.state = {}; // clear msg after displaying
-  }
+  useEffect(() => {
+    if (location.state && location.state.msg) {
+      message[location.state.type](location.state.msg, location.state.duration);
+      location.state = {}; // clear msg after displaying
+    }
+  }, [location]);
+
   return location;
+}
+
+// it's a higher-level API to manage user state and user cache (in localStorage & sessionStorage)
+let firstNotice = true; // enable notification prompt
+export function useUserProfile() {
+  const [user, setUser] = useState(getUserProfile());
+
+  useEffect(() => {
+    // if no account has been logged in, return
+    if (user === null) {
+      return;
+    }
+
+    const lastTime = getUserLastTime(user.status.effectiveTime);
+    // if account has expired
+    if (lastTime <= 0) {
+      // show expire tips
+      message.error(
+        "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
+        5
+      );
+      // clear the expired user data
+      clearUserProfile();
+      // clear the user state
+      setUser(null);
+    }
+    // if the account is about to expire
+    else if (lastTime <= 3 && firstNotice) {
+      firstNotice = false; // only display this msg once
+      message.warn(`您的账户将在${lastTime}日后过期`, 5);
+    }
+  }, [user]);
+
+  return [
+    user,
+    (user) => {
+      if (user) {
+        setUserProfile(user);
+      } else clearUserProfile();
+      setUser(user);
+    },
+  ];
 }

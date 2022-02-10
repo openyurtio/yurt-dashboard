@@ -55,8 +55,7 @@ export default function LoginPage() {
 
   const doGithubLogin = (code) => {
     setStatus("loading");
-    var value = { code: code };
-    sendRequest("/github", value).then(
+    sendRequest("/github", { code }).then(
       (user) => {
         setUserProfile(user);
         setStatus("githubAuth");
