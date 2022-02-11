@@ -40,6 +40,8 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
         - if you just want a web interface (don't need to debug frontend code), use
           `npm run build` to generate frontend files
 
+> If you want to change the GitHub OAuth behavior, we recommend you to [set up your own OAuth App with your account](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app), and replace the configurations in both [backend](./backend/proxy_server/auth.go) and [frontend](./frontend/src/components/User/LoginForm.jsx).
+
 ## Documentation
 
 - [x] [OpenYurt Experience Center overall introduction](https://openyurt.io/docs/next/installation/openyurt-experience-center/overview)
@@ -56,7 +58,7 @@ The features which will be added into the yurt-dashboard are outlined here. Welc
 | [Node status monitor](https://github.com/openyurtio/yurt-dashboard/issues/4)                       | display mem/CPU status of the node in the web interface Node panel                             |             | not assigned   | 1              |
 | [A better logging system](https://github.com/openyurtio/yurt-dashboard/issues/10)                  |                                                                                                | @luc99hen   | in progress    | 1              |
 | [Delete & Create resource from web console](https://github.com/openyurtio/yurt-dashboard/issues/6) |                                                                                                |             | not assigned   | 2              |
-| [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                        |                                                                                                |             | not assigned   | 2              |
+| [GitHub OAuth login](https://github.com/openyurtio/yurt-dashboard/issues/7)                        |                                                                                                | @hxcGit     | in progress    | 2              |
 | [User experience optimization](https://github.com/openyurtio/yurt-dashboard/issues/8)              | e.g. display information about how many users or nodes are active                              |             | not assigned   | 2              |
 | [Lab page refactor](https://github.com/openyurtio/yurt-dashboard/issues/9)                         | organize this page with OpenYurt's feature, e.g. Node autonomy; nodepool and united deployment |             | not assigned   | 3              |
 
