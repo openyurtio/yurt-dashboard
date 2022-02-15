@@ -1,0 +1,32 @@
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "yurt-dashboard.fullname" . }}-backend
+
+
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "yurt-dashboard.fullname" . }}-backend
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "yurt-dashboard.fullname" . }}-backend
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "yurt-dashboard.fullname" . }}-backend
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "yurt-dashboard.fullname" . }}-backend
+    namespace: {{ .Release.Namespace }}
+
