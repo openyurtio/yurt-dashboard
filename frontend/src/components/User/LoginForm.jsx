@@ -1,5 +1,5 @@
 import { Form, Input, Button, Checkbox, Card } from "antd";
-import { PhoneOutlined, LockOutlined } from "@ant-design/icons";
+import { GithubOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 import { sendRequest } from "../../utils/request";
 import { useState } from "react";
@@ -97,19 +97,6 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             Register Now
           </Button>
         </Form.Item>
-
-        <Form.Item>
-          <Button
-            type="primary"
-            onClick={() => {
-              window.location.href =
-                "https://github.com/login/oauth/authorize?client_id=4e5058f5e68e11b91193&scope=user";
-            }}
-            className="login-form-button"
-          >
-            Log in by github
-          </Button>
-        </Form.Item>
         <Form.Item>
           <Button
             type="primary"
@@ -118,6 +105,17 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             className="login-form-button"
           >
             Log in
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            href="https://github.com/login/oauth/authorize?client_id=4dd7d74594e273551935&scope=user"
+            className="login-form-button"
+            icon={<GithubOutlined style={{ fontSize: "150%" }} />}
+            style={{ background: "#333333", borderColor: "#333333" }}
+          >
+            Log in with Github
           </Button>
         </Form.Item>
       </Form>

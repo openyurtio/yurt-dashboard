@@ -12,8 +12,8 @@ var (
 
 // providers' client parameters
 const (
-	GithubClientID          = "4e5058f5e68e11b91193"
-	GithubClientSecret      = "f3833030e760214e349eff5fc360bd655ffb73e1"
+	GithubClientID          = "4dd7d74594e273551935"
+	GithubClientSecret      = "4956630d6535e694fcaf04834fa9332a393c72f1"
 	GithubClientRedirectURL = "http://47.242.50.237/login"
 )
 
