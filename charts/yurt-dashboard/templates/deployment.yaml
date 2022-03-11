@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "yurt-dashboard.fullname" . }}
+  labels:
+    {{- include "yurt-dashboard.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.dashboard.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "yurt-dashboard.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "yurt-dashboard.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "yurt-dashboard.fullname" . }}-backend
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.dashboard.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+{{- with .Values.dashboard.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: openyurt.io/is-edge-worker
+                    operator: In
+                    values: [ "false" ]

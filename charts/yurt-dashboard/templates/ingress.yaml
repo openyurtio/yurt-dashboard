@@ -1,0 +1,22 @@
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "yurt-dashboard.fullname" . }}
+  labels:
+    {{- include "yurt-dashboard.labels" . | nindent 4 }}
+  {{- with .Values.dashboard.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.dashboard.ingress.host | quote }}
+      http:
+        paths:
+        - backend:
+            serviceName: {{ include "yurt-dashboard.fullname" . }}
+            servicePort: {{ .Values.dashboard.service.port }}
+          path: /
+
