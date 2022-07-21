@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: yurt-user-controller-system
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: users.user.openyurt.io
+spec:
+  group: user.openyurt.io
+  names:
+    kind: User
+    listKind: UserList
+    plural: users
+    singular: user
+  scope: Namespaced
+  versions:
+    - additionalPrinterColumns:
+        - description: The validPeriod of user
+          jsonPath: .spec.validPeriod
+          name: ValidPeriod
+          type: integer
+        - description: The effectiveTime of user
+          jsonPath: .status.effectiveTime
+          name: EffectiveTime
+          type: date
+      name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: User is the Schema for the users API
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: UserSpec defines the desired state of User
+              properties:
+                email:
+                  description: User's email
+                  type: string
+                kubeConfig:
+                  description: User connects to the cluster using KubeConfig
+                  type: string
+                mobilephone:
+                  description: User's mobile number
+                  type: string
+                namespace:
+                  description: Namespace indicates what namespace the user can work in
+                  type: string
+                nodeAddScript:
+                  description: User uses the NodeAddScript to add an edge node to the cluster
+                  type: string
+                organization:
+                  description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run "make" to regenerate code after modifying this file User''s organization information'
+                  type: string
+                token:
+                  description: User uses the Token to log in to the experience center, use the created join-token as login token temporarily
+                  type: string
+                validPeriod:
+                  description: // MaxNodeNum represents the maximum number of edge nodes that can be added, the default is 3 MaxNodeNum int `json:"maxNodeNum,omitempty"` ValidPeriod represents the validity period of the user, in days, the default is 3 days
+                  type: integer
+              required:
+                - email
+                - mobilephone
+                - organization
+              type: object
+            status:
+              description: UserStatus defines the observed state of User
+              properties:
+                effectiveTime:
+                  description: EffectiveTime represents the effective date of the User
+                  format: date-time
+                  type: string
+                expired:
+                  description: // NodeNum indicates the number of edge nodes that the user has currently joined NodeNum int `json:"nodeNum"` Expired indicates whether the User has expired, if Expired is true, the User will be deleted
+                  type: boolean
+              type: object
+          type: object
+      served: true
+      storage: true
+      subresources:
+        status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
