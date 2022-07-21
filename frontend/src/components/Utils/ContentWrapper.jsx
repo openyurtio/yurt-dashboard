@@ -139,7 +139,7 @@ const ContentWithSider = ({ content, history }) => {
 
   const userManager = (
     <Card style={{ padding: "5% 3%" }}>
-      <div>
+      <div style={{ textAlign: "center" }}>
         您的账号还剩{" "}
         {userProfile && getUserLastTime(userProfile.status.effectiveTime)}{" "}
         天过期
@@ -175,6 +175,7 @@ const ContentWithSider = ({ content, history }) => {
               color: "#1890FF",
               marginTop: 13,
               marginRight: 5,
+              minWidth: 170,
             }}
           >
             Hi, {userProfile && userProfile.spec.mobilephone} <DownOutlined />
