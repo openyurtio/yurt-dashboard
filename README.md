@@ -33,10 +33,11 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
       - The backend server needs a `kubeconfig` with admin privileges of your cluster set up in the last step, you need to provide it as a file located at `./backend/config/kubeconfig.conf`.
       - Start the backend server with `cd ./backend/proxy_server && go run .`
    2. How to play with the frontend
-      - modify the backend server address `baseURL` at `./frontend/src/config.js`
       - install frontend dependencies `cd ./frontend && npm install`
       - develop
-        - if you want to modify frontend behavior (start a frontend dev server) `npm run start`
+        - if you want to modify frontend behavior
+          - define environment variable `BASE_URL` (e.g. `http://ip:port`) for the backend service
+          - (start a frontend dev server) `npm run start`
         - if you just want a web interface (don't need to debug frontend code), use
           `npm run build` to generate frontend files
 
