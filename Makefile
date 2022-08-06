@@ -6,9 +6,9 @@ SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
 REPO ?= openyurt
-TAG ?= latest
+IMAGE_TAG ?= latest
 
-DASHBOARD_IMG ?= ${REPO}/yurt-dashboard:${TAG}
+DASHBOARD_IMG ?= ${REPO}/yurt-dashboard:${IMAGE_TAG}
 
 DOCKER_BUILD_GO_PROXY_ARG ?= GO_PROXY=https://goproxy.cn,direct
 
