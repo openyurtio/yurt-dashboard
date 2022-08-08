@@ -1,14 +1,4 @@
-
 ## Prepare Image
-
-### Modify baseURL
-
-Currently as `yurt-dashboard` not support custom backend url. We need to modify file `frontend/src/config.js`.
-If you want expose the dashboard domain as `dashboard.yurt.epaas.domain`, you need to change the value as below:
-
-```javascript
-export const baseURL = "http://dashboard.yurt.epaas.domain:80/api";
-```
 
 ### Build Image
 

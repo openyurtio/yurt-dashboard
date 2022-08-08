@@ -3,7 +3,7 @@ import { message } from "antd";
 import { toPercentagePresentation, formatTime, getUserProfile } from "./utils";
 
 export function sendRequest(path, data) {
-  return fetch(baseURL + path, {
+  return fetch(baseURL + "/api" + path, {
     body: JSON.stringify({ ...data }),
     headers: {
       "content-type": "application/json",

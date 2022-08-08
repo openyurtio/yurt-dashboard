@@ -47,4 +47,8 @@ export const routes = [
   },
 ];
 
-export const baseURL = "http://139.224.236.157:80/api";
+// use baseurl defined by the environment variable  (Only for debug purpose)
+// or use default (browser location url) if not defined
+export const baseURL = process.env.BASE_URL
+  ? process.env.BASE_URL
+  : window.location.origin;

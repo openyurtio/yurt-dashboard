@@ -1,3 +1,4 @@
+#!/bin/bash
 
 mkdir -p /openyurt/backend/
 mkdir -p /openyurt/config/
