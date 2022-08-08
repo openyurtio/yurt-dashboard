@@ -1,6 +1,6 @@
 apiVersion: v2
 name: yurt-dashboard
-description: A Helm chart for Kubernetes
+description: Dashboard for openyurt
 
 # A chart can be either an 'application' or a 'library' chart.
 #
