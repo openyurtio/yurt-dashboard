@@ -13,11 +13,15 @@ on:
       - 'LICENSE'
       - 'OWNERS'
       - 'README.md'
+  schedule:
+    # run at UTC 1:30 every day
+    - cron:  '30 1 * * *'
+  workflow_dispatch: {}
 
 jobs:
   docker-push:
     if: github.repository == 'openyurtio/yurt-dashboard'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,7 +31,10 @@ jobs:
       - name: Get the version
         id: get_version
         run: |
-          VERSION="ci"
+          VERSION=${GITHUB_REF#refs/tags/}
+          if [[ ${GITHUB_REF} == "refs/heads/master" ]]; then
+            VERSION=latest
+          fi
           echo ::set-output name=VERSION::${VERSION}
       - name: Install Docker Buildx
         id: buildx
