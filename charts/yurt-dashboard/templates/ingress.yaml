@@ -1,6 +1,6 @@
 
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "yurt-dashboard.fullname" . }}
@@ -16,7 +16,9 @@ spec:
       http:
         paths:
         - backend:
-            serviceName: {{ include "yurt-dashboard.fullname" . }}
-            servicePort: {{ .Values.dashboard.service.port }}
+            service:
+              name: {{ include "yurt-dashboard.fullname" . }}
+              port:
+                number: {{ .Values.dashboard.service.port }}
           path: /
-
+          pathType: Prefix
