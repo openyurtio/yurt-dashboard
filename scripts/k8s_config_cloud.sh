@@ -7,10 +7,10 @@
 sed -i '/swap/d' /etc/fstab
 sudo swapoff -a
 
-# change hostname 
+# change hostname
 hostnamectl set-hostname $1
 
-# let ip_table see bridged network 
+# let ip_table see bridged network
 sudo modprobe br_netfilter
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 br_netfilter
@@ -78,7 +78,7 @@ systemctl enable kubelet && systemctl start kubelet
 
 # install cluster containers
 IMAGE_REPO=registry.aliyuncs.com/google_containers
-TARGET_REPO=k8s.gcr.io
+TARGET_REPO=registry.k8s.io
 Containers=("kube-apiserver:v1.18.8" "kube-controller-manager:v1.18.8" "kube-scheduler:v1.18.8" "kube-proxy:v1.18.8" "pause:3.2" "etcd:3.4.3-0" "coredns:1.6.7")
 
 for container in ${Containers[*]}; do
