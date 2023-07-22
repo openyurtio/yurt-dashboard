@@ -1,0 +1,51 @@
+package helm_client
+
+import (
+	"os"
+	"path/filepath"
+
+	"github.com/pkg/errors"
+	"helm.sh/helm/v3/pkg/helmpath"
+	"helm.sh/helm/v3/pkg/repo"
+)
+
+func repoRemove(names []string) error {
+	repoFile := settings.RepositoryConfig
+	repoCache := settings.RepositoryCache
+
+	r, err := repo.LoadFile(repoFile)
+	if isNotExist(err) || len(r.Repositories) == 0 {
+		return errors.New("no repositories configured")
+	}
+
+	for _, name := range names {
+		if !r.Remove(name) {
+			return errors.Errorf("no repo named %q found", name)
+		}
+		if err := r.WriteFile(repoFile, 0644); err != nil {
+			return err
+		}
+
+		if err := removeRepoCache(repoCache, name); err != nil {
+			return err
+		}
+		// ToDo log info fmt.Fprintf(out, "%q has been removed from your repositories\n", name)
+	}
+
+	return nil
+}
+
+func removeRepoCache(root, name string) error {
+	idx := filepath.Join(root, helmpath.CacheChartsFile(name))
+	if _, err := os.Stat(idx); err == nil {
+		os.Remove(idx)
+	}
+
+	idx = filepath.Join(root, helmpath.CacheIndexFile(name))
+	if _, err := os.Stat(idx); os.IsNotExist(err) {
+		return nil
+	} else if err != nil {
+		return errors.Wrapf(err, "can't remove index file %s", idx)
+	}
+	return os.Remove(idx)
+}
