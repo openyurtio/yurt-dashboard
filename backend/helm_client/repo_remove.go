@@ -9,16 +9,20 @@ import (
 	"helm.sh/helm/v3/pkg/repo"
 )
 
-func repoRemove(names []string) error {
-	repoFile := settings.RepositoryConfig
-	repoCache := settings.RepositoryCache
+type RepoRemoveOptions struct {
+	Names []string `json:"names"`
+}
+
+func (c *baseClient) repoRemove(o * RepoRemoveOptions) error {
+	repoFile := c.settings.RepositoryConfig
+	repoCache := c.settings.RepositoryCache
 
 	r, err := repo.LoadFile(repoFile)
 	if isNotExist(err) || len(r.Repositories) == 0 {
 		return errors.New("no repositories configured")
 	}
 
-	for _, name := range names {
+	for _, name := range o.Names {
 		if !r.Remove(name) {
 			return errors.Errorf("no repo named %q found", name)
 		}

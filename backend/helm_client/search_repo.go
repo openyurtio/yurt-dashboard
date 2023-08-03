@@ -7,6 +7,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"helm.sh/helm/v3/cmd/helm/search"
+	"helm.sh/helm/v3/pkg/cli"
 	"helm.sh/helm/v3/pkg/helmpath"
 	"helm.sh/helm/v3/pkg/repo"
 )
@@ -22,6 +23,7 @@ type RepoSearchOptions struct {
 
 type RepoSearchElement struct {
 	Name        string `json:"name"`
+	ChartName   string `json:"chart_name"`
 	Version     string `json:"version"`
 	AppVersion  string `json:"app_version"`
 	Description string `json:"description"`
@@ -31,10 +33,10 @@ type RepoSearchRsp struct {
 	RepoSearchElements []RepoSearchElement `json:"repo_search_elements"`
 }
 
-func searchRepo(o *RepoSearchOptions) (*RepoSearchRsp, error) {
+func (c *baseClient) searchRepo(o *RepoSearchOptions) (*RepoSearchRsp, error) {
 	o.setupSearchedVersion()
 
-	index, err := o.buildIndex()
+	index, err := o.buildIndex(c.settings)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +57,7 @@ func searchRepo(o *RepoSearchOptions) (*RepoSearchRsp, error) {
 	for _, r := range constraintRes {
 		element := RepoSearchElement{
 			Name:        r.Name,
+			ChartName:   r.Chart.Name,
 			Version:     r.Chart.Version,
 			AppVersion:  r.Chart.AppVersion,
 			Description: r.Chart.Description,
@@ -75,7 +78,7 @@ func (o *RepoSearchOptions) setupSearchedVersion() {
 	}
 }
 
-func (o *RepoSearchOptions) buildIndex() (*search.Index, error) {
+func (o *RepoSearchOptions) buildIndex(settings *cli.EnvSettings) (*search.Index, error) {
 	repoFile := settings.RepositoryConfig
 	repoCache := settings.RepositoryCache
 

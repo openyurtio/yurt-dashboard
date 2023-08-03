@@ -13,10 +13,10 @@ type RepoElement struct {
 	URL  string `json:"url"`
 }
 
-func repoList() (*ListRepoRsp, error) {
+func (c *baseClient) repoList() (*ListRepoRsp, error) {
 	result := &ListRepoRsp{}
 
-	f, err := repo.LoadFile(settings.RepositoryConfig)
+	f, err := repo.LoadFile(c.settings.RepositoryConfig)
 	if isNotExist(err) || len(f.Repositories) == 0 {
 		return result, nil
 	}

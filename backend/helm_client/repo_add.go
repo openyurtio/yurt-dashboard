@@ -25,11 +25,14 @@ type RepoAddOptions struct {
 	KeyFile               string
 	CaFile                string
 	InsecureSkipTLSverify bool
+
+	NoRepoExsitsError bool
+	UpdateWhenExsits  bool
 }
 
-func repoAdd(o *RepoAddOptions) error {
-	repoFile := settings.RepositoryConfig
-	repoCache := settings.RepositoryCache
+func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
+	repoFile := cli.settings.RepositoryConfig
+	repoCache := cli.settings.RepositoryCache
 
 	err := os.MkdirAll(filepath.Dir(repoFile), os.ModePerm)
 	if err != nil && !os.IsExist(err) {
@@ -86,11 +89,20 @@ func repoAdd(o *RepoAddOptions) error {
 			return errors.Errorf("repository name (%s) already exists, please specify a different name", o.Name)
 		}
 
-		// The add is idempotent so do nothing
-		return errors.Errorf("%q already exists with the same configuration, skipping\n", o.Name)
+		if o.UpdateWhenExsits {
+			if err := cli.repoUpdate(&RepoUpdateOptions{Names: []string{o.Name}}); err != nil {
+				// ToDo only log
+			}
+		}
+
+		if o.NoRepoExsitsError {
+			return nil
+		} else {
+			return errors.Errorf("%q already exists with the same configuration, skipping\n", o.Name)
+		}
 	}
 
-	r, err := repo.NewChartRepository(&c, getter.All(settings))
+	r, err := repo.NewChartRepository(&c, getter.All(cli.settings))
 	if err != nil {
 		return err
 	}

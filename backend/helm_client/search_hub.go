@@ -50,7 +50,7 @@ type HubValueOptions struct {
 	Version     string `json:"version"`
 }
 
-func searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
+func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	searchURL, err := url.JoinPath(HelmHubURL, "search")
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	return result, nil
 }
 
-func valueHub(o *HubValueOptions) (*HubSearchElement, error) {
+func (c *baseClient) valueHub(o *HubValueOptions) (*HubSearchElement, error) {
 	valueURL, err := url.JoinPath(HelmHubURL, "helm", o.RepoName, o.PackageName)
 	if err != nil {
 		return nil, err

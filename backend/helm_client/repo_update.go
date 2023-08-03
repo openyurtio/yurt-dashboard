@@ -10,11 +10,12 @@ import (
 )
 
 type RepoUpdateOptions struct {
+	Names []string	`json:"names"`
 }
 
-func repoUpdate(names []string) error {
-	repoFile := settings.RepositoryConfig
-	repoCache := settings.RepositoryCache
+func (c *baseClient) repoUpdate(o *RepoUpdateOptions) error {
+	repoFile := c.settings.RepositoryConfig
+	repoCache := c.settings.RepositoryCache
 
 	f, err := repo.LoadFile(repoFile)
 	switch {
@@ -26,18 +27,18 @@ func repoUpdate(names []string) error {
 	}
 
 	var repos []*repo.ChartRepository
-	updateAllRepos := len(names) == 0
+	updateAllRepos := len(o.Names) == 0
 
 	if !updateAllRepos {
 		// Fail early if the user specified an invalid repo to update
-		if err := checkRequestedRepos(names, f.Repositories); err != nil {
+		if err := checkRequestedRepos(o.Names, f.Repositories); err != nil {
 			return err
 		}
 	}
 
 	for _, cfg := range f.Repositories {
-		if updateAllRepos || isRepoRequested(cfg.Name, names) {
-			r, err := repo.NewChartRepository(cfg, getter.All(settings))
+		if updateAllRepos || isRepoRequested(cfg.Name, o.Names) {
+			r, err := repo.NewChartRepository(cfg, getter.All(c.settings))
 			if err != nil {
 				return err
 			}

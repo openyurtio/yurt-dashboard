@@ -3,9 +3,9 @@ package helm_client
 import (
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -23,40 +23,50 @@ func isNotExist(err error) bool {
 	return os.IsNotExist(errors.Cause(err))
 }
 
-func downloadFromUrlToFile(url string, dest string) (string, error) {
-	tokens := strings.Split(url, "/")
-	fileName := tokens[len(tokens)-1]
+func downloadUrl(downloadURL string, dest string, fileName string) error {
+	u, err := url.Parse(downloadURL)
+	if err != nil {
+		return err
+	}
+
+	if fileName == "" {
+		fileName = path.Base(u.Path)
+		if fileName == "" {
+			return errors.New("Need to specify a download file name.")
+		}
+	}
+
 	destFile := path.Join(dest, fileName)
 
-	_, err := os.Stat(destFile)
+	_, err = os.Stat(destFile)
 	if err == nil {
 		// File exists
-		return destFile, nil
+		return nil
 	} else if !isNotExist(err) {
-		return "", err
+		return err
 	}
 
 	tempFile, err := os.CreateTemp(dest, fileName)
 	if err != nil {
-		return "", err
+		return err
 	}
 	tempName := tempFile.Name()
 	defer tempFile.Close()
 
-	res, err := http.Get(url)
+	res, err := http.Get(downloadURL)
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer res.Body.Close()
 
 	_, err = io.Copy(tempFile, res.Body)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	if err := os.Chmod(tempName, 0644); err != nil {
-		return "", err
+		return err
 	}
 
-	return destFile, os.Rename(tempName, destFile)
+	return os.Rename(tempName, destFile)
 }

@@ -4,10 +4,20 @@ import (
 	"helm.sh/helm/v3/pkg/action"
 )
 
-func uninstall(cfg *action.Configuration, releaseName string) error {
-	client := action.NewUninstall(cfg)
+type UninstallOptions struct {
+	Namespace string   `json:"namespace"`
+	Names     []string `json:"names"`
+}
 
-	_, err := client.Run(releaseName)
-	// ToDo info fmt.Println("Successfully removed release: ", res.Release.Name)
-	return err
+func (c *baseClient) uninstall(o *UninstallOptions) error {
+	client := action.NewUninstall(c.cfg)
+
+	for i := 0; i < len(o.Names); i++ {
+		_, err := client.Run(o.Names[i])
+		if err != nil {
+			return err
+		}
+		// ToDo info fmt.Println("Successfully removed release: ", res.Release.Name)
+	}
+	return nil
 }
