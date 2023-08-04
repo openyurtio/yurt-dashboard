@@ -33,7 +33,6 @@ func (c *baseClient) repoRemove(o * RepoRemoveOptions) error {
 		if err := removeRepoCache(repoCache, name); err != nil {
 			return err
 		}
-		// ToDo log info fmt.Fprintf(out, "%q has been removed from your repositories\n", name)
 	}
 
 	return nil

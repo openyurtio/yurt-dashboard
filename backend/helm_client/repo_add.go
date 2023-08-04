@@ -90,9 +90,7 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 		}
 
 		if o.UpdateWhenExsits {
-			if err := cli.repoUpdate(&RepoUpdateOptions{Names: []string{o.Name}}); err != nil {
-				// ToDo only log
-			}
+			cli.repoUpdate(&RepoUpdateOptions{Names: []string{o.Name}})
 		}
 
 		if o.NoRepoExsitsError {
@@ -119,6 +117,5 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 	if err := f.WriteFile(repoFile, 0644); err != nil {
 		return err
 	}
-	// ToDo log info fmt.Fprintf(out, "%q has been added to your repositories\n", o.name)
 	return nil
 }

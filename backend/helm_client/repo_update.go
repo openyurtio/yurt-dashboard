@@ -56,10 +56,7 @@ func (c *baseClient) repoUpdate(o *RepoUpdateOptions) error {
 		go func(re *repo.ChartRepository) {
 			defer wg.Done()
 			if _, err := re.DownloadIndexFile(); err != nil {
-				// ToDo log error fmt.Fprintf(out, "...Unable to get an update from the %q chart repository (%s):\n\t%s\n", re.Config.Name, re.Config.URL, err)
 				repoFailList = append(repoFailList, re.Config.URL)
-			} else {
-				// ToDo log info fmt.Fprintf(out, "...Successfully got an update from the %q chart repository\n", re.Config.Name)
 			}
 		}(re)
 	}

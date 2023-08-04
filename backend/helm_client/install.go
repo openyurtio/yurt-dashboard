@@ -1,9 +1,6 @@
 package helm_client
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/pkg/errors"
 	"sigs.k8s.io/yaml"
 	"helm.sh/helm/v3/pkg/action"
@@ -28,46 +25,32 @@ func (c *baseClient) install(o *InstallOptions) error {
 		client.Version = ">0.0.0-0"
 	}
 
-	start := time.Now()
 	cp, err := client.ChartPathOptions.LocateChart(o.ChartString, c.settings)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("install locateChart time:%v\n", time.Since(start))
 
 	vals, err := MergeFileValues(o)
 	if err != nil {
 		return err
 	}
 
-	start = time.Now()
 	chartRequested, err := loader.Load(cp)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("install load chart time:%v\n", time.Since(start))
 
 	if err := checkIfInstallable(chartRequested); err != nil {
 		return err
 	}
 
-	if chartRequested.Metadata.Deprecated {
-		// ToDo log warning("This chart is deprecated")
-	}
-
-	start = time.Now()
 	if req := chartRequested.Metadata.Dependencies; req != nil {
 		if err := action.CheckDependencies(chartRequested, req); err != nil {
 			return err
 		}
 	}
-	fmt.Printf("install check dependencies time:%v\n", time.Since(start))
 
-	start = time.Now()
-	fmt.Printf("install values:\n%v\n", vals)
 	_, err = client.Run(chartRequested, vals)
-	fmt.Printf("install install time:%v\n", time.Since(start))
-	// ToDo log info install successful
 	return err
 }
 

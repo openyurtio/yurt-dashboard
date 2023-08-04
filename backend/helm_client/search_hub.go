@@ -79,7 +79,6 @@ func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 		return nil, err
 	}
 	p.RawQuery = v.Encode()
-	// ToDo fmt.Printf("Url: %s\n", p.String())
 	req, err := http.NewRequest(http.MethodGet, p.String(), nil)
 	if err != nil {
 		return nil, err

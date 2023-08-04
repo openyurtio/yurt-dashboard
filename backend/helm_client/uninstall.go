@@ -17,7 +17,6 @@ func (c *baseClient) uninstall(o *UninstallOptions) error {
 		if err != nil {
 			return err
 		}
-		// ToDo info fmt.Println("Successfully removed release: ", res.Release.Name)
 	}
 	return nil
 }

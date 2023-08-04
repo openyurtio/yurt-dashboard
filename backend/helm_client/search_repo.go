@@ -95,8 +95,6 @@ func (o *RepoSearchOptions) buildIndex(settings *cli.EnvSettings) (*search.Index
 			indexf := filepath.Join(repoCache, helmpath.CacheIndexFile(n))
 			ind, err := repo.LoadIndexFile(indexf)
 			if err != nil {
-				// ToDo log warning warning("Repo %q is corrupt or missing. Try 'helm repo update'.", n)
-				// ToDo log warning warning("%s", err)
 				continue
 			}
 			i.AddRepo(n, ind, true)
