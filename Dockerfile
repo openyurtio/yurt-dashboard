@@ -1,4 +1,4 @@
-FROM golang:1.16 as builder
+FROM golang:1.18 as builder
 
 ENV GOPROXY https://goproxy.cn,direct
 WORKDIR /workspace
