@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"path"
 
 	"github.com/google/go-querystring/query"
 )
@@ -51,14 +52,11 @@ type HubValueOptions struct {
 }
 
 func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
-	searchURL, err := url.JoinPath(HelmHubURL, "search")
+	searchURL, err := url.Parse(HelmHubURL)
 	if err != nil {
 		return nil, err
 	}
-	p, err := url.Parse(searchURL)
-	if err != nil {
-		return nil, err
-	}
+	searchURL.Path = path.Join(searchURL.Path, "search")
 	v, err := query.Values(struct {
 		Name       string `url:"ts_query_web"`
 		Limit      int    `url:"limit"`
@@ -78,8 +76,8 @@ func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	if err != nil {
 		return nil, err
 	}
-	p.RawQuery = v.Encode()
-	req, err := http.NewRequest(http.MethodGet, p.String(), nil)
+	searchURL.RawQuery = v.Encode()
+	req, err := http.NewRequest(http.MethodGet, searchURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -100,24 +98,16 @@ func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 }
 
 func (c *baseClient) valueHub(o *HubValueOptions) (*HubSearchElement, error) {
-	valueURL, err := url.JoinPath(HelmHubURL, "helm", o.RepoName, o.PackageName)
+	valueURL, err := url.Parse(HelmHubURL)
 	if err != nil {
 		return nil, err
 	}
+	valueURL.Path = path.Join(valueURL.Path, "helm", o.RepoName, o.PackageName)
 	if o.Version != "" {
-		valueURL, err = url.JoinPath(valueURL, o.Version)
-		if err != nil {
-			return nil, err
-		}
+		valueURL.Path = path.Join(valueURL.Path, o.Version)
 	}
 
-	p, err := url.Parse(valueURL)
-	if err != nil {
-		return nil, err
-	}
-
-	// ToDo fmt.Printf("Url: %s\n", p.String())
-	req, err := http.NewRequest(http.MethodGet, p.String(), nil)
+	req, err := http.NewRequest(http.MethodGet, valueURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
