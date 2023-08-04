@@ -12,7 +12,7 @@ import (
 )
 
 const RootHelmEnvVar = "HELM_ROOT_HOME"
-const RootHelmPath = "/helm/"
+const RootHelmPath = "/openyurt/helm/"
 const KubeConfigPath = "../config/kubeconfig.conf"
 
 func checkAndSetPath(helmEnvVar string, setValue string) {
@@ -26,6 +26,10 @@ func initEnvPath() {
 	if rootPath == "" {
 		rootPath = RootHelmPath
 	}
+	if _, err := os.Stat(rootPath); os.IsNotExist(err) {
+		os.MkdirAll(rootPath, os.ModePerm)
+	}
+
 	checkAndSetPath(helmpath.DataHomeEnvVar, filepath.Join(rootPath, "data"))
 	checkAndSetPath(helmpath.ConfigHomeEnvVar, filepath.Join(rootPath, "config"))
 	checkAndSetPath(helmpath.CacheHomeEnvVar, filepath.Join(rootPath, "cache"))
