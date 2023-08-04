@@ -57,6 +57,49 @@ export function sendUserRequest(path, data) {
     });
 }
 
+export function sendUserRequestWithTimeout(ms, path, data) {
+  if (ms === 0) {
+    return sendUserRequest(path, data);
+  }
+
+  let userProfile = getUserProfile();
+  if (!userProfile) {
+    return new Promise(() => emptyObj);
+  }
+
+  return timeoutPromise(ms, sendRequest(path, { ...data, ...userProfile.spec }))
+    .catch((err) => {
+      // handling thrown error from sendRequest
+      message.error(err.message);
+      console.error(err);
+    })
+    .then((res) => {
+      if (res && !("status" in res && res.status === false)) {
+        return res;
+      } else {
+        return emptyObj;
+      }
+    });
+}
+
+export function timeoutPromise(ms, promise) {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("request timeout"));
+    }, ms);
+    promise.then(
+      (res) => {
+        clearTimeout(timeoutId);
+        resolve(res);
+      },
+      (err) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    );
+  });
+}
+
 // transform common attributes of an object for presentation
 const transformObject = (object, i) => ({
   key: i,

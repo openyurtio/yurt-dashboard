@@ -7,6 +7,7 @@ import StatefulSet from "./components/WorkloadManagement/StatefulSet";
 import Job from "./components/WorkloadManagement/Job";
 import Pod from "./components/WorkloadManagement/Pod";
 import Lab from "./components/Lab/Lab";
+import SystemApp from "./components/AppManagement/SystemApp";
 
 export const routes = [
   {
@@ -44,6 +45,10 @@ export const routes = [
   {
     path: "/lab",
     main: () => <Lab></Lab>,
+  },
+  {
+    path: "/systemapp",
+    main: () => <SystemApp></SystemApp>,
   },
 ];
 

@@ -50,6 +50,18 @@ func setAPIGroup(router *gin.Engine) {
 		api.POST("/uninstallApp", uninstallAppHandler)
 		api.POST("/github", githubLoginHandler)
 	}
+	setSystemAPIGroup(api)
+}
+
+func setSystemAPIGroup(router *gin.RouterGroup) {
+	system := router.Group("/system")
+	{
+		system.POST("/appList", getSystemAppListHandler)
+		system.POST("/appInstall", installSystemAppHandler)
+		system.POST("/appUninstall", uninstallSystemAppHandler)
+		system.POST("/appDefaultConfig", getSystemAppDefaultConfigHandler)
+		system.POST("/appCurConfig", getSystemAppCurConfigHandler)
+	}
 }
 
 var logger baseLogger

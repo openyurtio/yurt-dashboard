@@ -74,6 +74,15 @@ const MySider = () => {
         <Menu.Item key="lab" icon={<ExperimentOutlined />}>
           <Link to="/lab">实验室</Link>
         </Menu.Item>
+        <SubMenu
+          key="appmanagement"
+          icon={<AppstoreOutlined />}
+          title="应用管理"
+        >
+          <Menu.Item key="systemapp">
+            <Link to="/systemapp">系统应用</Link>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </Sider>
   );
