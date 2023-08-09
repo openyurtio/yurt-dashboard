@@ -239,12 +239,11 @@ export default function ConfigEditorInput({
 
   function onDownload() {
     const downloadLink = document.createElement("a");
-    const encodedData = encodeURIComponent(configValue);
+    const encodedData = encodeURIComponent(form.getFieldValue("value_file"));
     const fileName = downloadFileName
       ? downloadFileName + ".yaml"
       : "values.yaml";
-    downloadLink.href =
-      "data:application/bpmn20-xml;charset=UTF-8," + encodedData;
+    downloadLink.href = "data:text/plain;charset=UTF-8," + encodedData;
     downloadLink.download = fileName;
     downloadLink.click();
     message.info("文件已开始下载，将保存为" + fileName);
