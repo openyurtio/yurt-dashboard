@@ -36,12 +36,6 @@ func InstallHubPackage(o *HubInstallOptions) error {
 	return c.installHubPackage(o)
 }
 
-func InstallPackageFromURL(packageURL string, releaseName string, namespace string) error {
-	c := &baseClient{}
-	c.InitClient(namespace)
-	return c.installFromURL(packageURL, releaseName)
-}
-
 func SearchRepo(o *RepoSearchOptions) (*RepoSearchRsp, error) {
 	c := &baseClient{}
 	c.InitClient("")

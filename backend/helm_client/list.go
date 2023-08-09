@@ -53,6 +53,7 @@ func (c *baseClient) list(o *ListReleaseOptions) (*ListReleaseRsp, error) {
 	client.Uninstalled = o.ShowOptions.ShowUninstalled
 	client.Uninstalling = o.ShowOptions.ShowUninstalling
 
+	client.SetStateMask()
 	res, err := client.Run()
 	if err != nil {
 		return nil, err
@@ -69,20 +70,21 @@ func (c *baseClient) list(o *ListReleaseOptions) (*ListReleaseRsp, error) {
 
 	result := &ListReleaseRsp{}
 	for _, one := range res {
-		if filterChartName != nil && filterChartName.MatchString(one.Chart.Name()) {
-			element := ReleaseElement{
-				Name:        one.Name,
-				ChartName:   one.Chart.Name(),
-				Description: one.Chart.Metadata.Description,
-				Namespace:   one.Namespace,
-				Revision:    strconv.Itoa(one.Version),
-				Status:      one.Info.Status.String(),
-				Version:     one.Chart.Metadata.Version,
-				AppVersion:  one.Chart.AppVersion(),
-			}
-
-			result.ReleaseElements = append(result.ReleaseElements, element)
+		if filterChartName != nil && !filterChartName.MatchString(one.Chart.Name()) {
+			continue
 		}
+		element := ReleaseElement{
+			Name:        one.Name,
+			ChartName:   one.Chart.Name(),
+			Description: one.Chart.Metadata.Description,
+			Namespace:   one.Namespace,
+			Revision:    strconv.Itoa(one.Version),
+			Status:      one.Info.Status.String(),
+			Version:     one.Chart.Metadata.Version,
+			AppVersion:  one.Chart.AppVersion(),
+		}
+
+		result.ReleaseElements = append(result.ReleaseElements, element)
 	}
 	return result, nil
 }
