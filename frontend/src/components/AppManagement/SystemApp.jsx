@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { sendUserRequest } from "../../utils/request";
 
 import {
@@ -30,26 +30,14 @@ const { Paragraph, Link } = Typography;
 export default function SystemApp() {
   // data
   const [originData, setOriginData] = useState(null);
-  const onRefresh = useCallback(
-    (update) => getSystemApp(update).then((res) => setOriginData(res)),
-    [getSystemApp]
-  );
-  useEffect(() => {
-    onRefresh(false);
-  }, [onRefresh]);
-  const [showData, setShowData] = useState([]);
   const [operationConfig, setOperationConfig] = useState([]);
+  useEffect(() => {
+    handleRefresh(false);
+  }, []);
 
   // filter
   const [searchVal, setSearchVal] = useState("");
   const [selectVal, setSelectVal] = useState(1);
-  useEffect(() => {
-    if (originData) {
-      setShowData(filterData(originData, searchVal, selectVal));
-    } else {
-      setShowData([]);
-    }
-  }, [originData, selectVal, searchVal]);
 
   // modal
   const [installVisible, setInstallVisible] = useState(false);
@@ -73,12 +61,6 @@ export default function SystemApp() {
   // refresh button
   const [lastUpdate, setLastUpdate] = useState(getCurrentTime());
   const [refreshLoading, setRefreshLoading] = useState(false);
-  const handleRefresh = async (updateRepo) => {
-    setRefreshLoading(true);
-    await onRefresh(updateRepo);
-    setLastUpdate(getCurrentTime());
-    setRefreshLoading(false);
-  };
 
   return (
     <div>
@@ -157,7 +139,8 @@ export default function SystemApp() {
         <List
           style={{ margin: 10 }}
           grid={{ sm: 2, column: 4, gutter: 10 }}
-          dataSource={showData}
+          dataSource={originData ? originData.filter(filterOriginData) : []}
+          loading={originData === null}
           renderItem={(data) => (
             <List.Item>
               <Card
@@ -270,32 +253,35 @@ export default function SystemApp() {
       />
     </div>
   );
-}
 
-function getSystemApp(updateRepo) {
-  return sendUserRequest("/system/appList", {
-    update_repo: updateRepo === null ? false : updateRepo,
-  }).then((sal) => {
-    if (sal.data) {
-      return sal.data.map(transformSysApp);
-    } else {
-      return [];
-    }
-  });
-}
+  function handleRefresh(updateRepo) {
+    setRefreshLoading(true);
+    sendUserRequest("/system/appList", {
+      update_repo: updateRepo === null ? false : updateRepo,
+    }).then((sal) => {
+      if (sal.data) {
+        setOriginData(sal.data.map(transformSysApp));
+      } else {
+        setOriginData([]);
+      }
+      setLastUpdate(getCurrentTime());
+      setRefreshLoading(false);
+    });
+  }
 
-const transformSysApp = (element, i) => ({
-  key: element.chart_name,
-  title: element.chart_name,
-  desc: element.description,
-  version: element.version,
-  versions: element.versions,
-  status: element.status,
-  supported: element.fully_supported,
-});
+  function transformSysApp(element, i) {
+    return {
+      key: element.chart_name,
+      title: element.chart_name,
+      desc: element.description,
+      version: element.version,
+      versions: element.versions,
+      status: element.status,
+      supported: element.fully_supported,
+    };
+  }
 
-function filterData(originData, searchVal, selectVal) {
-  const filterBender = (item) => {
+  function filterOriginData(item) {
     if (
       typeof item.title === "string"
         ? item.title.indexOf(searchVal) < 0
@@ -314,10 +300,9 @@ function filterData(originData, searchVal, selectVal) {
         break;
     }
     return true;
-  };
-  return originData.filter(filterBender);
-}
+  }
 
-function installSystemAppManually() {
-  message.info("功能正在开发中，敬请期待");
+  function installSystemAppManually() {
+    message.info("功能正在开发中，敬请期待");
+  }
 }
