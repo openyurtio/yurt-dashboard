@@ -3,7 +3,7 @@
 mkdir -p /openyurt/backend/
 mkdir -p /openyurt/config/
 
-server=https://kubernetes
+server=https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
 ca=$(base64 -w 0 /run/secrets/kubernetes.io/serviceaccount/ca.crt)
 token=$(cat /run/secrets/kubernetes.io/serviceaccount/token)
 
