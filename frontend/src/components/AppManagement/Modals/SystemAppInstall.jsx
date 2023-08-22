@@ -54,6 +54,7 @@ export default function SystemAppInstallModal({
       destroyOnClose
       footer={[
         <Button
+          key="install-button"
           type="primary"
           loading={installLoading}
           onClick={() => {
@@ -154,7 +155,7 @@ export default function SystemAppInstallModal({
   }
 
   function getConfigDefaultValue() {
-    return sendUserRequestWithTimeout(5000, "/system/appDefaultConfig", {
+    return sendUserRequestWithTimeout(10000, "/system/appDefaultConfig", {
       chart_name: data.title,
       version: data.version.version,
     }).then((res) => {

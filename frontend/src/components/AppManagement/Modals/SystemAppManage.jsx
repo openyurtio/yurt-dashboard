@@ -35,6 +35,7 @@ export default function SystemAppManageModal({
       destroyOnClose
       footer={[
         <Button
+          key="upgrade-button"
           style={{ display: data.supported ? "" : "none" }}
           onClick={() => {
             message.info("功能正在开发中，敬请期待");
@@ -43,6 +44,7 @@ export default function SystemAppManageModal({
           升级
         </Button>,
         <Popconfirm
+          key="uninstall-popconfirm"
           title="是否确认卸载组件？"
           okText="确认卸载"
           cancelText="取消"

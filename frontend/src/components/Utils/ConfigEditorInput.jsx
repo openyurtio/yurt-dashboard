@@ -109,7 +109,7 @@ export default function ConfigEditorInput({
         destroyOnClose
         closable={false}
         footer={[
-          <span style={{ float: "left" }}>
+          <span style={{ float: "left" }} key="config-operation">
             <Button
               icon={<ToolOutlined />}
               disabled={inputDisable}
@@ -144,6 +144,7 @@ export default function ConfigEditorInput({
             </Button>
           </span>,
           <Popconfirm
+            key="cancel-popconfirm"
             title="配置已变更，是否放弃变更？"
             visible={cancelConfirmVisible}
             okText="放弃变更"
@@ -171,6 +172,7 @@ export default function ConfigEditorInput({
             <Button disabled={inputDisable}>关闭</Button>
           </Popconfirm>,
           <Button
+            key="confirm-button"
             style={{ marginLeft: 10 }}
             disabled={inputDisable}
             type="primary"

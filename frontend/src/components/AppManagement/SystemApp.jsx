@@ -38,6 +38,24 @@ export default function SystemApp() {
   // filter
   const [searchVal, setSearchVal] = useState("");
   const [selectVal, setSelectVal] = useState(1);
+  const filterSearchVal = (item) => {
+    return typeof item.title === "string"
+      ? item.title.indexOf(searchVal) >= 0
+      : JSON.stringify(item.title).indexOf(searchVal) >= 0;
+  };
+  const filterSelectVal = (item) => {
+    switch (selectVal) {
+      case 2:
+        if (item.status !== "deployed") return false;
+        break;
+      case 3:
+        if (item.status !== "undeployed") return false;
+        break;
+      default:
+        break;
+    }
+    return true;
+  };
 
   // modal
   const [installVisible, setInstallVisible] = useState(false);
@@ -139,8 +157,13 @@ export default function SystemApp() {
         <List
           style={{ margin: 10 }}
           grid={{ sm: 2, column: 4, gutter: 10 }}
-          dataSource={originData ? originData.filter(filterOriginData) : []}
+          dataSource={
+            originData
+              ? originData.filter(filterSearchVal).filter(filterSelectVal)
+              : []
+          }
           loading={originData === null}
+          rowKey="key"
           renderItem={(data) => (
             <List.Item>
               <Card
@@ -150,7 +173,11 @@ export default function SystemApp() {
                   openModal(data);
                 }}
                 extra={[
-                  <Popover content="已安装" mouseEnterDelay={0.1}>
+                  <Popover
+                    key="extra-install"
+                    content="已安装"
+                    mouseEnterDelay={0.1}
+                  >
                     <CheckCircleTwoTone
                       twoToneColor="#52c41a"
                       style={{
@@ -159,7 +186,11 @@ export default function SystemApp() {
                       }}
                     />
                   </Popover>,
-                  <Popover content="处理中" mouseEnterDelay={0.1}>
+                  <Popover
+                    key="extra-dealing"
+                    content="处理中"
+                    mouseEnterDelay={0.1}
+                  >
                     <LoadingOutlined
                       style={{
                         float: "right",
@@ -172,6 +203,7 @@ export default function SystemApp() {
                     />
                   </Popover>,
                   <Popover
+                    key="extra-notsupport"
                     title="不完全支持组件"
                     content="此组件未受到完全支持，仅支持卸载操作"
                     mouseEnterDelay={0.1}
@@ -186,6 +218,7 @@ export default function SystemApp() {
                     />
                   </Popover>,
                   <Popover
+                    key="extra-failinfo"
                     title="组件信息获取失败"
                     content="请检查网络并尝试刷新列表"
                     mouseEnterDelay={0.1}
@@ -264,6 +297,8 @@ export default function SystemApp() {
       } else {
         setOriginData([]);
       }
+      setSearchVal("");
+      setSelectVal(1);
       setLastUpdate(getCurrentTime());
       setRefreshLoading(false);
     });
@@ -279,27 +314,6 @@ export default function SystemApp() {
       status: element.status,
       supported: element.fully_supported,
     };
-  }
-
-  function filterOriginData(item) {
-    if (
-      typeof item.title === "string"
-        ? item.title.indexOf(searchVal) < 0
-        : JSON.stringify(item.title).indexOf(searchVal) < 0
-    ) {
-      return false;
-    }
-    switch (selectVal) {
-      case 2:
-        if (item.status !== "deployed") return false;
-        break;
-      case 3:
-        if (item.status !== "undeployed") return false;
-        break;
-      default:
-        break;
-    }
-    return true;
   }
 
   function installSystemAppManually() {
