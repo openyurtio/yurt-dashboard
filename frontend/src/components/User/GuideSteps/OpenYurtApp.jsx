@@ -35,26 +35,21 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   let defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
   const [checkedList, setCheckedList] = useState(defaultChecked);
   const [indeterminate, setIndeterminate] = useState(
-    defaultChecked.length === 0 ||
-      defaultChecked.length === guideInfo.openyurt_apps.length
-      ? false
-      : true
+    defaultChecked.length && defaultChecked.length < allChecked.length
   );
   const [checkAll, setCheckAll] = useState(
-    defaultChecked.length === guideInfo.openyurt_apps.length
+    defaultChecked.length === allChecked.length
   );
 
   const onChange = (list) => {
     setCheckedList(list);
-    setIndeterminate(
-      list.length && list.length < guideInfo.openyurt_apps.length
-    );
-    setCheckAll(list.length === guideInfo.openyurt_apps.length);
+    setIndeterminate(list.length && list.length < allChecked.length);
+    setCheckAll(list.length === allChecked.length);
   };
 
   const onCheckAllChange = (e) => {
     setCheckedList(e.target.checked ? allChecked : defaultChecked);
-    setIndeterminate(false);
+    setIndeterminate(!e.target.checked && defaultChecked.length);
     setCheckAll(e.target.checked);
   };
 
