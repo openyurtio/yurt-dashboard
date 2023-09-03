@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 	client "yurt_console_backend/k8s_client"
@@ -118,4 +119,37 @@ func registerUser(userProfile *client.UserSpec) (int, interface{}) {
 	logger.Warn(userProfile.Mobilephone, "register fail", "check user status exceed maxretry")
 	return UserGetTimeOut, "register: get created user fail: exceed maxretry"
 
+}
+
+func fillAdminUserInfo(u *client.User) {
+	u.Spec.Mobilephone = "admin"
+	u.Spec.KubeConfig = adminKubeConfig
+	u.Spec.Namespace = ""
+}
+
+func getCurLoginMode() string {
+	experienceCenterEnv := os.Getenv("EXPERIENCE_CENTER_MODE")
+	if experienceCenterEnv == "1" {
+		return "experience_center"
+	}
+	return "normal"
+}
+
+func initEntryInfo(c *gin.Context) {
+	entryInfo := &struct {
+		Mode      string      `json:"mode"`
+		Finish    bool        `json:"finish"`
+		UserInfo  client.User `json:"user_info"`
+		GuideInfo guideInfo   `json:"guide_info"`
+	}{}
+
+	entryInfo.Mode = getCurLoginMode()
+	entryInfo.Finish = isGuideFinish()
+	if entryInfo.Finish {
+		fillAdminUserInfo(&entryInfo.UserInfo)
+	} else {
+		entryInfo.GuideInfo = getGuideInfo()
+	}
+
+	JSONSuccessWithData(c, "", entryInfo)
 }

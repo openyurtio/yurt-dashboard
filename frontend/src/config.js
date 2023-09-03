@@ -1,7 +1,7 @@
 import ClusterInfo from "./components/Cluster/ClusterInfo";
 import Deployment from "./components/WorkloadManagement/Deployment";
 import Nodes from "./components/NodeManagement/Nodes";
-import Login from "./components/User/Login";
+import Entry from "./components/User/Entry";
 import NodePool from "./components/NodeManagement/NodePool";
 import StatefulSet from "./components/WorkloadManagement/StatefulSet";
 import Job from "./components/WorkloadManagement/Job";
@@ -24,7 +24,7 @@ export const routes = [
   },
   {
     path: "/login",
-    main: () => <Login></Login>,
+    main: () => <Entry></Entry>,
   },
   {
     path: "/nodepool",

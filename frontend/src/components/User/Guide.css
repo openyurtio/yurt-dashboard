@@ -1,0 +1,49 @@
+/* guide-content */
+.guide-content {
+  margin: 8% auto 0 auto;
+  width: 60%;
+  max-width: 800px;
+  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 5%);
+  text-align: center;
+}
+
+/* .guide-title-box */
+.guide-title-box {
+  height: 40px;
+  line-height: 40px;
+  font-size: 22px;
+  color: #888;
+}
+
+/* .guide-progress-box */
+.guide-progress-box {
+  width: 100%;
+  margin: 0px auto;
+  padding: 10px 0px;
+  display: table;
+  table-layout: fixed;
+}
+
+.guide-progress-box div {
+  display: table-cell;
+  text-align: center;
+  color: #949494;
+  .bottom-line {
+    width: 95%;
+    display: inline-block;
+    background: #ddd;
+    height: 5px;
+  }
+}
+
+.guide-progress-box .active {
+  color: #1890ff;
+  .bottom-line {
+    background: #1890ff;
+  }
+}
+
+/* guide-step-content */
+.guide-step-content {
+  padding: 30px 10px 10px 10px;
+}

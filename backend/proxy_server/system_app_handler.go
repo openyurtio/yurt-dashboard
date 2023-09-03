@@ -56,17 +56,30 @@ func getFullySupportedOpenYurtNames() []string {
 	}
 }
 
+func getRequiredOpenYurtNames() []string {
+	return []string{
+		"yurt-manager",
+	}
+}
+
 func checkAndAddSystemAppRepo(updateRepo bool) error {
-	err := helm_client.RepoAdd(&helm_client.RepoAddOptions{
+	return helm_client.RepoAdd(&helm_client.RepoAddOptions{
 		Name:              OpenYurtRepoName,
 		URL:               OpenYurtRepoURL,
 		NoRepoExsitsError: true,
 		UpdateWhenExsits:  updateRepo,
 	})
-	if err != nil {
-		return err
+}
+
+func checkHasName(names []string, name string) bool {
+	hasName := false
+	for _, n := range names {
+		if n == name {
+			hasName = true
+			break
+		}
 	}
-	return nil
+	return hasName
 }
 
 func fetchFakePackageInfo(packages *[]packageInfo) {
@@ -91,15 +104,15 @@ func fetchFakePackageInfo(packages *[]packageInfo) {
 	}
 }
 
-func fetchRepoPackagesInfo(packages *[]packageInfo) error {
+func fetchRepoPackagesInfo(packages *[]packageInfo) {
 	fetchFakePackageInfo(packages)
 
 	res, err := helm_client.SearchRepo(&helm_client.RepoSearchOptions{
 		RepoNames: []string{OpenYurtRepoName},
 	})
 	if err != nil {
-		// return the fake info instead of error
-		return nil
+		// return the fake info
+		return
 	}
 
 	chartNames := getFullySupportedOpenYurtNames()
@@ -148,8 +161,6 @@ func fetchRepoPackagesInfo(packages *[]packageInfo) error {
 			*packages = append(*packages, newPackageInfo)
 		}
 	}
-
-	return nil
 }
 
 func fetchInstalledPackagesInfo(packages *[]packageInfo) error {
@@ -211,14 +222,9 @@ func getSystemAppListHandler(c *gin.Context) {
 	checkAndAddSystemAppRepo(requestParas.UpdateRepo)
 
 	packages := []packageInfo{}
-	err := fetchRepoPackagesInfo(&packages)
-	if err != nil {
-		logger.Error(c.ClientIP(), "fetch repo packages fail", err.Error())
-		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("fetch repo packages fail: %v", err))
-		return
-	}
+	fetchRepoPackagesInfo(&packages)
 
-	err = fetchInstalledPackagesInfo(&packages)
+	err := fetchInstalledPackagesInfo(&packages)
 	if err != nil {
 		logger.Error(c.ClientIP(), "fetch install packages fail", err.Error())
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("fetch install packages fail: %v", err))
@@ -243,15 +249,7 @@ func installSystemAppHandler(c *gin.Context) {
 		return
 	}
 
-	isOpenYurtApp := false
-	elements := getFullySupportedOpenYurtNames()
-	for _, element := range elements {
-		if element == requestParas.ChartName {
-			isOpenYurtApp = true
-			break
-		}
-	}
-	if !isOpenYurtApp {
+	if !checkHasName(getFullySupportedOpenYurtNames(), requestParas.ChartName) {
 		logger.Error(c.ClientIP(), "installSystemAppHandler, not openyurt app:", requestParas.ChartName)
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppHandler: not openyurt app: %s", requestParas.ChartName))
 		return
@@ -279,6 +277,43 @@ func installSystemAppHandler(c *gin.Context) {
 	JSONSuccess(c, fmt.Sprintf("install openyurt app %s successsfully", requestParas.ChartName))
 }
 
+func installSystemAppFromGuideHandler(c *gin.Context) {
+	requestParas := &struct {
+		AppsName []string `json:"apps_name"`
+	}{}
+
+	if err := c.BindJSON(requestParas); err != nil {
+		logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, fail to parse request parameter:", err.Error())
+		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: parse parameters fail: %v", err))
+		return
+	}
+
+	if err := checkAndAddSystemAppRepo(false); err != nil {
+		logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, fail to init openyurt repo:", err.Error())
+		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to init openyurt repo: %v", err))
+	}
+
+	supportedNames := getFullySupportedOpenYurtNames()
+	for _, n := range requestParas.AppsName {
+		if !checkHasName(supportedNames, n) {
+			logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, not openyurt app:", n)
+			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: not openyurt app: %s", n))
+			return
+		}
+	}
+
+	for _, n := range requestParas.AppsName {
+		helm_client.Install(&helm_client.InstallOptions{
+			Namespace:   OpenYurtNamespace,
+			ReleaseName: n,
+			ChartString: OpenYurtRepoName + "/" + n,
+		})
+	}
+
+	logger.Info("", fmt.Sprintf("install openyurt app %s from guide successsfully", strings.Join(requestParas.AppsName, ",")))
+	JSONSuccess(c, fmt.Sprint(strings.Join(requestParas.AppsName, ",")))
+}
+
 func uninstallSystemAppHandler(c *gin.Context) {
 	requestParas := &struct {
 		User
@@ -291,15 +326,7 @@ func uninstallSystemAppHandler(c *gin.Context) {
 		return
 	}
 
-	isOpenYurtApp := false
-	elements := getAllOpenYurtNames()
-	for _, element := range elements {
-		if element == requestParas.ChartName {
-			isOpenYurtApp = true
-			break
-		}
-	}
-	if !isOpenYurtApp {
+	if !checkHasName(getAllOpenYurtNames(), requestParas.ChartName) {
 		logger.Error(c.ClientIP(), "uninstallSystemAppHandler, not openyurt app:", requestParas.ChartName)
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("uninstallSystemAppHandler: not openyurt app: %s", requestParas.ChartName))
 		return
@@ -348,15 +375,7 @@ func getSystemAppDefaultConfigHandler(c *gin.Context) {
 		return
 	}
 
-	isOpenYurtApp := false
-	elements := getAllOpenYurtNames()
-	for _, element := range elements {
-		if element == requestParas.ChartName {
-			isOpenYurtApp = true
-			break
-		}
-	}
-	if !isOpenYurtApp {
+	if !checkHasName(getFullySupportedOpenYurtNames(), requestParas.ChartName) {
 		logger.Error(c.ClientIP(), "getSystemAppDefaultConfigHandler, not openyurt app:", requestParas.ChartName)
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppDefaultConfigHandler: not openyurt app: %s", requestParas.ChartName))
 		return
@@ -373,59 +392,4 @@ func getSystemAppDefaultConfigHandler(c *gin.Context) {
 	}
 
 	JSONSuccessWithData(c, "get default config success", gin.H{"default_config": defConfig})
-}
-
-func getSystemAppCurConfigHandler(c *gin.Context) {
-	requestParas := &struct {
-		User
-		ChartName string `json:"chart_name"`
-	}{}
-
-	if err := c.BindJSON(requestParas); err != nil {
-		logger.Error(c.ClientIP(), "getSystemAppCurConfigHandler, fail to parse request parameter:", err.Error())
-		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppCurConfigHandler: parse parameters fail: %v", err))
-		return
-	}
-
-	isOpenYurtApp := false
-	elements := getAllOpenYurtNames()
-	for _, element := range elements {
-		if element == requestParas.ChartName {
-			isOpenYurtApp = true
-			break
-		}
-	}
-	if !isOpenYurtApp {
-		logger.Error(c.ClientIP(), "getSystemAppCurConfigHandler, not openyurt app:", requestParas.ChartName)
-		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppCurConfigHandler: not openyurt app: %s", requestParas.ChartName))
-		return
-	}
-
-	// Find release by chart name, compatible with system apps installed by other means
-	res, err := helm_client.List(&helm_client.ListReleaseOptions{
-		AllNamespaces:   true,
-		FilterChartName: requestParas.ChartName,
-	})
-	if err != nil {
-		logger.Error(c.ClientIP(), "getSystemAppCurConfigHandler, find openyurt app fail:", requestParas.ChartName)
-		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppCurConfigHandler: find openyurt app fail: %s", requestParas.ChartName))
-		return
-	}
-
-	curConfig := ""
-	for _, element := range res.ReleaseElements {
-		if requestParas.ChartName == element.ChartName {
-			res, err := helm_client.GetValues(&helm_client.GetOptions{
-				ReleaseName:   element.Name,
-				ShowAllValues: true,
-			})
-			if err != nil {
-				logger.Error(c.ClientIP(), "getSystemAppCurConfigHandler, get cur values fail:", requestParas.ChartName)
-				JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppCurConfigHandler: get cur values fail: %s", requestParas.ChartName))
-			}
-			curConfig = res
-		}
-	}
-
-	JSONSuccessWithData(c, "get cur config success", gin.H{"cur_config": curConfig})
 }

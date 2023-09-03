@@ -49,6 +49,9 @@ func setAPIGroup(router *gin.Engine) {
 		api.POST("/installApp", installAppHandler)
 		api.POST("/uninstallApp", uninstallAppHandler)
 		api.POST("/github", githubLoginHandler)
+		api.POST("/initEntryInfo", initEntryInfo)
+		api.POST("/checkConnectivity", checkConnectivity)
+		api.POST("/guideComplete", guideComplete)
 	}
 	setSystemAPIGroup(api)
 }
@@ -60,7 +63,7 @@ func setSystemAPIGroup(router *gin.RouterGroup) {
 		system.POST("/appInstall", installSystemAppHandler)
 		system.POST("/appUninstall", uninstallSystemAppHandler)
 		system.POST("/appDefaultConfig", getSystemAppDefaultConfigHandler)
-		system.POST("/appCurConfig", getSystemAppCurConfigHandler)
+		system.POST("/appInstallFromGuide", installSystemAppFromGuideHandler)
 	}
 }
 
