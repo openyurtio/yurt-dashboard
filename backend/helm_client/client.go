@@ -3,6 +3,7 @@ package helm_client
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/cli"
@@ -44,7 +45,7 @@ func (c *baseClient) createActionConfig() error {
 	cfg := new(action.Configuration)
 	restClientGetter := c.NewRESTClientGetter()
 
-	if err := cfg.Init(restClientGetter, c.namespace, "", c.debug); err != nil {
+	if err := cfg.Init(restClientGetter, c.namespace, os.Getenv(HelmDriverEnv), c.debug); err != nil {
 		return err
 	}
 

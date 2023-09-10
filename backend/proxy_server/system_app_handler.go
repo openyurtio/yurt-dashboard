@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	helm_client "yurt_console_backend/helm_client"
 
@@ -12,6 +13,7 @@ import (
 const OpenYurtRepoName = "openyurt"
 const OpenYurtRepoURL = "https://openyurtio.github.io/openyurt-helm"
 const OpenYurtNamespace = "kube-system"
+const EnableOldNamesEnv = "ENABLE_OLD_APPS"
 
 type packageVersion struct {
 	Version    string `json:"version"`
@@ -28,7 +30,7 @@ type packageInfo struct {
 
 func getAllOpenYurtNames() []string {
 	res := getFullySupportedOpenYurtNames()
-	if true {
+	if os.Getenv(EnableOldNamesEnv) == "1" {
 		res = append(res, getNotFullySupportedOpenYurtNames()...)
 	}
 	return res

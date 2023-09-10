@@ -9,6 +9,7 @@ import (
 )
 
 const showGuidePageEnv = "SHOW_GUIDE_PAGE"
+const experienceCenterEnv = "EXPERIENCE_CENTER_MODE"
 
 func guideComplete(c *gin.Context) {
 	res := &struct {
