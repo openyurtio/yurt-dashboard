@@ -33,7 +33,6 @@ type ListShowOptions struct {
 
 type ListReleaseOptions struct {
 	Namespace       string          `json:"namespace"`
-	AllNamespaces   bool            `json:"all_namespaces"`
 	FilterName      string          `json:"filter_name"`
 	FilterChartName string          `json:"filter_chart_name"`
 	Limit           int             `json:"limit"`

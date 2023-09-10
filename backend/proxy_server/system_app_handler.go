@@ -168,7 +168,6 @@ func fetchRepoPackagesInfo(packages *[]packageInfo) {
 func fetchInstalledPackagesInfo(packages *[]packageInfo) error {
 	chartNames := getAllOpenYurtNames()
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
-		AllNamespaces:   true,
 		FilterChartName: strings.Join(chartNames, "|"),
 		ShowOptions: helm_client.ListShowOptions{
 			ShowDeployed:     true,
@@ -336,7 +335,6 @@ func uninstallSystemAppHandler(c *gin.Context) {
 
 	// Find release by chart name, compatible with system apps installed by other means
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
-		AllNamespaces:   true,
 		FilterChartName: requestParas.ChartName,
 	})
 	if err != nil {
