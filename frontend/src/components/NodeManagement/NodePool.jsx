@@ -86,15 +86,6 @@ const NodePool = () => {
               YurtAppDaemon
             </Link>
           </li>
-          <li>
-            边缘Ingress：
-            <Link
-              href="https://github.com/openyurtio/openyurt/blob/master/docs/proposals/20210628-nodepool-ingress-support.md"
-              target="_blank"
-            >
-              YurtIngress
-            </Link>
-          </li>
         </ul>
         体验中心提供了一个简单的
         <Link

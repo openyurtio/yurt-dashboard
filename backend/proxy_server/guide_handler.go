@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"strings"
+	helm_client "yurt_console_backend/helm_client"
 	client "yurt_console_backend/k8s_client"
 
 	"github.com/gin-gonic/gin"
@@ -64,9 +65,11 @@ func getGuideInfo() guideInfo {
 }
 
 func checkNeedGuidance() bool {
-	// Get nodepool data to test if openyurt is deployed. Activate guidance if data fetch fails.
-	_, err := client.GetRawNodepool(adminKubeConfig, "")
-	return err != nil
+	// Check whether yurt-manager is installed. Activate guidance if not installed
+	res, err := helm_client.List(&helm_client.ListReleaseOptions{
+		FilterChartName: "yurt-manager",
+	})
+	return err != nil || len(res.ReleaseElements) == 0
 }
 
 func checkConnectivity(c *gin.Context) {

@@ -61,6 +61,7 @@ func getFullySupportedOpenYurtNames() []string {
 func getRequiredOpenYurtNames() []string {
 	return []string{
 		"yurt-manager",
+		"yurthub",
 	}
 }
 
@@ -292,6 +293,7 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 	if err := checkAndAddSystemAppRepo(false); err != nil {
 		logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, fail to init openyurt repo:", err.Error())
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to init openyurt repo: %v", err))
+		return
 	}
 
 	supportedNames := getFullySupportedOpenYurtNames()
@@ -303,12 +305,36 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 		}
 	}
 
+	res, err := helm_client.List(&helm_client.ListReleaseOptions{
+		FilterChartName: strings.Join(requestParas.AppsName, "|"),
+		ShowOptions: helm_client.ListShowOptions{
+			ShowDeployed:     true,
+			ShowPending:      true,
+		},
+	})
+	if err != nil {
+		logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, fail to connect cluster", err.Error())
+		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to connect cluster, err:%v", err))
+	}
+	var installedApps []string
+	for _, one := range res.ReleaseElements {
+		installedApps = append(installedApps, one.ChartName)
+	}
+
 	for _, n := range requestParas.AppsName {
-		helm_client.Install(&helm_client.InstallOptions{
+		if checkHasName(installedApps, n) {
+			continue
+		}
+		err := helm_client.Install(&helm_client.InstallOptions{
 			Namespace:   OpenYurtNamespace,
 			ReleaseName: n,
 			ChartString: OpenYurtRepoName + "/" + n,
 		})
+		if err != nil {
+			logger.Error(c.ClientIP(), fmt.Sprintf("installSystemAppFromGuideHandler, fail to install app:%v", n), err.Error())
+			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to install app:%v, err:%v", n, err))
+		}
+		return
 	}
 
 	logger.Info("", fmt.Sprintf("install openyurt app %s from guide successsfully", strings.Join(requestParas.AppsName, ",")))

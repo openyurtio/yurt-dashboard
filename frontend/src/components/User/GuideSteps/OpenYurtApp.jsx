@@ -8,6 +8,16 @@ const transformApps = (info) => ({
   disabled: info.required,
 });
 
+const compareApps = (a, b) => {
+  if (a.required === b.required) {
+    return a.name.localeCompare(b.name);
+  }
+  if (a.required) {
+    return -1;
+  }
+  return 1;
+};
+
 const getAllChecked = (appList) => {
   let a = [];
   appList.forEach((item) => {
@@ -85,7 +95,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
         </div>
         <Checkbox.Group
           style={{ marginTop: 10, display: "grid", gridGap: "10px" }}
-          options={guideInfo.openyurt_apps.map(transformApps)}
+          options={guideInfo.openyurt_apps.sort(compareApps).map(transformApps)}
           value={checkedList}
           onChange={onChange}
         />

@@ -18,6 +18,8 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const MySider = () => {
+  const [userProfile] = useUserProfile();
+
   const [collapsed, setCollapse] = useSessionState("collapsed", false);
   const [openKeys, setOpenKeys] = useSessionState("openKeys", [
     "nodemanagement",
@@ -58,6 +60,11 @@ const MySider = () => {
           </Menu.Item>
         </SubMenu>
         <SubMenu key="workload" icon={<AppstoreOutlined />} title="工作负载">
+          {userProfile && userProfile.spec.mobilephone === "admin" && (
+            <Menu.Item key="systemapp">
+              <Link to="/systemapp">系统应用</Link>
+            </Menu.Item>
+          )}
           <Menu.Item key="pod">
             <Link to="/pod">容器组</Link>
           </Menu.Item>
@@ -74,15 +81,6 @@ const MySider = () => {
         <Menu.Item key="lab" icon={<ExperimentOutlined />}>
           <Link to="/lab">实验室</Link>
         </Menu.Item>
-        <SubMenu
-          key="appmanagement"
-          icon={<AppstoreOutlined />}
-          title="应用管理"
-        >
-          <Menu.Item key="systemapp">
-            <Link to="/systemapp">系统应用</Link>
-          </Menu.Item>
-        </SubMenu>
       </Menu>
     </Sider>
   );
@@ -148,11 +146,12 @@ const ContentWithSider = ({ content, history }) => {
 
   const userManager = (
     <Card style={{ padding: "5% 3%" }}>
-      <div style={{ textAlign: "center" }}>
-        您的账号还剩{" "}
-        {userProfile && getUserLastTime(userProfile.status.effectiveTime)}{" "}
-        天过期
-      </div>
+      {userProfile && userProfile.status.effectiveTime !== null && (
+        <div style={{ textAlign: "center" }}>
+          您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)}{" "}
+          天过期
+        </div>
+      )}
       <Divider style={{ margin: "8px 0" }} />
       <Button
         type="text"

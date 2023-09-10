@@ -48,6 +48,7 @@ export const routes = [
   },
   {
     path: "/systemapp",
+    type: "admin",
     main: () => <SystemApp></SystemApp>,
   },
 ];
