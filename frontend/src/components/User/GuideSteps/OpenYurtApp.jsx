@@ -2,12 +2,6 @@ import { Button, Checkbox, message } from "antd";
 import { useState } from "react";
 import { sendRequest } from "../../../utils/request";
 
-const transformApps = (info) => ({
-  label: info.name,
-  value: info.name,
-  disabled: info.required,
-});
-
 const compareApps = (a, b) => {
   if (a.required === b.required) {
     return a.name.localeCompare(b.name);
@@ -40,6 +34,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [installFailed, setInstallFailed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tips, setTips] = useState("");
+  const [appDesc, setAppDesc] = useState("");
 
   let allChecked = getAllChecked(guideInfo.openyurt_apps);
   let defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
@@ -81,24 +76,47 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   return (
     <div>
-      <div style={{ display: "inline-block" }}>
-        <div style={{ display: "flex" }}>
-          <p>共{guideInfo.openyurt_apps.length}项</p>
-          <Checkbox
-            style={{ marginLeft: 10 }}
-            indeterminate={indeterminate}
-            onChange={onCheckAllChange}
-            checked={checkAll}
-          >
-            全选
-          </Checkbox>
+      <div style={{ display: "flex", height: 200 }}>
+        <div style={{ width: 150 }}>
+          <div style={{ display: "flex" }}>
+            <p>共{guideInfo.openyurt_apps.length}项</p>
+            <Checkbox
+              style={{ marginLeft: 10 }}
+              indeterminate={indeterminate}
+              onChange={onCheckAllChange}
+              checked={checkAll}
+            >
+              全选
+            </Checkbox>
+          </div>
+          <Checkbox.Group
+            style={{ display: "grid", gridGap: "10px" }}
+            options={guideInfo.openyurt_apps.sort(compareApps).map((info) => ({
+              label: (
+                <label onClick={() => setAppDesc(info.desc)}>{info.name}</label>
+              ),
+              value: info.name,
+              disabled: info.required,
+            }))}
+            value={checkedList}
+            onChange={onChange}
+          />
         </div>
-        <Checkbox.Group
-          style={{ marginTop: 10, display: "grid", gridGap: "10px" }}
-          options={guideInfo.openyurt_apps.sort(compareApps).map(transformApps)}
-          value={checkedList}
-          onChange={onChange}
-        />
+        <div
+          style={{
+            flex: 1,
+            border: "1px solid #000",
+            textAlign: "left",
+            padding: 10,
+            display: "flex",
+            flexWrap: "wrap",
+            overflowY: "auto",
+            whiteSpace: "pre-wrap",
+            marginLeft: 20,
+          }}
+        >
+          {appDesc}
+        </div>
       </div>
       <div style={{ marginTop: 20 }}>
         <div

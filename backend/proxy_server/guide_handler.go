@@ -22,11 +22,6 @@ func guideComplete(c *gin.Context) {
 	JSONSuccessWithData(c, "", res)
 }
 
-type OpenYurtAppInfo struct {
-	Name     string `json:"name"`
-	Required bool   `json:"required"`
-}
-
 type guideInfo struct {
 	OpenYurtAppList []OpenYurtAppInfo `json:"openyurt_apps"`
 }
@@ -46,20 +41,7 @@ func isGuideFinish() bool {
 
 func getGuideInfo() guideInfo {
 	var res guideInfo
-
-	OpenYurtAppsName := getFullySupportedOpenYurtNames()
-	RequiredOpenYurtAppsName := getRequiredOpenYurtNames()
-	for _, n := range OpenYurtAppsName {
-		var info OpenYurtAppInfo
-		info.Name = n
-		for _, rn := range RequiredOpenYurtAppsName {
-			if rn == n {
-				info.Required = true
-				break
-			}
-		}
-		res.OpenYurtAppList = append(res.OpenYurtAppList, info)
-	}
+	res.OpenYurtAppList = FullySupportedOpenYurtApps
 
 	return res
 }

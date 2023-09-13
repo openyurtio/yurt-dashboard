@@ -3,17 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 	helm_client "yurt_console_backend/helm_client"
 
 	"github.com/gin-gonic/gin"
 )
-
-const OpenYurtRepoName = "openyurt"
-const OpenYurtRepoURL = "https://openyurtio.github.io/openyurt-helm"
-const OpenYurtNamespace = "kube-system"
-const EnableOldNamesEnv = "ENABLE_OLD_APPS"
 
 type packageVersion struct {
 	Version    string `json:"version"`
@@ -26,43 +20,6 @@ type packageInfo struct {
 	Versions       []packageVersion `json:"versions"`
 	Status         string           `json:"status"`
 	FullySupported bool             `json:"fully_supported"`
-}
-
-func getAllOpenYurtNames() []string {
-	res := getFullySupportedOpenYurtNames()
-	if os.Getenv(EnableOldNamesEnv) == "1" {
-		res = append(res, getNotFullySupportedOpenYurtNames()...)
-	}
-	return res
-}
-
-func getNotFullySupportedOpenYurtNames() []string {
-	// A collection of components that only provide uninstallation
-	return []string{
-		"openyurt",
-		"pool-coordinator",
-		"yurt-app-manager",
-		"yurt-controller-manager",
-		"raven-controller-manager",
-	}
-}
-
-func getFullySupportedOpenYurtNames() []string {
-	// A collection of components that provide complete control, including installation, uninstallation, and upgrades
-	return []string{
-		"yurt-manager",
-		"yurt-coordinator",
-		"yurthub",
-		"raven-agent",
-		//"yurt-dashboard",
-	}
-}
-
-func getRequiredOpenYurtNames() []string {
-	return []string{
-		"yurt-manager",
-		"yurthub",
-	}
 }
 
 func checkAndAddSystemAppRepo(updateRepo bool) error {
@@ -308,8 +265,8 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
 		FilterChartName: strings.Join(requestParas.AppsName, "|"),
 		ShowOptions: helm_client.ListShowOptions{
-			ShowDeployed:     true,
-			ShowPending:      true,
+			ShowDeployed: true,
+			ShowPending:  true,
 		},
 	})
 	if err != nil {
