@@ -11,7 +11,7 @@ const ConnectClusterGuide = ({ onStepFinish }) => {
     setLoading(true);
     sendRequest("/checkConnectivity").then(
       (res) => {
-        if (res.data === undefined) {
+        if (!res.data) {
           setResult(false);
           console.log("server responde nothing!!");
         } else {

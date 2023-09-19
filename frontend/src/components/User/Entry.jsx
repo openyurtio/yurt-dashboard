@@ -25,7 +25,7 @@ const EntryPage = ({ history }) => {
     sendRequest("/initEntryInfo").then(
       (res) => {
         // show the login page if an error occurs or it is in experience center mode
-        if (res.data === undefined || res.data.mode === "experience_center") {
+        if (!res.data || res.data.mode === "experience_center") {
           showPage("login");
           return;
         }

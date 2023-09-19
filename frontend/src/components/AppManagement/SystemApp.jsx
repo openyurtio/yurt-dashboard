@@ -162,7 +162,7 @@ export default function SystemApp() {
               ? originData.filter(filterSearchVal).filter(filterSelectVal)
               : []
           }
-          loading={originData === null}
+          loading={!originData}
           rowKey="key"
           renderItem={(data) => (
             <List.Item>
@@ -290,7 +290,7 @@ export default function SystemApp() {
   function handleRefresh(updateRepo) {
     setRefreshLoading(true);
     sendUserRequest("/system/appList", {
-      update_repo: updateRepo === null ? false : updateRepo,
+      update_repo: updateRepo,
     }).then((sal) => {
       if (sal.data) {
         setOriginData(sal.data.map(transformSysApp));

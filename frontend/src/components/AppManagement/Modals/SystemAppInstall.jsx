@@ -33,7 +33,7 @@ export default function SystemAppInstallModal({
   // set the default installed version
   const [appVersion, setAppVersion] = useState("");
   useEffect(() => {
-    if (visible === true && data.version !== null) {
+    if (visible === true && !!data.version) {
       form.setFieldsValue({
         version: data.version.version,
       });
