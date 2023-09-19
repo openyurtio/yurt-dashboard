@@ -60,7 +60,7 @@ const MySider = () => {
           </Menu.Item>
         </SubMenu>
         <SubMenu key="workload" icon={<AppstoreOutlined />} title="工作负载">
-          {userProfile && userProfile.spec.mobilephone === "admin" && (
+          {userProfile && userProfile.metadata.name === "admin" && (
             <Menu.Item key="systemapp">
               <Link to="/systemapp">系统应用</Link>
             </Menu.Item>
