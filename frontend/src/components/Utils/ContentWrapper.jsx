@@ -146,7 +146,7 @@ const ContentWithSider = ({ content, history }) => {
 
   const userManager = (
     <Card style={{ padding: "5% 3%" }}>
-      {userProfile && userProfile.status.effectiveTime !== null && (
+      {userProfile && !!userProfile.status.effectiveTime && (
         <div style={{ textAlign: "center" }}>
           您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)}{" "}
           天过期
