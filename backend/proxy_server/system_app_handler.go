@@ -272,6 +272,7 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 	if err != nil {
 		logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, fail to connect cluster", err.Error())
 		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to connect cluster, err:%v", err))
+		return
 	}
 	var installedApps []string
 	for _, one := range res.ReleaseElements {
@@ -290,8 +291,8 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 		if err != nil {
 			logger.Error(c.ClientIP(), fmt.Sprintf("installSystemAppFromGuideHandler, fail to install app:%v", n), err.Error())
 			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to install app:%v, err:%v", n, err))
+			return
 		}
-		return
 	}
 
 	logger.Info("", fmt.Sprintf("install openyurt app %s from guide successsfully", strings.Join(requestParas.AppsName, ",")))
