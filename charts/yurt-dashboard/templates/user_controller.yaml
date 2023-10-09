@@ -1,3 +1,4 @@
+{{- if eq .Values.dashboard.env.experienceCenterMode "yes" }}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -101,4 +102,4 @@ roleRef:
   name: cluster-admin
   apiGroup: ""
 ---
-
+{{- end}}

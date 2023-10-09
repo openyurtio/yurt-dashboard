@@ -257,7 +257,7 @@ func fillAdminUserInfo(u *client.User) {
 
 func getCurLoginMode() string {
 	env := os.Getenv(experienceCenterEnv)
-	if env == "1" {
+	if env == "yes" {
 		return "experience_center"
 	}
 	return "normal"

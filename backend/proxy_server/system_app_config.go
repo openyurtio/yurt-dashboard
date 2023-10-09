@@ -69,7 +69,7 @@ func getFullySupportedOpenYurtNames() []string {
 
 func getAllOpenYurtNames() []string {
 	res := getFullySupportedOpenYurtNames()
-	if os.Getenv(EnableOldNamesEnv) == "1" {
+	if os.Getenv(EnableOldNamesEnv) == "yes" {
 		res = append(res, getNotFullySupportedOpenYurtNames()...)
 	}
 	return res

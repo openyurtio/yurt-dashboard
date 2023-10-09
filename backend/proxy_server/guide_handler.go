@@ -29,7 +29,7 @@ type guideInfo struct {
 func isGuideFinish() bool {
 	ShowGuideMode := strings.ToLower(os.Getenv(showGuidePageEnv))
 	switch ShowGuideMode {
-	case "", "necessary":
+	case "", "auto":
 		return !checkNeedGuidance()
 	case "never":
 		return true
