@@ -2,6 +2,7 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 ```
 |- backend              // Golang backend
+    |-- helm_client     // backend lib for requesting k8s using helm api
     |-- k8s_client      // backend lib for requesting k8s
     |-- proxy_server    // backend api service
 |- config               // user controller setting files
@@ -16,16 +17,12 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 ## Get Started
 
-> Note: Since yurt-dashboard is essentially a web interface of an customized OpenYurt cluster, you need some extra work to run this project locally.
+### Steps to set up the development environment
+
+---
 
 1. Prepare local development environment
-   1. Create an OpenYurt Cluster. (You can setup the OpenYurt cluster [manually](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/manually-setup.md), but we recommend to start OpenYurt by using the [yurtctl](https://github.com/openyurtio/openyurt/blob/master/docs/tutorial/yurtctl.md) CLI tool.)
-      - OpenYurt version needs to be **0.6.0+**
-   2. Install User Controller. (yurt-dashboard's user management module depends on this User Controller)
-      1. install User CRD, `cd ./config && kubectl apply -f ./user_crd.yaml`
-      2. install yurt-user-controller, `cd ./config && kubectl apply -f ./user_controller.yaml` (Note: the yurt-user-controller image is still in progress, will be updated at any time, mainly for the convenience of daily debugging.)
-      3. you can run `cd ./config && kubectl apply -f user_test.yaml` to test if your user CRD has been set up properly
-   3. install yurt-dashboard dependencies
+   1. install yurt-dashboard dependencies
       - [Golang](https://go.dev/)
       - [Node.js](https://nodejs.dev/)
 2. Install
@@ -41,7 +38,19 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
         - if you just want a web interface (don't need to debug frontend code), use
           `npm run build` to generate frontend files
 
-> If you want to change the GitHub OAuth behavior, we recommend you to [set up your own OAuth App with your account](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app), and replace the configurations in both [backend](./backend/proxy_server/auth.go) and [frontend](./frontend/src/components/User/LoginForm.jsx).
+### Steps to install to kubernetes
+
+---
+
+1. Prepare local compilation environment
+   - install dependencies
+     - [Make](https://www.make.com/)
+     - [Docker](https://www.docker.com/)
+2. Build the image
+   - Use `make docker-build` to build the image. The generated image defaults to `openyurt/yurt-dashboard:latest`.
+3. Install
+   1. Upload the image to the kubernetes node and label the node `openyurt.io/is-edge-worker: false`.
+   2. Install. `helm upgrade --install yurt-dashboard ./charts/yurt-dashboard -n kube-system`.
 
 ## Documentation
 
