@@ -25,7 +25,7 @@ var FullySupportedOpenYurtApps = []OpenYurtAppInfo{
 		"yurt-coordinator", 
 		false, 
 		`Yurt-Coordinator可以为边缘节点池提供以下功能：
-1. 缘节点心跳代理
+1. 边缘节点心跳代理
 2. 节点池维度资源的缓存和复用`,
 	},
 	{
