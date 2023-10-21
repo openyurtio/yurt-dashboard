@@ -17,7 +17,7 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 ## Get Started
 
-### Steps to set up the development environment
+### For dashboard developers
 
 ---
 
@@ -38,7 +38,7 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
         - if you just want a web interface (don't need to debug frontend code), use
           `npm run build` to generate frontend files
 
-### Steps to install to kubernetes
+### For dashboard users
 
 ---
 
@@ -51,6 +51,20 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 3. Install
    1. Upload the image to the kubernetes node and label the node `openyurt.io/is-edge-worker: false`.
    2. Install. `helm upgrade --install yurt-dashboard ./charts/yurt-dashboard -n kube-system`.
+4. Access
+   - An ingress resource is automatically installed by default. If you already have an ingress-controller, you can access the dashboard through `dashboard.yurt.local`.
+   - If you don't want to use ingress, you can simply set `dashboard.service.type` in the `values.yaml` to `NodePort` and add the `nodePort` configuration. You can then access the dashboard by accessing the cluster IP and the configured nodePort value. The configuration example is as follows:
+      ```yaml
+      # values.yaml
+      dashboard:
+         service:
+            type: NodePort
+            nodePort: 30000
+            port: 80
+      
+      # Access through http://clusterip:30000
+      ```
+   - Or you can create a temporary service exposure by using `kubectl port-forward service/yurt-dashboard --address 0.0.0.0 30000:80 -n kube-system` and access the panel through `http://clusterip:30000`.
 
 ## Documentation
 

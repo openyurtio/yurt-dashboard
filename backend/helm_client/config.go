@@ -11,7 +11,7 @@ import (
 const HelmUserAgent = "Helm/v3.11"
 
 const RootHelmEnvVar = "HELM_ROOT_HOME"
-const HelmDriverEnv = "HELM_DRIVER"
+const HelmDriverEnvVar = "HELM_DRIVER"
 const RootHelmPath = "/openyurt/helm/"
 const KubeConfigPath = "../config/kubeconfig.conf"
 

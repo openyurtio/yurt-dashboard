@@ -45,7 +45,7 @@ func (c *baseClient) createActionConfig() error {
 	cfg := new(action.Configuration)
 	restClientGetter := c.NewRESTClientGetter()
 
-	if err := cfg.Init(restClientGetter, c.namespace, os.Getenv(HelmDriverEnv), c.debug); err != nil {
+	if err := cfg.Init(restClientGetter, c.namespace, os.Getenv(HelmDriverEnvVar), c.debug); err != nil {
 		return err
 	}
 
