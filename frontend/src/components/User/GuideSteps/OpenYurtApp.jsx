@@ -30,6 +30,7 @@ const getDefaultChecked = (appList) => {
   return a;
 };
 
+// Step: Openyurt component installation.
 const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [installFailed, setInstallFailed] = useState(false);
   const [loading, setLoading] = useState(false);

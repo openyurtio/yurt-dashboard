@@ -10,7 +10,7 @@ import (
 )
 
 type RepoUpdateOptions struct {
-	Names []string	`json:"names"`
+	Names []string	`json:"names"`	// Update all repos when empty
 }
 
 func (c *baseClient) repoUpdate(o *RepoUpdateOptions) error {

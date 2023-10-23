@@ -5,6 +5,9 @@ import "os"
 const OpenYurtRepoName = "openyurt"
 const OpenYurtRepoURL = "https://openyurtio.github.io/openyurt-helm"
 const OpenYurtNamespace = "kube-system"
+
+// "yes": Display installed components that are no longer supported.
+// "no": Any components that are no longer supported will not be displayed.
 const EnableOldNamesEnv = "ENABLE_OLD_APPS"
 
 // Required: Indicates whether the component is forced to be checked during installation guidance.
@@ -14,7 +17,7 @@ type OpenYurtAppInfo struct {
 	Desc     string `json:"desc"`
 }
 
-// A collection of components that provide complete control, including installation, uninstallation, and upgrades
+// Openyurt components. Provide complete control, including installation, uninstallation, and upgrades.
 var FullySupportedOpenYurtApps = []OpenYurtAppInfo{
 	{
 		"yurt-manager", 
@@ -46,7 +49,7 @@ Raven Agent以DaemonSet的方式部署，运行在集群的每一个节点，它
 	},
 }
 
-// A collection of components that only provide uninstallation
+// Deprecated components. Only provide uninstallation.
 var notFullySupportedOpenYurtAppNames = []string{
 	"openyurt",
 	"pool-coordinator",

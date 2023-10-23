@@ -13,7 +13,7 @@ type InstallOptions struct {
 	ReleaseName string `json:"release_name"`
 	ChartString string `json:"chart_string"`
 	Version     string `json:"version"`
-	ValueFile   string `json:"value_file"`
+	ValueFile   string `json:"value_file"`	//  -f, --values strings
 }
 
 func (c *baseClient) install(o *InstallOptions) error {

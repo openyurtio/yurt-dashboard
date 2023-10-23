@@ -177,6 +177,7 @@ func getTokenInfo(cs clientset.Interface, user *client.User) (string, error) {
 		return "", errors.Wrap(err, "failed to list bootstrap tokens")
 	}
 
+	// Find an existing token through the desc field
 	for _, secret := range secrets.Items {
 		token, err := bootstraptokenv1.BootstrapTokenFromSecret(&secret)
 		if err != nil {
@@ -188,6 +189,7 @@ func getTokenInfo(cs clientset.Interface, user *client.User) (string, error) {
 		}
 	}
 
+	// Not found. Create a new token
 	return createJoinToken(cs, user)
 }
 
@@ -263,7 +265,7 @@ func getCurLoginMode() string {
 	return "normal"
 }
 
-func initEntryInfo(c *gin.Context) {
+func initEntryInfoHandler(c *gin.Context) {
 	entryInfo := &struct {
 		Mode      string      `json:"mode"`
 		Finish    bool        `json:"finish"`

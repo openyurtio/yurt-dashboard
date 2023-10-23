@@ -1,5 +1,6 @@
 import { Button, Result } from "antd";
 
+// Step: Complete the guide.
 const CompleteGuide = ({ onStepFinish }) => {
   return (
     <Result

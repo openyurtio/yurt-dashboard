@@ -13,9 +13,9 @@ import (
 const HelmHubURL = "https://artifacthub.io/api/v1/packages"
 
 type HubSearchElementRepo struct {
-	URL         string `json:"url"`
-	Name        string `json:"name"`
-	DisplayName string `json:"display_name"`
+	URL         string `json:"url"`				// repo url
+	Name        string `json:"name"`			// repo name
+	DisplayName string `json:"display_name"`	// display-only name
 }
 
 type HubSearchAvailableVersion struct {
@@ -26,12 +26,12 @@ type HubSearchElement struct {
 	ID                string                      `json:"package_id"`
 	Name              string                      `json:"name"`
 	NormalizedName    string                      `json:"normalized_name"`
-	ImageID           string                      `json:"logo_image_id"`
+	ImageID           string                      `json:"logo_image_id"`		// Get the icon by URL:https://artifacthub.io/image/{ImageID}@2x
 	Description       string                      `json:"description"`
 	Version           string                      `json:"version"`
 	AppVersion        string                      `json:"app_version"`
-	ContentURL        string                      `json:"content_url"`
-	AvailableVersions []HubSearchAvailableVersion `json:"available_versions"`
+	ContentURL        string                      `json:"content_url"`			// The direct download address of the specified version of the hub chart package. Only for valueHub.
+	AvailableVersions []HubSearchAvailableVersion `json:"available_versions"`	// A list of available versions of a search result. Only for valueHub
 	Repo              HubSearchElementRepo        `json:"repository"`
 }
 
@@ -51,6 +51,7 @@ type HubValueOptions struct {
 	Version     string `json:"version"`
 }
 
+// Search results from the hub based on keywords
 func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	searchURL, err := url.Parse(HelmHubURL)
 	if err != nil {
@@ -97,6 +98,7 @@ func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	return result, nil
 }
 
+// Get more detailed information about a search result
 func (c *baseClient) valueHub(o *HubValueOptions) (*HubSearchElement, error) {
 	valueURL, err := url.Parse(HelmHubURL)
 	if err != nil {

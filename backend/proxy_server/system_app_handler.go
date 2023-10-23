@@ -22,6 +22,7 @@ type packageInfo struct {
 	FullySupported bool             `json:"fully_supported"`
 }
 
+// Add repo openyurt
 func checkAndAddSystemAppRepo(updateRepo bool) error {
 	return helm_client.RepoAdd(&helm_client.RepoAddOptions{
 		Name:              OpenYurtRepoName,
@@ -42,6 +43,8 @@ func checkHasName(names []string, name string) bool {
 	return hasName
 }
 
+// Add temporary information for fully supported components.
+// This will be overwritten later by obtaining repo information or local installation information.
 func fetchFakePackageInfo(packages *[]packageInfo) {
 	chartNames := getFullySupportedOpenYurtNames()
 	for _, name := range chartNames {
@@ -64,6 +67,7 @@ func fetchFakePackageInfo(packages *[]packageInfo) {
 	}
 }
 
+// Get component information from repo.
 func fetchRepoPackagesInfo(packages *[]packageInfo) {
 	fetchFakePackageInfo(packages)
 
@@ -123,6 +127,7 @@ func fetchRepoPackagesInfo(packages *[]packageInfo) {
 	}
 }
 
+// Get information of installed components locally
 func fetchInstalledPackagesInfo(packages *[]packageInfo) error {
 	chartNames := getAllOpenYurtNames()
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
@@ -166,6 +171,10 @@ func fetchInstalledPackagesInfo(packages *[]packageInfo) error {
 	return nil
 }
 
+// Get openyurt component list. Get component information from repo and locally.
+// Fully supported components will always be filled in.
+// Not fully supported components will only be filled in when the EnableOldNamesEnv set to "yes".
+// Not fully supported components appear in the list only if they are installed.
 func getSystemAppListHandler(c *gin.Context) {
 	requestParas := &struct {
 		User

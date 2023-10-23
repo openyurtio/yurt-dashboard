@@ -18,6 +18,7 @@ const KubeConfigPath = "../config/kubeconfig.conf"
 var helmKubeConfig = getKubeConfigString(KubeConfigPath)
 
 func initEnvPath() {
+	// Set the storage path of local data of the helm client
 	rootPath := os.Getenv(RootHelmEnvVar)
 	if rootPath == "" {
 		rootPath = RootHelmPath

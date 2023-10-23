@@ -16,9 +16,9 @@ const searchMaxScore = 25
 
 type RepoSearchOptions struct {
 	RepoNames []string
-	Names     []string
-	Version   string
-	Devel     bool
+	Names     []string		// -r, --regexp
+	Version   string		// --version string. And always use param (-l, --versions).
+	Devel     bool			// --devel
 }
 
 type RepoSearchElement struct {

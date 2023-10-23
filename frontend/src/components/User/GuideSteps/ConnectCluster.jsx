@@ -3,6 +3,7 @@ import "../Guide.css";
 import { useEffect, useState } from "react";
 import { sendRequest } from "../../../utils/request";
 
+// Step: Test cluster connectivity.
 const ConnectClusterGuide = ({ onStepFinish }) => {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(false);

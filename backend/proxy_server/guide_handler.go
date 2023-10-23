@@ -9,10 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Empty or "auto": automatically detect whether the guide page needs to be displayed. 
+// "always": Always displayed.
+// "never": Never displayed.
 const showGuidePageEnv = "SHOW_GUIDE_PAGE"
+
+// "yes": experience center mode
+// "no": admin mode
 const experienceCenterEnv = "EXPERIENCE_CENTER_MODE"
 
-func guideComplete(c *gin.Context) {
+// Handler
+func guideCompleteHandler(c *gin.Context) {
 	res := &struct {
 		UserInfo client.User `json:"user_info"`
 	}{}
@@ -22,10 +29,30 @@ func guideComplete(c *gin.Context) {
 	JSONSuccessWithData(c, "", res)
 }
 
-type guideInfo struct {
-	OpenYurtAppList []OpenYurtAppInfo `json:"openyurt_apps"`
+func checkConnectivityHandler(c *gin.Context) {
+	res := &struct {
+		Result bool   `json:"result"`
+		Msg    string `json:"msg"`
+	}{}
+
+	// Get node data from k8s to test cluster connectivity
+	_, err := client.GetRawNode(adminKubeConfig, "")
+	if err != nil {
+		res.Result = false
+		res.Msg = err.Error()
+	} else {
+		res.Result = true
+	}
+
+	JSONSuccessWithData(c, "", res)
 }
 
+// Information sent to the front-end before loading the guide page
+type guideInfo struct {
+	OpenYurtAppList []OpenYurtAppInfo `json:"openyurt_apps"`	// Component information used in component installation guidance
+}
+
+// Tool function
 func isGuideFinish() bool {
 	ShowGuideMode := strings.ToLower(os.Getenv(showGuidePageEnv))
 	switch ShowGuideMode {
@@ -52,22 +79,4 @@ func checkNeedGuidance() bool {
 		FilterChartName: "yurt-manager",
 	})
 	return err != nil || len(res.ReleaseElements) == 0
-}
-
-func checkConnectivity(c *gin.Context) {
-	res := &struct {
-		Result bool   `json:"result"`
-		Msg    string `json:"msg"`
-	}{}
-
-	// Get node data from k8s to test cluster connectivity
-	_, err := client.GetRawNode(adminKubeConfig, "")
-	if err != nil {
-		res.Result = false
-		res.Msg = err.Error()
-	} else {
-		res.Result = true
-	}
-
-	JSONSuccessWithData(c, "", res)
 }

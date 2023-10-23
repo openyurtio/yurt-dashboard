@@ -17,28 +17,30 @@ import (
 type RepoAddOptions struct {
 	Name               string
 	URL                string
-	Username           string
-	Password           string
-	PassCredentialsAll bool
+	Username           string		// --username string
+	Password           string		// --password string
+	PassCredentialsAll bool			// --pass-credentials
 
-	CertFile              string
-	KeyFile               string
-	CaFile                string
-	InsecureSkipTLSverify bool
+	CertFile              string	// --cert-file string
+	KeyFile               string	// --key-file string
+	CaFile                string	// --ca-file string
+	InsecureSkipTLSverify bool		// --insecure-skip-tls-verify
 
-	NoRepoExsitsError bool
-	UpdateWhenExsits  bool
+	NoRepoExsitsError bool			// When set to true, no error will be returned when the same repo exists.
+	UpdateWhenExsits  bool			// --force-update
 }
 
 func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 	repoFile := cli.settings.RepositoryConfig
 	repoCache := cli.settings.RepositoryCache
 
+	// create repo file
 	err := os.MkdirAll(filepath.Dir(repoFile), os.ModePerm)
 	if err != nil && !os.IsExist(err) {
 		return err
 	}
 
+	// lock repo file
 	repoFileExt := filepath.Ext(repoFile)
 	var lockPath string
 	if len(repoFileExt) > 0 && len(repoFileExt) < len(repoFile) {
@@ -57,6 +59,7 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 		return err
 	}
 
+	// read repo file
 	b, err := os.ReadFile(repoFile)
 	if err != nil && !os.IsNotExist(err) {
 		return err
@@ -83,6 +86,7 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 		return errors.Errorf("repository name (%s) contains '/', please specify a different name without '/'", o.Name)
 	}
 
+	// There is a repo with the same name
 	if f.Has(o.Name) {
 		existing := f.Get(o.Name)
 		if c != *existing {
@@ -100,6 +104,7 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 		}
 	}
 
+	// Add new repo configuration in repo file
 	r, err := repo.NewChartRepository(&c, getter.All(cli.settings))
 	if err != nil {
 		return err

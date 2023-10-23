@@ -23,20 +23,20 @@ type ReleaseElement struct {
 }
 
 type ListShowOptions struct {
-	ShowAll          bool `json:"all"`
-	ShowDeployed     bool `json:"deployed"`
-	ShowFailed       bool `json:"failed"`
-	ShowPending      bool `json:"pending"`
-	ShowUninstalling bool `json:"uninstalling"`
-	ShowUninstalled  bool `json:"uninstalled"`
+	ShowAll          bool `json:"all"`			// -a, --all
+	ShowDeployed     bool `json:"deployed"`		// --deployed
+	ShowFailed       bool `json:"failed"`		// --failed
+	ShowPending      bool `json:"pending"`		// --pending
+	ShowUninstalling bool `json:"uninstalling"`	// --uninstalling
+	ShowUninstalled  bool `json:"uninstalled"`	// --uninstalled
 }
 
 type ListReleaseOptions struct {
 	Namespace       string          `json:"namespace"`
-	FilterName      string          `json:"filter_name"`
+	FilterName      string          `json:"filter_name"`		// -f, --filter string
 	FilterChartName string          `json:"filter_chart_name"`
-	Limit           int             `json:"limit"`
-	Offset          int             `json:"offset"`
+	Limit           int             `json:"limit"`				// -m, --max int
+	Offset          int             `json:"offset"`				// --offset int
 	ShowOptions     ListShowOptions `json:"show_options"`
 }
 

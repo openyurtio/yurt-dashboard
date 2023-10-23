@@ -6,6 +6,9 @@ import { useState } from "react";
 import { GuideSteps } from "./GuideSteps/stepsConfig";
 
 const GuidePage = ({ guideInfo, history }) => {
+  // Specific guidance steps are implemented in the GuideSteps folder and registered in the stepsConfig file.
+  // The guide step needs to accept the onStepFinish parameter. And called when step is complete.
+
   let [user, setUserProfile] = useUserProfile();
   if (user) {
     history.push("/clusterInfo");

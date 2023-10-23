@@ -9,6 +9,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+// Implement interface: genericclioptions.RESTClientGetter
 type SimpleHelmRESTClientGetter struct {
 	Namespace  string
 	KubeConfig string
