@@ -56,3 +56,9 @@ func (c *baseClient) createActionConfig() error {
 func (c *baseClient) getAllEnv() map[string]string {
 	return c.settings.EnvVars()
 }
+
+func CreateClient(namespace string) *baseClient {
+	c := &baseClient{}
+	c.InitClient(namespace)
+	return c
+}
