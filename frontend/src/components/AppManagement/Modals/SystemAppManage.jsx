@@ -22,6 +22,11 @@ export default function SystemAppManageModal({
     onSuccess();
   };
 
+  const isOnlyUninstall = () => {
+    if (!data.supported || data.status === "failed") return true;
+    return false;
+  };
+
   return (
     <Modal
       style={{
@@ -36,7 +41,7 @@ export default function SystemAppManageModal({
       footer={[
         <Button
           key="upgrade-button"
-          style={{ display: data.supported ? "" : "none" }}
+          style={{ display: isOnlyUninstall() ? "none" : "" }}
           onClick={() => {
             message.info("功能正在开发中，敬请期待");
           }}

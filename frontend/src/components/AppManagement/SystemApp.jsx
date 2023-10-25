@@ -17,7 +17,7 @@ import {
   CheckCircleTwoTone,
   QuestionCircleTwoTone,
   LoadingOutlined,
-  InfoCircleTwoTone,
+  ExclamationCircleTwoTone,
   WarningTwoTone,
 } from "@ant-design/icons";
 
@@ -26,6 +26,46 @@ import SystemAppManageModal from "./Modals/SystemAppManage";
 import { getCurrentTime } from "../../utils/utils";
 
 const { Paragraph, Link } = Typography;
+
+const statusPopoverInfo = {
+  Deployed: {
+    content: "已安装",
+    icon: (
+      <CheckCircleTwoTone twoToneColor="#52c41a" style={{ float: "right" }} />
+    ),
+  },
+  Pending: {
+    content: "处理中",
+    icon: <LoadingOutlined style={{ float: "right" }} />,
+  },
+  FakeInfo: {
+    content: "组件信息获取失败, 请检查网络并尝试刷新列表",
+    icon: (
+      <ExclamationCircleTwoTone
+        twoToneColor="#FF0000"
+        style={{ float: "right" }}
+      />
+    ),
+  },
+  Failed: {
+    content: "组件安装出现错误，请卸载后重新安装",
+    icon: (
+      <ExclamationCircleTwoTone
+        twoToneColor="#FF0000"
+        style={{ float: "right" }}
+      />
+    ),
+  },
+  Unknow: {
+    content: "无法处理的状态，请在命令行中使用helm进行管理",
+    icon: (
+      <QuestionCircleTwoTone
+        twoToneColor="#FFa631"
+        style={{ float: "right" }}
+      />
+    ),
+  },
+};
 
 export default function SystemApp() {
   // data
@@ -62,9 +102,10 @@ export default function SystemApp() {
   const [manageVisible, setManageVisible] = useState(false);
   const openModal = (data) => {
     setOperationConfig(data);
-    if (data.status) {
+    if (!!data.status) {
       switch (data.status) {
         case "deployed":
+        case "failed":
           setManageVisible(true);
           break;
         case "undeployed":
@@ -79,6 +120,57 @@ export default function SystemApp() {
   // refresh button
   const [lastUpdate, setLastUpdate] = useState(getCurrentTime());
   const [refreshLoading, setRefreshLoading] = useState(false);
+
+  // status popover
+  const StatusPopover = (supported, status) => {
+    var popovers = [];
+    if (!supported) {
+      popovers.push(
+        <Popover
+          key="extra-notsupport"
+          title="不完全支持组件"
+          content="此组件未受到完全支持，仅支持卸载操作"
+          mouseEnterDelay={0.1}
+        >
+          <WarningTwoTone twoToneColor="#FFa631" style={{ float: "right" }} />
+        </Popover>
+      );
+    }
+
+    var statusInfoKey = "";
+    switch (status) {
+      case "undeployed":
+        break;
+      case "deployed":
+        statusInfoKey = "Deployed";
+        break;
+      case "uninstalling":
+      case "pending-install":
+        statusInfoKey = "Pending";
+        break;
+      case "fakeinfo":
+        statusInfoKey = "FakeInfo";
+        break;
+      case "failed":
+        statusInfoKey = "Failed";
+        break;
+      default:
+        statusInfoKey = "Unknow";
+        break;
+    }
+    if (statusInfoKey !== "") {
+      popovers.push(
+        <Popover
+          key="extra-status"
+          content={statusPopoverInfo[statusInfoKey].content}
+          mouseEnterDelay={0.1}
+        >
+          {statusPopoverInfo[statusInfoKey].icon}
+        </Popover>
+      );
+    }
+    return popovers;
+  };
 
   return (
     <div>
@@ -172,67 +264,7 @@ export default function SystemApp() {
                 onClick={() => {
                   openModal(data);
                 }}
-                extra={[
-                  <Popover
-                    key="extra-install"
-                    content="已安装"
-                    mouseEnterDelay={0.1}
-                  >
-                    <CheckCircleTwoTone
-                      twoToneColor="#52c41a"
-                      style={{
-                        float: "right",
-                        display: data.status === "deployed" ? "" : "none",
-                      }}
-                    />
-                  </Popover>,
-                  <Popover
-                    key="extra-dealing"
-                    content="处理中"
-                    mouseEnterDelay={0.1}
-                  >
-                    <LoadingOutlined
-                      style={{
-                        float: "right",
-                        display:
-                          data.status === "uninstalling" ||
-                          data.status === "pending-install"
-                            ? ""
-                            : "none",
-                      }}
-                    />
-                  </Popover>,
-                  <Popover
-                    key="extra-notsupport"
-                    title="不完全支持组件"
-                    content="此组件未受到完全支持，仅支持卸载操作"
-                    mouseEnterDelay={0.1}
-                  >
-                    <WarningTwoTone
-                      twoToneColor="#FFa631"
-                      style={{
-                        marginRight: 10,
-                        float: "right",
-                        display: data.supported ? "none" : "",
-                      }}
-                    />
-                  </Popover>,
-                  <Popover
-                    key="extra-failinfo"
-                    title="组件信息获取失败"
-                    content="请检查网络并尝试刷新列表"
-                    mouseEnterDelay={0.1}
-                  >
-                    <InfoCircleTwoTone
-                      twoToneColor="#FF0000"
-                      style={{
-                        marginRight: 10,
-                        float: "right",
-                        display: data.status === "fakeinfo" ? "" : "none",
-                      }}
-                    />
-                  </Popover>,
-                ]}
+                extra={StatusPopover(data.supported, data.status)}
               >
                 <Popover content={data.desc} mouseEnterDelay={1}>
                   <div

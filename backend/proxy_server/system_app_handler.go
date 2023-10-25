@@ -133,9 +133,7 @@ func fetchInstalledPackagesInfo(packages *[]packageInfo) error {
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
 		FilterChartName: strings.Join(chartNames, "|"),
 		ShowOptions: helm_client.ListShowOptions{
-			ShowDeployed:     true,
-			ShowPending:      true,
-			ShowUninstalling: true,
+			ShowAll: true,
 		},
 	})
 	if err != nil {
