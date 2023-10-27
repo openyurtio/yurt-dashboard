@@ -34,7 +34,8 @@ const getDefaultChecked = (appList) => {
 const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [installFailed, setInstallFailed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tips, setTips] = useState("");
+  const [tips, setTipsContent] = useState("");
+  const [isErrorTip, setIsErrorTip] = useState(false);
   const [appDesc, setAppDesc] = useState("");
 
   let allChecked = getAllChecked(guideInfo.openyurt_apps);
@@ -46,6 +47,15 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [checkAll, setCheckAll] = useState(
     defaultChecked.length === allChecked.length
   );
+
+  const setErrorTips = (msg) => {
+    setIsErrorTip(true);
+    setTipsContent(msg);
+  };
+  const setTips = (msg) => {
+    setIsErrorTip(false);
+    setTipsContent(msg);
+  };
 
   const onChange = (list) => {
     setCheckedList(list);
@@ -61,6 +71,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   const installOpenYurtApp = () => {
     setLoading(true);
+    setTips("安装过程受网络环境影响，预计耗时2分钟。");
     sendRequest("/system/appInstallFromGuide", { apps_name: checkedList }).then(
       (res) => {
         message.success("安装成功！已安装组件：" + res.msg);
@@ -68,7 +79,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       },
       (err) => {
         console.log(err);
-        setTips("安装失败：" + err.message);
+        setErrorTips("安装失败：" + err.message);
         setInstallFailed(true);
         setLoading(false);
       }
@@ -122,7 +133,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       <div style={{ marginTop: 20 }}>
         <div
           style={{
-            color: "red",
+            color: isErrorTip ? "red" : "grey",
           }}
         >
           {tips}
