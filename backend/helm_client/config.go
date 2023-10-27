@@ -6,6 +6,7 @@ import (
 
 	"helm.sh/helm/v3/pkg/cli"
 	"helm.sh/helm/v3/pkg/helmpath"
+	"helm.sh/helm/v3/pkg/kube"
 )
 
 const HelmUserAgent = "Helm/v3.11"
@@ -33,6 +34,7 @@ func initEnvPath() {
 }
 
 func createSettings() *cli.EnvSettings {
+	kube.ManagedFieldsManager = "helm"
 	initEnvPath()
 	return cli.New()
 }
