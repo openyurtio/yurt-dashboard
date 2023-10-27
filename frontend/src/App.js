@@ -7,6 +7,7 @@ import {
   ContentWithSider,
   ContentWithoutSider,
 } from "./components/Utils/ContentWrapper";
+import AdminRoute from "./utils/adminRoute";
 
 const App = () => {
   return (
@@ -24,11 +25,27 @@ const App = () => {
                   ></ContentWithoutSider>
                 }
               />
+            ) : route.type && route.type === "admin" ? (
+              <AdminRoute
+                key={index}
+                path={route.path}
+                render={({ history }) => (
+                  <ContentWithSider
+                    history={history}
+                    content={<route.main />}
+                  ></ContentWithSider>
+                )}
+              />
             ) : (
               <Route
                 key={index}
                 path={route.path}
-                render={({ history }) => <ContentWithSider history={history} content={<route.main />} ></ContentWithSider>}
+                render={({ history }) => (
+                  <ContentWithSider
+                    history={history}
+                    content={<route.main />}
+                  ></ContentWithSider>
+                )}
               />
             )
           )}

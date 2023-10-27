@@ -60,6 +60,14 @@ func JSONSuccess(c *gin.Context, msg string) {
 	})
 }
 
+func JSONSuccessWithData(c *gin.Context, msg string, obj interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"data":   obj,
+		"msg":    msg,
+		"status": true,
+	})
+}
+
 func int32Ptr(i int32) *int32 { return &i }
 
 func getAppServiceName(appName string) string {

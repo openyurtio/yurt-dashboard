@@ -10,12 +10,16 @@ dashboard:
   image:
     repository: openyurt/yurt-dashboard
     pullPolicy: IfNotPresent
-    tag: 0.0.6
+    tag: latest
   service:
     type: ClusterIP
     port: 80
   ingress:
     host: dashboard.yurt.local
+  env:
+    showGuidePage: "auto"
+    experienceCenterMode: "no"
+    showDeprecatedOpenYurtComponents: "no"
 
 usercontroller:
   image:

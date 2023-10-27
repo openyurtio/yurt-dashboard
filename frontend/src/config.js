@@ -1,12 +1,13 @@
 import ClusterInfo from "./components/Cluster/ClusterInfo";
 import Deployment from "./components/WorkloadManagement/Deployment";
 import Nodes from "./components/NodeManagement/Nodes";
-import Login from "./components/User/Login";
+import Entry from "./components/User/Entry";
 import NodePool from "./components/NodeManagement/NodePool";
 import StatefulSet from "./components/WorkloadManagement/StatefulSet";
 import Job from "./components/WorkloadManagement/Job";
 import Pod from "./components/WorkloadManagement/Pod";
 import Lab from "./components/Lab/Lab";
+import SystemApp from "./components/AppManagement/SystemApp";
 
 export const routes = [
   {
@@ -23,7 +24,7 @@ export const routes = [
   },
   {
     path: "/login",
-    main: () => <Login></Login>,
+    main: () => <Entry></Entry>,
   },
   {
     path: "/nodepool",
@@ -44,6 +45,11 @@ export const routes = [
   {
     path: "/lab",
     main: () => <Lab></Lab>,
+  },
+  {
+    path: "/systemapp",
+    type: "admin",
+    main: () => <SystemApp></SystemApp>,
   },
 ];
 
