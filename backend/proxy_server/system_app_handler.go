@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 	helm_client "yurt_console_backend/helm_client"
+	k8s_client "yurt_console_backend/k8s_client"
 
 	"github.com/gin-gonic/gin"
 )
@@ -243,6 +245,26 @@ func installSystemAppHandler(c *gin.Context) {
 	JSONSuccess(c, fmt.Sprintf("install openyurt app %s successsfully", requestParas.ChartName))
 }
 
+func waitYurtManagerInstallSuccess() {
+	count := 0
+	for count < 600 {
+		count++
+		rsp, err := k8s_client.GetDeployment(adminKubeConfig, OpenYurtNamespace)
+		if err == nil {
+			for _, dp := range rsp.Items {
+				if dp.Name != "yurt-manager" {
+					continue
+				}
+				if dp.Status.AvailableReplicas >= *dp.Spec.Replicas {
+					return
+				}
+				break
+			}
+		}
+		time.Sleep(time.Second)
+	}
+}
+
 func installSystemAppFromGuideHandler(c *gin.Context) {
 	requestParas := &struct {
 		AppsName []string `json:"apps_name"`
@@ -260,20 +282,12 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 		return
 	}
 
-	supportedNames := getFullySupportedOpenYurtNames()
-	for _, n := range requestParas.AppsName {
-		if !checkHasName(supportedNames, n) {
-			logger.Error(c.ClientIP(), "installSystemAppFromGuideHandler, not openyurt app:", n)
-			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: not openyurt app: %s", n))
-			return
-		}
-	}
-
 	res, err := helm_client.List(&helm_client.ListReleaseOptions{
 		FilterChartName: strings.Join(requestParas.AppsName, "|"),
 		ShowOptions: helm_client.ListShowOptions{
 			ShowDeployed: true,
 			ShowPending:  true,
+			ShowFailed:   true,
 		},
 	})
 	if err != nil {
@@ -286,19 +300,22 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 		installedApps = append(installedApps, one.ChartName)
 	}
 
-	for _, n := range requestParas.AppsName {
-		if checkHasName(installedApps, n) {
+	for _, app := range FullySupportedOpenYurtApps {
+		if !(app.Required || checkHasName(requestParas.AppsName, app.Name)) || checkHasName(installedApps, app.Name) {
 			continue
 		}
 		err := helm_client.Install(&helm_client.InstallOptions{
 			Namespace:   OpenYurtNamespace,
-			ReleaseName: n,
-			ChartString: OpenYurtRepoName + "/" + n,
+			ReleaseName: app.Name,
+			ChartString: OpenYurtRepoName + "/" + app.Name,
 		})
 		if err != nil {
-			logger.Error(c.ClientIP(), fmt.Sprintf("installSystemAppFromGuideHandler, fail to install app:%v", n), err.Error())
-			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to install app:%v, err:%v", n, err))
+			logger.Error(c.ClientIP(), fmt.Sprintf("installSystemAppFromGuideHandler, fail to install app:%v", app.Name), err.Error())
+			JSONErr(c, http.StatusBadRequest, fmt.Sprintf("installSystemAppFromGuideHandler: fail to install app:%v, err:%v", app.Name, err))
 			return
+		}
+		if app.Name == "yurt-manager" {
+			waitYurtManagerInstallSuccess()
 		}
 	}
 
