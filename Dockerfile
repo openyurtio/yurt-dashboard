@@ -1,4 +1,4 @@
-FROM golang:1.18 as builder
+FROM --platform=$TARGETPLATFORM golang:1.18 as builder
 
 ENV GOPROXY https://goproxy.cn,direct
 WORKDIR /workspace
@@ -8,7 +8,7 @@ COPY backend/ /workspace
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod readonly -a  -o apiserver ./proxy_server/
 
 ##Build ui
-FROM node:14.17.6-alpine3.14 as build-ui
+FROM --platform=$BUILDPLATFORM node:14.17.6-alpine3.14 as build-ui
 
 #RUN apk update && apk add bash
 
@@ -21,7 +21,7 @@ COPY frontend/package.json .
 RUN npm install
 RUN npm run build
 
-FROM centos:7
+FROM --platform=$TARGETPLATFORM centos:7
 # FROM alpine:3.12.0
 
 WORKDIR /openyurt/backend/

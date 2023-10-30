@@ -7,6 +7,7 @@ SHELL = /usr/bin/env bash -o pipefail
 
 REPO ?= openyurt
 IMAGE_TAG ?= latest
+TARGETPLATFORM ?= linux/amd64
 
 DASHBOARD_IMG ?= ${REPO}/yurt-dashboard:${IMAGE_TAG}
 
@@ -14,8 +15,9 @@ DOCKER_BUILD_GO_PROXY_ARG ?= GO_PROXY=https://goproxy.cn,direct
 
 
 docker-build:
-	docker build -f Dockerfile . -t ${DASHBOARD_IMG} \
-		--build-arg ${DOCKER_BUILD_GO_PROXY_ARG}
+	docker buildx build --load \
+	-f Dockerfile . -t ${DASHBOARD_IMG} \
+	--platform ${TARGETPLATFORM} --build-arg ${DOCKER_BUILD_GO_PROXY_ARG}
 
 docker-push:
 	docker push ${DASHBOARD_IMG}
