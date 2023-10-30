@@ -23,6 +23,13 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          env:
+            - name: SHOW_GUIDE_PAGE
+              value: "{{ .Values.dashboard.env.showGuidePage }}"
+            - name: EXPERIENCE_CENTER_MODE
+              value: "{{ .Values.dashboard.env.experienceCenterMode }}"
+            - name: ENABLE_OLD_APPS
+              value: "{{ .Values.dashboard.env.showDeprecatedOpenYurtComponents }}"
 {{- with .Values.dashboard.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}

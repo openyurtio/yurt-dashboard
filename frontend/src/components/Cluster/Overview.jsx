@@ -13,7 +13,11 @@ export default function ClusterOverview() {
   useLocationMsg();
 
   const [userProfile] = useUserProfile();
-  const namespace = userProfile ? userProfile.spec.namespace : "NULL";
+  const namespace = !userProfile
+    ? "NULL"
+    : userProfile.spec.namespace
+    ? userProfile.spec.namespace
+    : "ALL";
 
   const [connStatus, setStatus] = useState("Loading");
   const setConnStatus = useCallback((res) => {
