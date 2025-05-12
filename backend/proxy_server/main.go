@@ -1,18 +1,20 @@
 package main
 
 import (
-	"io"
-	"os"
-
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-
-	"github.com/gin-contrib/cors"
 )
 
+var logger ServerLogger
+
 func main() {
-	// Set the router as the default one shipped with Gin
-	router := gin.Default()
+	logger = NewZLogger(true) 
+	router := gin.New()
+
+	// Use our custom logger middleware
+	router.Use(logger.GinLogger())
+
 	// allow CORS request for frontend dev server request
 	router.Use(cors.Default())
 	// setup oauth2 client
@@ -23,11 +25,10 @@ func main() {
 	router.NoRoute(func(c *gin.Context) { c.File("../../frontend/build/index.html") })
 	// setup route group for the API
 	setAPIGroup(router)
-	// setup logger output to stdout
-	setLogger(os.Stdout)
 
 	// Start and run the server
 	if err := router.Run(":80"); err != nil {
+		logger.Error("server", "start", "Failed to start server: "+err.Error())
 		panic("gin server fail to start")
 	}
 }
@@ -65,10 +66,4 @@ func setSystemAPIGroup(router *gin.RouterGroup) {
 		system.POST("/appDefaultConfig", getSystemAppDefaultConfigHandler)
 		system.POST("/appInstallFromGuide", installSystemAppFromGuideHandler)
 	}
-}
-
-var logger baseLogger
-
-func setLogger(output io.Writer) {
-	logger.Init(output)
 }
