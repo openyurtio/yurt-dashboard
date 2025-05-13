@@ -2,10 +2,10 @@ package helm_client
 
 import (
 	"github.com/pkg/errors"
-	"sigs.k8s.io/yaml"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chart/loader"
+	"sigs.k8s.io/yaml"
 )
 
 type InstallOptions struct {
@@ -13,7 +13,7 @@ type InstallOptions struct {
 	ReleaseName string `json:"release_name"`
 	ChartString string `json:"chart_string"`
 	Version     string `json:"version"`
-	ValueFile   string `json:"value_file"`	//  -f, --values strings
+	ValueFile   string `json:"value_file"` //  -f, --values strings
 }
 
 func (c *baseClient) install(o *InstallOptions) error {
@@ -25,7 +25,7 @@ func (c *baseClient) install(o *InstallOptions) error {
 		client.Version = ">0.0.0-0"
 	}
 
-	cp, err := client.ChartPathOptions.LocateChart(o.ChartString, c.settings)
+	cp, err := client.LocateChart(o.ChartString, c.settings)
 	if err != nil {
 		return err
 	}

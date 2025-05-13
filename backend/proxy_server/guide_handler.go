@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Empty or "auto": automatically detect whether the guide page needs to be displayed. 
+// Empty or "auto": automatically detect whether the guide page needs to be displayed.
 // "always": Always displayed.
 // "never": Never displayed.
 const showGuidePageEnv = "SHOW_GUIDE_PAGE"
@@ -49,7 +49,7 @@ func checkConnectivityHandler(c *gin.Context) {
 
 // Information sent to the front-end before loading the guide page
 type guideInfo struct {
-	OpenYurtAppList []OpenYurtAppInfo `json:"openyurt_apps"`	// Component information used in component installation guidance
+	OpenYurtAppList []OpenYurtAppInfo `json:"openyurt_apps"` // Component information used in component installation guidance
 }
 
 // Tool function

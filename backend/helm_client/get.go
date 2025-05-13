@@ -7,7 +7,7 @@ import (
 
 type GetOptions struct {
 	ReleaseName   string `json:"release_name"`
-	ShowAllValues bool   `json:"show_all"`		// values: -a --all
+	ShowAllValues bool   `json:"show_all"` // values: -a --all
 }
 
 func (c *baseClient) getValues(o *GetOptions) (string, error) {

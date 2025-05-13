@@ -2,6 +2,7 @@ package helm_client
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/pkg/errors"
@@ -17,7 +18,9 @@ func getKubeConfigString(kubeconfigPath string) string {
 
 func checkAndSetPath(envVar string, setValue string) {
 	if os.Getenv(envVar) == "" {
-		os.Setenv(envVar, setValue)
+		if err := os.Setenv(envVar, setValue); err != nil {
+			log.Printf("Failed to set environment variable %s: %v", envVar, err)
+		}
 	}
 }
 

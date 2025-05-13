@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -104,6 +105,13 @@ func getOauthToken(githubconfig *oauth2.Config, code string) (*oauth2.Token, err
 	if err != nil {
 		return nil, err
 	}
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Failed to close response body: %v", err)
+		}
+	}()
+
 	err = json.NewDecoder(resp.Body).Decode(&token)
 	if err != nil {
 		return nil, err
@@ -122,7 +130,11 @@ func getUserGithubInfo(token *oauth2.Token) (*githubUser, error) {
 		return nil, err
 	}
 
-	defer userInfo.Body.Close()
+	defer func() {
+		if err := userInfo.Body.Close(); err != nil {
+			log.Printf("Failed to close response body: %v", err)
+		}
+	}()
 
 	info, err := ioutil.ReadAll(userInfo.Body)
 	if err != nil {

@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -16,14 +17,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/client-go/kubernetes"
-	clientset "k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
+	clientcmd "k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	bootstrapapi "k8s.io/cluster-bootstrap/token/api"
 	bootstraputil "k8s.io/cluster-bootstrap/token/util"
 	bootstraptokenv1 "k8s.io/kubernetes/cmd/kubeadm/app/apis/bootstraptoken/v1"
@@ -121,7 +120,7 @@ func registerUser(userProfile *client.UserSpec) (int, interface{}) {
 		}
 
 		// all resources has been created, return success
-		if createdUser.Status.EffectiveTime != (v1.Time{}) {
+		if createdUser.Status.EffectiveTime != (metav1.Time{}) {
 			logger.Info(userProfile.Mobilephone, "regist successfully")
 			return UserCreateSuccess, createdUser
 		}
@@ -138,12 +137,15 @@ func getUserTokenDesc(user *client.User) string {
 	return fmt.Sprintf("Dashboard user: %s", user.Name)
 }
 
-func createJoinToken(cs clientset.Interface, user *client.User) (string, error) {
+func createJoinToken(cs kubernetes.Interface, user *client.User) (string, error) {
 	tokenStr, err := bootstraputil.GenerateBootstrapToken()
 	if err != nil {
 		return "", errors.Wrap(err, "couldn't generate random token")
 	}
 	bootstrapToken, err := bootstraptokenv1.NewBootstrapTokenString(tokenStr)
+	if err != nil {
+		return "", errors.Wrap(err, "couldn't create bootstrap token string")
+	}
 	userValidityPeriod := time.Duration(24*user.Spec.ValidPeriod) * time.Hour
 	token := bootstraptokenv1.BootstrapToken{
 		Token:       bootstrapToken,
@@ -162,7 +164,7 @@ func createJoinToken(cs clientset.Interface, user *client.User) (string, error) 
 	return tokenStr, nil
 }
 
-func getTokenInfo(cs clientset.Interface, user *client.User) (string, error) {
+func getTokenInfo(cs kubernetes.Interface, user *client.User) (string, error) {
 	tokenSelector := fields.SelectorFromSet(
 		map[string]string{
 			"type": string(bootstrapapi.SecretTypeBootstrapToken),
@@ -193,7 +195,7 @@ func getTokenInfo(cs clientset.Interface, user *client.User) (string, error) {
 	return createJoinToken(cs, user)
 }
 
-func getClusterInfo(cs clientset.Interface) (*clientcmdapi.Config, error) {
+func getClusterInfo(cs kubernetes.Interface) (*clientcmdapi.Config, error) {
 	insecureClusterInfo, err := cs.CoreV1().ConfigMaps(metav1.NamespacePublic).Get(context.Background(), "cluster-info", metav1.GetOptions{})
 	if err != nil {
 		return nil, err
@@ -246,6 +248,10 @@ func generateNodeAddScript(user *client.User) error {
 		user.Spec.NodeAddScript = joinStr
 		user.Spec.Token = bootstrapToken
 	}
+	if err := generateNodeAddScript(user); err != nil {
+		logger.Error(user.Name, "generateNodeAddScript", err.Error())
+		return err
+	}
 	return nil
 }
 
@@ -254,7 +260,9 @@ func fillAdminUserInfo(u *client.User) {
 	u.Spec.Mobilephone = "admin"
 	u.Spec.KubeConfig = adminKubeConfig
 	u.Spec.Namespace = ""
-	generateNodeAddScript(u)
+	if err := generateNodeAddScript(u); err != nil {
+		log.Printf("Failed to generate node add script for admin user: %v", err)
+	}
 }
 
 func getCurLoginMode() string {
