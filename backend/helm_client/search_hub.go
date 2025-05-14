@@ -3,6 +3,7 @@ package helm_client
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -13,9 +14,9 @@ import (
 const HelmHubURL = "https://artifacthub.io/api/v1/packages"
 
 type HubSearchElementRepo struct {
-	URL         string `json:"url"`				// repo url
-	Name        string `json:"name"`			// repo name
-	DisplayName string `json:"display_name"`	// display-only name
+	URL         string `json:"url"`          // repo url
+	Name        string `json:"name"`         // repo name
+	DisplayName string `json:"display_name"` // display-only name
 }
 
 type HubSearchAvailableVersion struct {
@@ -26,12 +27,12 @@ type HubSearchElement struct {
 	ID                string                      `json:"package_id"`
 	Name              string                      `json:"name"`
 	NormalizedName    string                      `json:"normalized_name"`
-	ImageID           string                      `json:"logo_image_id"`		// Get the icon by URL:https://artifacthub.io/image/{ImageID}@2x
+	ImageID           string                      `json:"logo_image_id"` // Get the icon by URL:https://artifacthub.io/image/{ImageID}@2x
 	Description       string                      `json:"description"`
 	Version           string                      `json:"version"`
 	AppVersion        string                      `json:"app_version"`
-	ContentURL        string                      `json:"content_url"`			// The direct download address of the specified version of the hub chart package. Only for valueHub.
-	AvailableVersions []HubSearchAvailableVersion `json:"available_versions"`	// A list of available versions of a search result. Only for valueHub
+	ContentURL        string                      `json:"content_url"`        // The direct download address of the specified version of the hub chart package. Only for valueHub.
+	AvailableVersions []HubSearchAvailableVersion `json:"available_versions"` // A list of available versions of a search result. Only for valueHub
 	Repo              HubSearchElementRepo        `json:"repository"`
 }
 
@@ -87,14 +88,20 @@ func (c *baseClient) searchHub(o *HubSearchOptions) (*HubSearchRsp, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if err := res.Body.Close(); err != nil {
+			log.Printf("Failed to close response body: %v", err)
+		}
+	}()
 
 	if res.StatusCode != 200 {
 		return nil, errors.New("search request get error code")
 	}
 
 	result := &HubSearchRsp{}
-	json.NewDecoder(res.Body).Decode(result)
+	if err := json.NewDecoder(res.Body).Decode(result); err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 
@@ -118,13 +125,19 @@ func (c *baseClient) valueHub(o *HubValueOptions) (*HubSearchElement, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if err := res.Body.Close(); err != nil {
+			log.Printf("Failed to close response body: %v", err)
+		}
+	}()
 
 	if res.StatusCode != 200 {
 		return nil, errors.New("value request get error code")
 	}
 
 	result := &HubSearchElement{}
-	json.NewDecoder(res.Body).Decode(result)
+	if err := json.NewDecoder(res.Body).Decode(result); err != nil {
+		return nil, err
+	}
 	return result, nil
 }

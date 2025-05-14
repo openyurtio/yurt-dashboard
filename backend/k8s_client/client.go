@@ -160,9 +160,10 @@ func (c *NodeClient) GetStatus(namespace string) (*ResourceStatus, error) {
 }
 
 // PATCH /api/v1/nodes/{nodeName}
-// patchData example: map[string]interface{}{"metadata": map[string]map[string]string{"annotations": {
-// 	"node.beta.alibabacloud.com/autonomy": "false",
-// }}}
+//
+//	patchData example: map[string]interface{}{"metadata": map[string]map[string]string{"annotations": {
+//		"node.beta.alibabacloud.com/autonomy": "false",
+//	}}}
 func (c *NodeClient) Patch(nodeName string, patchData map[string]interface{}) ([]byte, error) {
 
 	payload, err := json.Marshal(patchData)

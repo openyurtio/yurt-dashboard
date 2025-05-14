@@ -12,7 +12,7 @@ import (
 func assertNoErr(err error, t testing.TB) {
 	t.Helper()
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Error(err)
 	}
 }
 

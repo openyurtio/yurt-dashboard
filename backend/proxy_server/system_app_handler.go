@@ -187,7 +187,11 @@ func getSystemAppListHandler(c *gin.Context) {
 		return
 	}
 
-	checkAndAddSystemAppRepo(requestParas.UpdateRepo)
+	if err := checkAndAddSystemAppRepo(requestParas.UpdateRepo); err != nil {
+		logger.Error(c.ClientIP(), "getSystemAppListHandler, fail to init openyurt repo:", err.Error())
+		JSONErr(c, http.StatusBadRequest, fmt.Sprintf("getSystemAppListHandler: fail to init openyurt repo: %v", err))
+		return
+	}
 
 	packages := []packageInfo{}
 	fetchRepoPackagesInfo(&packages)
@@ -301,7 +305,7 @@ func installSystemAppFromGuideHandler(c *gin.Context) {
 	}
 
 	for _, app := range FullySupportedOpenYurtApps {
-		if !(app.Required || checkHasName(requestParas.AppsName, app.Name)) || checkHasName(installedApps, app.Name) {
+		if (app.Required || checkHasName(requestParas.AppsName, app.Name)) && !checkHasName(installedApps, app.Name) {
 			continue
 		}
 		err := helm_client.Install(&helm_client.InstallOptions{

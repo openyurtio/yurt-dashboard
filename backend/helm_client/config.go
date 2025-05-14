@@ -1,6 +1,7 @@
 package helm_client
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 
@@ -25,7 +26,9 @@ func initEnvPath() {
 		rootPath = RootHelmPath
 	}
 	if _, err := os.Stat(rootPath); os.IsNotExist(err) {
-		os.MkdirAll(rootPath, os.ModePerm)
+		if err := os.MkdirAll(rootPath, os.ModePerm); err != nil {
+			log.Printf("Failed to create directory %s: %v", rootPath, err)
+		}
 	}
 
 	checkAndSetPath(helmpath.DataHomeEnvVar, filepath.Join(rootPath, "data"))

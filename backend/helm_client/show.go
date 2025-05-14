@@ -14,7 +14,7 @@ func (c *baseClient) showValues(o *ShowOptions) (string, error) {
 		client.Version = ">0.0.0-0"
 	}
 
-	cp, err := client.ChartPathOptions.LocateChart(o.ChartString, c.settings)
+	cp, err := client.LocateChart(o.ChartString, c.settings)
 	if err != nil {
 		return "", err
 	}

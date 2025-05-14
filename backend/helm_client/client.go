@@ -36,7 +36,9 @@ func (c *baseClient) NewRESTClientGetter() *SimpleHelmRESTClientGetter {
 func (c *baseClient) debug(format string, v ...interface{}) {
 	if c.settings.Debug {
 		format = fmt.Sprintf("[debug] %s\n", format)
-		log.Output(2, fmt.Sprintf(format, v...))
+		if err := log.Output(2, fmt.Sprintf(format, v...)); err != nil {
+			log.Printf("Failed to output debug log: %v", err)
+		}
 	}
 }
 
@@ -57,8 +59,10 @@ func (c *baseClient) getAllEnv() map[string]string {
 	return c.settings.EnvVars()
 }
 
-func CreateClient(namespace string) *baseClient {
+func CreateClient(namespace string) (*baseClient, error) {
 	c := &baseClient{}
-	c.InitClient(namespace)
-	return c
+	if err := c.InitClient(namespace); err != nil {
+		return nil, err
+	}
+	return c, nil
 }

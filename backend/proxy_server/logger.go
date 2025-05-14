@@ -56,7 +56,9 @@ func (l *baseLogger) Info(user, msg string) {
 
 func (l *baseLogger) debug_println(msg string) {
 	// set call_depth = 4 to trace original error line
-	l.debug_logger.Output(4, msg)
+	if err := l.debug_logger.Output(4, msg); err != nil {
+		log.Printf("Failed to output debug log: %v", err)
+	}
 }
 
 func (l *baseLogger) Debug(msg string) {

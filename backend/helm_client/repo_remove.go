@@ -13,7 +13,7 @@ type RepoRemoveOptions struct {
 	Names []string `json:"names"`
 }
 
-func (c *baseClient) repoRemove(o * RepoRemoveOptions) error {
+func (c *baseClient) repoRemove(o *RepoRemoveOptions) error {
 	repoFile := c.settings.RepositoryConfig
 	repoCache := c.settings.RepositoryCache
 
@@ -41,7 +41,9 @@ func (c *baseClient) repoRemove(o * RepoRemoveOptions) error {
 func removeRepoCache(root, name string) error {
 	idx := filepath.Join(root, helmpath.CacheChartsFile(name))
 	if _, err := os.Stat(idx); err == nil {
-		os.Remove(idx)
+		if err := os.Remove(idx); err != nil {
+			return errors.Wrapf(err, "can't remove chart file %s", idx)
+		}
 	}
 
 	idx = filepath.Join(root, helmpath.CacheIndexFile(name))
