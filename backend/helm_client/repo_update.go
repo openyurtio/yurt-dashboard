@@ -10,7 +10,7 @@ import (
 )
 
 type RepoUpdateOptions struct {
-	Names []string	`json:"names"`	// Update all repos when empty
+	Names []string `json:"names"` // Update all repos when empty
 }
 
 func (c *baseClient) repoUpdate(o *RepoUpdateOptions) error {
@@ -63,7 +63,7 @@ func (c *baseClient) repoUpdate(o *RepoUpdateOptions) error {
 	wg.Wait()
 
 	if len(repoFailList) > 0 {
-		return fmt.Errorf("Failed to update the following repositories: %s",
+		return fmt.Errorf("failed to update the following repositories: %s",
 			repoFailList)
 	}
 

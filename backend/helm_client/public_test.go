@@ -13,7 +13,7 @@ const TestChartVersion = "15.3.3"
 func assertNoErr(err error, t testing.TB) {
 	t.Helper()
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Error(err)
 	}
 }
 

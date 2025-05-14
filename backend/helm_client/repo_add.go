@@ -2,6 +2,7 @@ package helm_client
 
 import (
 	"context"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -17,17 +18,17 @@ import (
 type RepoAddOptions struct {
 	Name               string
 	URL                string
-	Username           string		// --username string
-	Password           string		// --password string
-	PassCredentialsAll bool			// --pass-credentials
+	Username           string // --username string
+	Password           string // --password string
+	PassCredentialsAll bool   // --pass-credentials
 
-	CertFile              string	// --cert-file string
-	KeyFile               string	// --key-file string
-	CaFile                string	// --ca-file string
-	InsecureSkipTLSverify bool		// --insecure-skip-tls-verify
+	CertFile              string // --cert-file string
+	KeyFile               string // --key-file string
+	CaFile                string // --ca-file string
+	InsecureSkipTLSverify bool   // --insecure-skip-tls-verify
 
-	NoRepoExsitsError bool			// When set to true, no error will be returned when the same repo exists.
-	UpdateWhenExsits  bool			// --force-update
+	NoRepoExsitsError bool // When set to true, no error will be returned when the same repo exists.
+	UpdateWhenExsits  bool // --force-update
 }
 
 func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
@@ -53,7 +54,11 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 	defer cancel()
 	locked, err := fileLock.TryLockContext(lockCtx, time.Second)
 	if err == nil && locked {
-		defer fileLock.Unlock()
+		defer func() {
+			if err := fileLock.Unlock(); err != nil {
+				log.Printf("Failed to unlock file: %v", err)
+			}
+		}()
 	}
 	if err != nil {
 		return err
@@ -94,7 +99,9 @@ func (cli *baseClient) repoAdd(o *RepoAddOptions) error {
 		}
 
 		if o.UpdateWhenExsits {
-			cli.repoUpdate(&RepoUpdateOptions{Names: []string{o.Name}})
+			if err := cli.repoUpdate(&RepoUpdateOptions{Names: []string{o.Name}}); err != nil {
+				log.Printf("Failed to update repository: %v", err)
+			}
 		}
 
 		if o.NoRepoExsitsError {
