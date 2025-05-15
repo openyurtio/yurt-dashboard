@@ -1,74 +1,117 @@
 /*
- logger.go defines a logger used to record server behavior
+logger.go defines a structured logger using zerolog
 */
 
 package main
 
 import (
-	"fmt"
 	"io"
-	"log"
+	"os"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog"
 )
 
+// ServerLogger interface defines the logging methods
 type ServerLogger interface {
-	Init(writer io.Writer)
-
-	// used to record server behavior
-	// seperated by info levels
-
-	// trascational info
 	Info(user string, action string)
-	// expected anomaly info, can be recovered automatically
 	Warn(user string, action string, info string)
-	// unexpected error info
 	Error(user string, action string, info string)
-
-	// used for developers to trace bugs
 	Debug(msg string)
+	GinLogger() gin.HandlerFunc
 }
 
-// baseLogger implement Logger based on `log` package
-type baseLogger struct {
-	// info_logger is used to print transactional information
-	info_logger *log.Logger
-	// debug_logger is different with info_logger to print file&line info to trace bugs
-	debug_logger *log.Logger
+// zLogger implements ServerLogger using zerolog
+type zLogger struct {
+	logger zerolog.Logger
 }
 
-func (l *baseLogger) Init(writer io.Writer) {
-	l.info_logger = log.New(writer, "[Server] ", log.LstdFlags)
-	l.debug_logger = log.New(writer, "[Server] ", log.Lshortfile|log.LstdFlags)
-}
+func NewZLogger(pretty bool) ServerLogger {
+	zerolog.TimeFieldFormat = time.RFC3339
 
-func (l *baseLogger) print_format(user, action, info, level string) string {
-	var line string
-	if info == "" {
-		line = fmt.Sprintf("User: %s, Action: %s [%s]", user, action, level)
-	} else {
-		line = fmt.Sprintf("User: %s, Action: %s, Info: %s [%s]", user, action, info, level)
+	var output io.Writer = os.Stderr
+	if pretty {
+		output = zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}
 	}
-	return line
+
+	logger := zerolog.New(output).With().Timestamp().Logger()
+	return &zLogger{logger: logger}
 }
 
-func (l *baseLogger) Info(user, msg string) {
-	l.info_logger.Println(l.print_format(user, msg, "", "INFO"))
+func (l *zLogger) Info(user, action string) {
+	l.logger.Info().
+		Str("user", user).
+		Str("action", action).
+		Send()
 }
 
-func (l *baseLogger) debug_println(msg string) {
-	// set call_depth = 4 to trace original error line
-	if err := l.debug_logger.Output(4, msg); err != nil {
-		log.Printf("Failed to output debug log: %v", err)
+func (l *zLogger) Warn(user, action, info string) {
+	l.logger.Warn().
+		Str("user", user).
+		Str("action", action).
+		Str("info", info).
+		Send()
+}
+
+func (l *zLogger) Error(user, action, info string) {
+	l.logger.Error().
+		Str("user", user).
+		Str("action", action).
+		Str("info", info).
+		Send()
+}
+
+func (l *zLogger) Debug(msg string) {
+	l.logger.Debug().Msg(msg)
+}
+
+// GinLogger returns a gin.HandlerFunc for request and error logging
+func (l *zLogger) GinLogger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+		path := c.Request.URL.Path
+		raw := c.Request.URL.RawQuery
+
+		// Process request
+		c.Next()
+
+		// Handle errors if any
+		if !c.Writer.Written() && len(c.Errors) > 0 {
+			json := c.Errors.JSON()
+			if json != nil {
+				c.JSON(-1, json)
+			}
+		}
+
+		// Log request details
+		latency := time.Since(start)
+		if raw != "" {
+			path = path + "?" + raw
+		}
+
+		msg := c.Errors.String()
+		if msg == "" {
+			msg = "Request"
+		}
+
+		// Create log event with common fields
+		event := l.logger.With().
+			Str("method", c.Request.Method).
+			Str("path", path).
+			Dur("latency", latency).
+			Int("status", c.Writer.Status()).
+			Str("client_ip", c.ClientIP())
+
+		// Log based on status code
+		logger := event.Logger()
+		switch {
+		case c.Writer.Status() >= 500:
+			logger.Error().Msg(msg)
+		case c.Writer.Status() >= 400:
+			logger.Warn().Msg(msg)
+		default:
+			logger.Info().Msg(msg)
+		}
 	}
-}
-
-func (l *baseLogger) Debug(msg string) {
-	l.debug_println(fmt.Sprintf("%s [DEBUG]", msg))
-}
-
-func (l *baseLogger) Warn(user, action, info string) {
-	l.debug_println(l.print_format(user, action, info, "WARN"))
-}
-
-func (l *baseLogger) Error(user, action, info string) {
-	l.debug_println(l.print_format(user, action, info, "ERROR"))
 }
