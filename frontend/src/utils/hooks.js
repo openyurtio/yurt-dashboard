@@ -1,13 +1,8 @@
 // customized hooks
-import { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router";
-import { message } from "antd";
-import {
-  getUserLastTime,
-  getUserProfile,
-  clearUserProfile,
-  setUserProfile,
-} from "./utils";
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import { message } from 'antd';
+import { getUserLastTime, getUserProfile, clearUserProfile, setUserProfile } from './utils';
 
 // use sessionStorage to cache state
 export function useSessionState(cache_key, default_val) {
@@ -23,14 +18,14 @@ export function useLocalState(cache_key, default_val) {
 // cache has higher priority than val
 function useCacheState(key, val, storage) {
   if (storage !== sessionStorage && storage !== localStorage) {
-    throw new Error("Storage must be either sessionStorage or localStorage");
+    throw new Error('Storage must be either sessionStorage or localStorage');
   }
 
   const cache_val = storage.getItem(key);
   const [state, setState] = useState(cache_val ? JSON.parse(cache_val) : val);
   return [
     state,
-    (new_val) => {
+    new_val => {
       setState(new_val);
       storage.setItem(key, JSON.stringify(new_val));
     },
@@ -42,10 +37,7 @@ export function useResourceState(fetchData) {
   // rows contains the table data
   const [rows, setRows] = useState(null);
   // onRefresh used when page refresh or refresh button is clicked
-  const onRefresh = useCallback(
-    () => fetchData().then((res) => setRows(res)),
-    [fetchData]
-  );
+  const onRefresh = useCallback(() => fetchData().then(res => setRows(res)), [fetchData]);
 
   useEffect(() => {
     onRefresh();
@@ -83,7 +75,7 @@ export function useUserProfile() {
     if (lastTime <= 0) {
       // show expire tips
       message.error(
-        "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。",
+        '对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。',
         5
       );
       // clear the expired user data
@@ -100,7 +92,7 @@ export function useUserProfile() {
 
   return [
     user,
-    (user) => {
+    user => {
       if (user) {
         setUserProfile(user);
       } else clearUserProfile();

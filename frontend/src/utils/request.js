@@ -1,25 +1,25 @@
-import { baseURL } from "../config";
-import { message } from "antd";
-import { toPercentagePresentation, formatTime, getUserProfile } from "./utils";
+import { baseURL } from '../config';
+import { message } from 'antd';
+import { toPercentagePresentation, formatTime, getUserProfile } from './utils';
 
 export function sendRequest(path, data) {
-  return fetch(baseURL + "/api" + path, {
+  return fetch(baseURL + '/api' + path, {
     body: JSON.stringify({ ...data }),
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
-    method: "POST",
+    method: 'POST',
   })
     .then(
-      (res) => res.json(),
+      res => res.json(),
       () => {
-        throw new Error("网络问题，请检查您的网络连接");
+        throw new Error('网络问题，请检查您的网络连接');
       }
     )
-    .then((res) => {
-      if (res && "status" in res && res.status === false) {
+    .then(res => {
+      if (res && 'status' in res && res.status === false) {
         // throw failed resp error
-        throw new Error(res["msg"]);
+        throw new Error(res['msg']);
       }
       return res;
     });
@@ -29,7 +29,7 @@ export function sendRequest(path, data) {
 const emptyObj = {
   items: [],
   filter: () => [],
-  status: "error",
+  status: 'error',
   some: () => true,
 };
 
@@ -43,13 +43,13 @@ export function sendUserRequest(path, data) {
   }
 
   return sendRequest(path, { ...data, ...userProfile.spec })
-    .catch((err) => {
+    .catch(err => {
       // handling thrown error from sendRequest
       message.error(err.message);
       console.error(err);
     })
-    .then((res) => {
-      if (res && !("status" in res && res.status === false)) {
+    .then(res => {
+      if (res && !('status' in res && res.status === false)) {
         return res;
       } else {
         return emptyObj;
@@ -68,13 +68,13 @@ export function sendUserRequestWithTimeout(ms, path, data) {
   }
 
   return timeoutPromise(ms, sendRequest(path, { ...data, ...userProfile.spec }))
-    .catch((err) => {
+    .catch(err => {
       // handling thrown error from sendRequest
       message.error(err.message);
       console.error(err);
     })
-    .then((res) => {
-      if (res && !("status" in res && res.status === false)) {
+    .then(res => {
+      if (res && !('status' in res && res.status === false)) {
         return res;
       } else {
         return emptyObj;
@@ -85,14 +85,14 @@ export function sendUserRequestWithTimeout(ms, path, data) {
 export function timeoutPromise(ms, promise) {
   return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
-      reject(new Error("request timeout"));
+      reject(new Error('request timeout'));
     }, ms);
     promise.then(
-      (res) => {
+      res => {
         clearTimeout(timeoutId);
         resolve(res);
       },
-      (err) => {
+      err => {
         clearTimeout(timeoutId);
         reject(err);
       }
@@ -122,17 +122,15 @@ export function getNodepools(paras) {
     };
   };
 
-  return sendUserRequest("/getNodepools", paras).then((nps) =>
-    nps.items.map(trasnform)
-  );
+  return sendUserRequest('/getNodepools', paras).then(nps => nps.items.map(trasnform));
 }
 
 export function getNodes(paras) {
   const transform = (rawNode, i) => {
-    const nodePoolKey = "apps.openyurt.io/nodepool";
-    const nodeRoleKey = "node-role.kubernetes.io/master";
-    const getNodeCondition = (rawNode) =>
-      rawNode.status.conditions.filter((item) => item.type === "Ready")[0];
+    const nodePoolKey = 'apps.openyurt.io/nodepool';
+    const nodeRoleKey = 'node-role.kubernetes.io/master';
+    const getNodeCondition = rawNode =>
+      rawNode.status.conditions.filter(item => item.type === 'Ready')[0];
 
     return {
       ...transformObject(rawNode, i),
@@ -143,26 +141,22 @@ export function getNodes(paras) {
         uid: rawNode.metadata.uid,
       },
       nodePool:
-        nodePoolKey in rawNode.metadata.labels
-          ? rawNode.metadata.labels[nodePoolKey]
-          : "无",
+        nodePoolKey in rawNode.metadata.labels ? rawNode.metadata.labels[nodePoolKey] : '无',
       role: {
-        role: nodeRoleKey in rawNode.metadata.labels ? "master" : "node",
+        role: nodeRoleKey in rawNode.metadata.labels ? 'master' : 'node',
         condition: getNodeCondition(rawNode),
       },
       config: {
         CPU: rawNode.status.capacity.cpu,
         Mem: rawNode.status.capacity.memory,
-        Storage: rawNode.status.capacity["ephemeral-storage"],
+        Storage: rawNode.status.capacity['ephemeral-storage'],
       },
       status: {
         CPU: toPercentagePresentation(
-          parseFloat(rawNode.status.allocatable.cpu) /
-            parseFloat(rawNode.status.capacity.cpu)
+          parseFloat(rawNode.status.allocatable.cpu) / parseFloat(rawNode.status.capacity.cpu)
         ),
         Mem: toPercentagePresentation(
-          parseFloat(rawNode.status.allocatable.memory) /
-            parseFloat(rawNode.status.capacity.memory)
+          parseFloat(rawNode.status.allocatable.memory) / parseFloat(rawNode.status.capacity.memory)
         ),
       },
       version: {
@@ -173,36 +167,28 @@ export function getNodes(paras) {
       operations: {
         NodeName: rawNode.metadata.name,
         Autonomy:
-          "node.beta.openyurt.io/autonomy" in rawNode.metadata.annotations
-            ? rawNode.metadata.annotations["node.beta.openyurt.io/autonomy"]
-            : "false",
+          'node.beta.openyurt.io/autonomy' in rawNode.metadata.annotations
+            ? rawNode.metadata.annotations['node.beta.openyurt.io/autonomy']
+            : 'false',
       },
     };
   };
 
-  return sendUserRequest("/getNodes", paras).then((nodes) =>
-    nodes.items.map(transform)
-  );
+  return sendUserRequest('/getNodes', paras).then(nodes => nodes.items.map(transform));
 }
 
 // customized transform for workloads
 const transformWorkload = (workload, i) => ({
   ...transformObject(workload, i),
-  image: workload.spec.template.spec.containers.map(
-    (container) => container.image
-  ),
+  image: workload.spec.template.spec.containers.map(container => container.image),
 });
 
 export function getDeployments(paras) {
-  return sendUserRequest("/getDeployments", paras).then((dps) =>
-    dps.items.map(transformWorkload)
-  );
+  return sendUserRequest('/getDeployments', paras).then(dps => dps.items.map(transformWorkload));
 }
 
 export function getStatefulSets(paras) {
-  return sendUserRequest("/getStatefulsets", paras).then((ss) =>
-    ss.items.map(transformWorkload)
-  );
+  return sendUserRequest('/getStatefulsets', paras).then(ss => ss.items.map(transformWorkload));
 }
 
 export function getJobs(paras) {
@@ -215,22 +201,20 @@ export function getJobs(paras) {
         failed: job.status.failed,
         active: job.status.active,
       },
-      jobStatus: job.status.failed === 0 ? "正常" : "异常",
+      jobStatus: job.status.failed === 0 ? '正常' : '异常',
     };
   };
 
-  return sendUserRequest("/getJobs", paras).then((jobs) =>
-    jobs.items.map(transform)
-  );
+  return sendUserRequest('/getJobs', paras).then(jobs => jobs.items.map(transform));
 }
 
 export function getPods(paras) {
   const transform = (pod, i) => ({
     ...transformObject(pod, i),
-    containers: pod.spec.containers.map((container) => container.image),
+    containers: pod.spec.containers.map(container => container.image),
     node: {
-      Name: pod.spec.nodeName ? pod.spec.nodeName : "无",
-      IP: pod.status.hostIP ? pod.status.hostIP : "无",
+      Name: pod.spec.nodeName ? pod.spec.nodeName : '无',
+      IP: pod.status.hostIP ? pod.status.hostIP : '无',
     },
     title: {
       Name: pod.metadata.name,
@@ -240,7 +224,5 @@ export function getPods(paras) {
     podStatus: pod.status.phase,
   });
 
-  return sendUserRequest("/getPods", paras).then((pods) =>
-    pods.items.map(transform)
-  );
+  return sendUserRequest('/getPods', paras).then(pods => pods.items.map(transform));
 }

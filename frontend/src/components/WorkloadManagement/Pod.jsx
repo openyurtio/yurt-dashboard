@@ -1,13 +1,13 @@
-import Workload from "./WorkloadTemplate";
-import { Status } from "../Utils/Status";
-import { getPods } from "../../utils/request";
-import { renderDictCell } from "../../utils/utils";
+import Workload from './WorkloadTemplate';
+import { Status } from '../Utils/Status';
+import { getPods } from '../../utils/request';
+import { renderDictCell } from '../../utils/utils';
 
 const columns = [
   {
-    title: "名称/IP地址/实例 ID",
-    dataIndex: "title",
-    render: (pod) => {
+    title: '名称/IP地址/实例 ID',
+    dataIndex: 'title',
+    render: pod => {
       return (
         <div>
           <div>{pod.Name}</div>
@@ -18,27 +18,27 @@ const columns = [
     },
   },
   {
-    title: "标签",
-    dataIndex: "tag",
-    render: (pod) => renderDictCell(pod),
+    title: '标签',
+    dataIndex: 'tag',
+    render: pod => renderDictCell(pod),
   },
   {
-    title: "状态",
-    dataIndex: "podStatus",
-    render: (state) => <Status status={state}></Status>,
+    title: '状态',
+    dataIndex: 'podStatus',
+    render: state => <Status status={state}></Status>,
   },
   {
-    title: "节点",
-    dataIndex: "node",
-    render: (pod) => renderDictCell(pod),
+    title: '节点',
+    dataIndex: 'node',
+    render: pod => renderDictCell(pod),
   },
   {
-    title: "镜像",
-    dataIndex: "containers",
+    title: '镜像',
+    dataIndex: 'containers',
   },
   {
-    title: "创建时间",
-    dataIndex: "createTime",
+    title: '创建时间',
+    dataIndex: 'createTime',
   },
 ];
 

@@ -1,13 +1,13 @@
-import { Table, Typography } from "antd";
-import { getNodepools } from "../../utils/request";
-import { useResourceState } from "../../utils/hooks";
-import { RefreshButton } from "../Utils/RefreshButton";
+import { Table, Typography } from 'antd';
+import { getNodepools } from '../../utils/request';
+import { useResourceState } from '../../utils/hooks';
+import { RefreshButton } from '../Utils/RefreshButton';
 
 const { Paragraph, Link } = Typography;
 
 const columns = [
-  { title: "名称", dataIndex: "title" },
-  { title: "类型", dataIndex: "type" },
+  { title: '名称', dataIndex: 'title' },
+  { title: '类型', dataIndex: 'type' },
   // {
   //   title: "状态",
   //   dataIndex: "state",
@@ -22,17 +22,17 @@ const columns = [
   //   ),
   // },
   {
-    title: "节点数",
-    dataIndex: "nodeStatus",
-    render: (nums) => (
+    title: '节点数',
+    dataIndex: 'nodeStatus',
+    render: nums => (
       <div>
-        <span>总计:{nums["ready"] + nums["unready"]}</span> &nbsp;
-        <span>正常:{nums["ready"]}</span> &nbsp;
-        <span>失败:{nums["unready"]}</span>
+        <span>总计:{nums['ready'] + nums['unready']}</span> &nbsp;
+        <span>正常:{nums['ready']}</span> &nbsp;
+        <span>失败:{nums['unready']}</span>
       </div>
     ),
   },
-  { title: "创建时间", dataIndex: "createTime" },
+  { title: '创建时间', dataIndex: 'createTime' },
   // {
   //   title: "操作",
   //   dataIndex: "operations",

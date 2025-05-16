@@ -1,6 +1,6 @@
-import { Button, Checkbox, message } from "antd";
-import { useState } from "react";
-import { sendRequest } from "../../../utils/request";
+import { Button, Checkbox, message } from 'antd';
+import { useState } from 'react';
+import { sendRequest } from '../../../utils/request';
 
 const compareApps = (a, b) => {
   if (a.required === b.required) {
@@ -12,17 +12,17 @@ const compareApps = (a, b) => {
   return 1;
 };
 
-const getAllChecked = (appList) => {
+const getAllChecked = appList => {
   let a = [];
-  appList.forEach((item) => {
+  appList.forEach(item => {
     a.push(item.name);
   });
   return a;
 };
 
-const getDefaultChecked = (appList) => {
+const getDefaultChecked = appList => {
   let a = [];
-  appList.forEach((item) => {
+  appList.forEach(item => {
     if (item.required) {
       a.push(item.name);
     }
@@ -34,9 +34,9 @@ const getDefaultChecked = (appList) => {
 const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [installFailed, setInstallFailed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tips, setTipsContent] = useState("");
+  const [tips, setTipsContent] = useState('');
   const [isErrorTip, setIsErrorTip] = useState(false);
-  const [appDesc, setAppDesc] = useState("");
+  const [appDesc, setAppDesc] = useState('');
 
   let allChecked = getAllChecked(guideInfo.openyurt_apps);
   let defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
@@ -44,26 +44,24 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [indeterminate, setIndeterminate] = useState(
     defaultChecked.length && defaultChecked.length < allChecked.length
   );
-  const [checkAll, setCheckAll] = useState(
-    defaultChecked.length === allChecked.length
-  );
+  const [checkAll, setCheckAll] = useState(defaultChecked.length === allChecked.length);
 
-  const setErrorTips = (msg) => {
+  const setErrorTips = msg => {
     setIsErrorTip(true);
     setTipsContent(msg);
   };
-  const setTips = (msg) => {
+  const setTips = msg => {
     setIsErrorTip(false);
     setTipsContent(msg);
   };
 
-  const onChange = (list) => {
+  const onChange = list => {
     setCheckedList(list);
     setIndeterminate(list.length && list.length < allChecked.length);
     setCheckAll(list.length === allChecked.length);
   };
 
-  const onCheckAllChange = (e) => {
+  const onCheckAllChange = e => {
     setCheckedList(e.target.checked ? allChecked : defaultChecked);
     setIndeterminate(!e.target.checked && defaultChecked.length);
     setCheckAll(e.target.checked);
@@ -71,15 +69,15 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   const installOpenYurtApp = () => {
     setLoading(true);
-    setTips("安装过程受网络环境影响，预计耗时2分钟。");
-    sendRequest("/system/appInstallFromGuide", { apps_name: checkedList }).then(
-      (res) => {
-        message.success("安装成功！已安装组件：" + res.msg);
+    setTips('安装过程受网络环境影响，预计耗时2分钟。');
+    sendRequest('/system/appInstallFromGuide', { apps_name: checkedList }).then(
+      res => {
+        message.success('安装成功！已安装组件：' + res.msg);
         onStepFinish();
       },
-      (err) => {
+      err => {
         console.log(err);
-        setErrorTips("安装失败：" + err.message);
+        setErrorTips('安装失败：' + err.message);
         setInstallFailed(true);
         setLoading(false);
       }
@@ -88,9 +86,9 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   return (
     <div>
-      <div style={{ display: "flex", height: 200 }}>
+      <div style={{ display: 'flex', height: 200 }}>
         <div style={{ width: 150 }}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <p>共{guideInfo.openyurt_apps.length}项</p>
             <Checkbox
               style={{ marginLeft: 10 }}
@@ -102,11 +100,9 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
             </Checkbox>
           </div>
           <Checkbox.Group
-            style={{ display: "grid", gridGap: "10px" }}
-            options={guideInfo.openyurt_apps.sort(compareApps).map((info) => ({
-              label: (
-                <label onClick={() => setAppDesc(info.desc)}>{info.name}</label>
-              ),
+            style={{ display: 'grid', gridGap: '10px' }}
+            options={guideInfo.openyurt_apps.sort(compareApps).map(info => ({
+              label: <label onClick={() => setAppDesc(info.desc)}>{info.name}</label>,
               value: info.name,
               disabled: info.required,
             }))}
@@ -117,13 +113,13 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
         <div
           style={{
             flex: 1,
-            border: "1px solid #000",
-            textAlign: "left",
+            border: '1px solid #000',
+            textAlign: 'left',
             padding: 10,
-            display: "flex",
-            flexWrap: "wrap",
-            overflowY: "auto",
-            whiteSpace: "pre-wrap",
+            display: 'flex',
+            flexWrap: 'wrap',
+            overflowY: 'auto',
+            whiteSpace: 'pre-wrap',
             marginLeft: 20,
           }}
         >
@@ -133,7 +129,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       <div style={{ marginTop: 20 }}>
         <div
           style={{
-            color: isErrorTip ? "red" : "grey",
+            color: isErrorTip ? 'red' : 'grey',
           }}
         >
           {tips}

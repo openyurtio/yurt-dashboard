@@ -1,5 +1,5 @@
-import { getStatefulSets } from "../../utils/request";
-import Workload from "./WorkloadTemplate";
+import { getStatefulSets } from '../../utils/request';
+import Workload from './WorkloadTemplate';
 
 export default function StatefulSet() {
   return (
