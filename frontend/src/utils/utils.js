@@ -1,21 +1,21 @@
 import { message } from 'antd';
 
 export function tableData2txt(columns, dataSource, colDelimiter = ';', lineDelimiter = '\n') {
-  let txtHeaders = columns.map(header => header.title).join(colDelimiter);
-  let txtContens = dataSource
+  const txtHeaders = columns.map(header => header.title).join(colDelimiter);
+  const txtContens = dataSource
     .map(line => columns.map(col => line[col.dataIndex]).join(colDelimiter))
     .join(lineDelimiter);
   return txtHeaders + lineDelimiter + txtContens;
 }
 
 export function downloadTable(content, fileName) {
-  let blob = new Blob(['\ufeff' + content], {
+  const blob = new Blob(['\ufeff' + content], {
     type: 'text/txt;charset=utf-8;',
   }); // add prefix BOM
-  let downloadLink = document.createElement('a');
+  const downloadLink = document.createElement('a');
   if ('download' in downloadLink) {
     // check if browser support H5 download attribute
-    let url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
     downloadLink.href = url;
     downloadLink.download = fileName;
     downloadLink.hidden = true;
@@ -23,7 +23,7 @@ export function downloadTable(content, fileName) {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   } else {
-    console.log('H5 download not supported');
+    message.error('Your browser does not support file downloads');
   }
 }
 
@@ -34,7 +34,7 @@ export function copy2clipboard(content) {
   } else {
     // for non-secure connection
     // text area method
-    let textArea = document.createElement('textarea');
+    const textArea = document.createElement('textarea');
     textArea.value = content;
     // make the textarea out of viewport
     textArea.style.position = 'fixed';
@@ -112,7 +112,7 @@ export function getUserProfile() {
 }
 
 export function setUserProfile(userObj) {
-  let userStr = JSON.stringify(userObj);
+  const userStr = JSON.stringify(userObj);
   sessionStorage.setItem('user', userStr);
   if (localStorage.getItem('user')) {
     localStorage.setItem('user', userStr);

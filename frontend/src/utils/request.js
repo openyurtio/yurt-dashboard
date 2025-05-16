@@ -1,5 +1,7 @@
-import { baseURL } from '../config';
 import { message } from 'antd';
+
+import { baseURL } from '../config';
+
 import { toPercentagePresentation, formatTime, getUserProfile } from './utils';
 
 export function sendRequest(path, data) {
@@ -36,7 +38,7 @@ const emptyObj = {
 // send request as a use (add user token in request body)
 export function sendUserRequest(path, data) {
   // `useUserProfile` is better, `getUserProfile` is used here for simplicity
-  let userProfile = getUserProfile();
+  const userProfile = getUserProfile();
   if (!userProfile) {
     // if userProfile is empty, return emyty obj
     return new Promise(() => emptyObj);
@@ -46,7 +48,6 @@ export function sendUserRequest(path, data) {
     .catch(err => {
       // handling thrown error from sendRequest
       message.error(err.message);
-      console.error(err);
     })
     .then(res => {
       if (res && !('status' in res && res.status === false)) {
@@ -62,7 +63,7 @@ export function sendUserRequestWithTimeout(ms, path, data) {
     return sendUserRequest(path, data);
   }
 
-  let userProfile = getUserProfile();
+  const userProfile = getUserProfile();
   if (!userProfile) {
     return new Promise(() => emptyObj);
   }
@@ -71,7 +72,6 @@ export function sendUserRequestWithTimeout(ms, path, data) {
     .catch(err => {
       // handling thrown error from sendRequest
       message.error(err.message);
-      console.error(err);
     })
     .then(res => {
       if (res && !('status' in res && res.status === false)) {

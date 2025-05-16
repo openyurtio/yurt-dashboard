@@ -1,13 +1,13 @@
+import SystemApp from './components/AppManagement/SystemApp';
 import ClusterInfo from './components/Cluster/ClusterInfo';
-import Deployment from './components/WorkloadManagement/Deployment';
+import Lab from './components/Lab/Lab';
+import NodePool from './components/NodeManagement/NodePool';
 import Nodes from './components/NodeManagement/Nodes';
 import Entry from './components/User/Entry';
-import NodePool from './components/NodeManagement/NodePool';
-import StatefulSet from './components/WorkloadManagement/StatefulSet';
+import Deployment from './components/WorkloadManagement/Deployment';
 import Job from './components/WorkloadManagement/Job';
 import Pod from './components/WorkloadManagement/Pod';
-import Lab from './components/Lab/Lab';
-import SystemApp from './components/AppManagement/SystemApp';
+import StatefulSet from './components/WorkloadManagement/StatefulSet';
 
 export const routes = [
   {

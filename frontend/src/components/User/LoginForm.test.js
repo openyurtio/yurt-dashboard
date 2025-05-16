@@ -1,6 +1,6 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+
 import LoginForm from './LoginForm';
 import '../../utils/jest.mock';
 

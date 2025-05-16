@@ -1,7 +1,7 @@
-import React from 'react';
-import Workload from './WorkloadTemplate';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import Workload from './WorkloadTemplate';
 import '../../utils/jest.mock';
 
 describe('Workload Test', () => {

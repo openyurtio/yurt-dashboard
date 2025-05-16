@@ -1,6 +1,6 @@
 import { message } from 'antd';
-import React from 'react';
 import ReactDOM from 'react-dom';
+
 import App from './App';
 
 // Currently, Experience center only support large screen (width >= 630)
