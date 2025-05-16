@@ -1,17 +1,7 @@
-import { useState, useEffect } from "react";
-import { sendUserRequest } from "../../utils/request";
+import { useState, useEffect } from 'react';
+import { sendUserRequest } from '../../utils/request';
 
-import {
-  Typography,
-  Input,
-  Radio,
-  List,
-  Card,
-  Popover,
-  Space,
-  Button,
-  message,
-} from "antd";
+import { Typography, Input, Radio, List, Card, Popover, Space, Button, message } from 'antd';
 import {
   SearchOutlined,
   CheckCircleTwoTone,
@@ -19,51 +9,34 @@ import {
   LoadingOutlined,
   ExclamationCircleTwoTone,
   WarningTwoTone,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
-import SystemAppInstallModal from "./Modals/SystemAppInstall";
-import SystemAppManageModal from "./Modals/SystemAppManage";
-import { getCurrentTime } from "../../utils/utils";
+import SystemAppInstallModal from './Modals/SystemAppInstall';
+import SystemAppManageModal from './Modals/SystemAppManage';
+import { getCurrentTime } from '../../utils/utils';
 
 const { Paragraph, Link } = Typography;
 
 const statusPopoverInfo = {
   Deployed: {
-    content: "已安装",
-    icon: (
-      <CheckCircleTwoTone twoToneColor="#52c41a" style={{ float: "right" }} />
-    ),
+    content: '已安装',
+    icon: <CheckCircleTwoTone twoToneColor="#52c41a" style={{ float: 'right' }} />,
   },
   Pending: {
-    content: "处理中",
-    icon: <LoadingOutlined style={{ float: "right" }} />,
+    content: '处理中',
+    icon: <LoadingOutlined style={{ float: 'right' }} />,
   },
   FakeInfo: {
-    content: "组件信息获取失败, 请检查网络并尝试刷新列表",
-    icon: (
-      <ExclamationCircleTwoTone
-        twoToneColor="#FF0000"
-        style={{ float: "right" }}
-      />
-    ),
+    content: '组件信息获取失败, 请检查网络并尝试刷新列表',
+    icon: <ExclamationCircleTwoTone twoToneColor="#FF0000" style={{ float: 'right' }} />,
   },
   Failed: {
-    content: "组件安装出现错误，请卸载后重新安装",
-    icon: (
-      <ExclamationCircleTwoTone
-        twoToneColor="#FF0000"
-        style={{ float: "right" }}
-      />
-    ),
+    content: '组件安装出现错误，请卸载后重新安装',
+    icon: <ExclamationCircleTwoTone twoToneColor="#FF0000" style={{ float: 'right' }} />,
   },
   Unknow: {
-    content: "无法处理的状态，请在命令行中使用helm进行管理",
-    icon: (
-      <QuestionCircleTwoTone
-        twoToneColor="#FFa631"
-        style={{ float: "right" }}
-      />
-    ),
+    content: '无法处理的状态，请在命令行中使用helm进行管理',
+    icon: <QuestionCircleTwoTone twoToneColor="#FFa631" style={{ float: 'right' }} />,
   },
 };
 
@@ -76,20 +49,20 @@ export default function SystemApp() {
   }, []);
 
   // filter
-  const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState('');
   const [selectVal, setSelectVal] = useState(1);
-  const filterSearchVal = (item) => {
-    return typeof item.title === "string"
+  const filterSearchVal = item => {
+    return typeof item.title === 'string'
       ? item.title.indexOf(searchVal) >= 0
       : JSON.stringify(item.title).indexOf(searchVal) >= 0;
   };
-  const filterSelectVal = (item) => {
+  const filterSelectVal = item => {
     switch (selectVal) {
       case 2:
-        if (item.status !== "deployed") return false;
+        if (item.status !== 'deployed') return false;
         break;
       case 3:
-        if (item.status !== "undeployed") return false;
+        if (item.status !== 'undeployed') return false;
         break;
       default:
         break;
@@ -100,15 +73,15 @@ export default function SystemApp() {
   // modal
   const [installVisible, setInstallVisible] = useState(false);
   const [manageVisible, setManageVisible] = useState(false);
-  const openModal = (data) => {
+  const openModal = data => {
     setOperationConfig(data);
     if (!!data.status) {
       switch (data.status) {
-        case "deployed":
-        case "failed":
+        case 'deployed':
+        case 'failed':
           setManageVisible(true);
           break;
-        case "undeployed":
+        case 'undeployed':
           setInstallVisible(true);
           break;
         default:
@@ -132,33 +105,33 @@ export default function SystemApp() {
           content="此组件未受到完全支持，仅支持卸载操作"
           mouseEnterDelay={0.1}
         >
-          <WarningTwoTone twoToneColor="#FFa631" style={{ float: "right" }} />
+          <WarningTwoTone twoToneColor="#FFa631" style={{ float: 'right' }} />
         </Popover>
       );
     }
 
-    var statusInfoKey = "";
+    var statusInfoKey = '';
     switch (status) {
-      case "undeployed":
+      case 'undeployed':
         break;
-      case "deployed":
-        statusInfoKey = "Deployed";
+      case 'deployed':
+        statusInfoKey = 'Deployed';
         break;
-      case "uninstalling":
-      case "pending-install":
-        statusInfoKey = "Pending";
+      case 'uninstalling':
+      case 'pending-install':
+        statusInfoKey = 'Pending';
         break;
-      case "fakeinfo":
-        statusInfoKey = "FakeInfo";
+      case 'fakeinfo':
+        statusInfoKey = 'FakeInfo';
         break;
-      case "failed":
-        statusInfoKey = "Failed";
+      case 'failed':
+        statusInfoKey = 'Failed';
         break;
       default:
-        statusInfoKey = "Unknow";
+        statusInfoKey = 'Unknow';
         break;
     }
-    if (statusInfoKey !== "") {
+    if (statusInfoKey !== '') {
       popovers.push(
         <Popover
           key="extra-status"
@@ -193,7 +166,7 @@ export default function SystemApp() {
       <div style={{ height: 40 }}>
         <Radio.Group
           style={{ marginTop: 10 }}
-          onChange={(e) => {
+          onChange={e => {
             setSelectVal(e.target.value);
           }}
           value={selectVal}
@@ -205,12 +178,12 @@ export default function SystemApp() {
         <Input
           placeholder="search system app"
           value={searchVal}
-          onChange={(e) => setSearchVal(e.target.value)}
+          onChange={e => setSearchVal(e.target.value)}
           style={{ width: 180 }}
           suffix={<SearchOutlined />}
         />
-        <Space style={{ float: "right" }}>
-          {"上次更新:" + lastUpdate}
+        <Space style={{ float: 'right' }}>
+          {'上次更新:' + lastUpdate}
           <Button
             loading={refreshLoading}
             onClick={() => {
@@ -228,9 +201,7 @@ export default function SystemApp() {
             mouseEnterDelay={0.1}
             content={
               <div>
-                <p>
-                  请尝试刷新列表或者检查集群网络状态以确保能正确访问OpenYurt仓库。
-                </p>
+                <p>请尝试刷新列表或者检查集群网络状态以确保能正确访问OpenYurt仓库。</p>
                 <p>或者手动上传安装包进行安装。</p>
               </div>
             }
@@ -241,22 +212,18 @@ export default function SystemApp() {
       </div>
       <div
         style={{
-          width: "100%",
-          overflow: "auto",
+          width: '100%',
+          overflow: 'auto',
           height: 400,
         }}
       >
         <List
           style={{ margin: 10 }}
           grid={{ sm: 2, column: 4, gutter: 10 }}
-          dataSource={
-            originData
-              ? originData.filter(filterSearchVal).filter(filterSelectVal)
-              : []
-          }
+          dataSource={originData ? originData.filter(filterSearchVal).filter(filterSelectVal) : []}
           loading={!originData}
           rowKey="key"
-          renderItem={(data) => (
+          renderItem={data => (
             <List.Item>
               <Card
                 title={data.title}
@@ -269,12 +236,12 @@ export default function SystemApp() {
                 <Popover content={data.desc} mouseEnterDelay={1}>
                   <div
                     style={{
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                      overflow: "hidden",
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
                     }}
                   >
-                    {data.desc === "" ? "No description" : data.desc}
+                    {data.desc === '' ? 'No description' : data.desc}
                   </div>
                 </Popover>
               </Card>
@@ -289,9 +256,9 @@ export default function SystemApp() {
           setInstallVisible(false);
         }}
         onDealing={() => {
-          originData.forEach((item) => {
+          originData.forEach(item => {
             if (item.title === operationConfig.title) {
-              item.status = "pending-install";
+              item.status = 'pending-install';
             }
           });
         }}
@@ -306,9 +273,9 @@ export default function SystemApp() {
           setManageVisible(false);
         }}
         onDealing={() => {
-          originData.forEach((item) => {
+          originData.forEach(item => {
             if (item.title === operationConfig.title) {
-              item.status = "uninstalling";
+              item.status = 'uninstalling';
             }
           });
         }}
@@ -321,15 +288,15 @@ export default function SystemApp() {
 
   function handleRefresh(updateRepo) {
     setRefreshLoading(true);
-    sendUserRequest("/system/appList", {
+    sendUserRequest('/system/appList', {
       update_repo: updateRepo,
-    }).then((sal) => {
+    }).then(sal => {
       if (sal.data) {
         setOriginData(sal.data.map(transformSysApp));
       } else {
         setOriginData([]);
       }
-      setSearchVal("");
+      setSearchVal('');
       setSelectVal(1);
       setLastUpdate(getCurrentTime());
       setRefreshLoading(false);
@@ -349,6 +316,6 @@ export default function SystemApp() {
   }
 
   function installSystemAppManually() {
-    message.info("功能正在开发中，敬请期待");
+    message.info('功能正在开发中，敬请期待');
   }
 }

@@ -1,13 +1,8 @@
-import { Form, Input, Button, Card } from "antd";
-import {
-  MailOutlined,
-  BankOutlined,
-  PhoneOutlined,
-  RollbackOutlined,
-} from "@ant-design/icons";
+import { Form, Input, Button, Card } from 'antd';
+import { MailOutlined, BankOutlined, PhoneOutlined, RollbackOutlined } from '@ant-design/icons';
 
 const RegisterForm = ({ register, goToLogin }) => {
-  const onSubmit = (formData) => {
+  const onSubmit = formData => {
     register(formData);
   };
 
@@ -25,30 +20,27 @@ const RegisterForm = ({ register, goToLogin }) => {
           rules={[
             {
               required: true,
-              message: "Please input your Email!",
+              message: 'Please input your Email!',
             },
             {
-              type: "email",
-              message: "This is not a valid mail address!",
+              type: 'email',
+              message: 'This is not a valid mail address!',
             },
           ]}
         >
-          <Input
-            prefix={<MailOutlined className="site-form-item-icon" />}
-            placeholder="Email"
-          />
+          <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="mobilephone"
           rules={[
             {
               required: true,
-              message: "Please input your phone number!",
+              message: 'Please input your phone number!',
             },
             {
-              type: "string",
+              type: 'string',
               pattern: /^1[3456789]\d{9}$/,
-              message: "This is not a valid phone number!",
+              message: 'This is not a valid phone number!',
             },
           ]}
         >
@@ -62,7 +54,7 @@ const RegisterForm = ({ register, goToLogin }) => {
           rules={[
             {
               required: true,
-              message: "Please input your Organization!",
+              message: 'Please input your Organization!',
             },
           ]}
         >

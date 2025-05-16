@@ -1,34 +1,34 @@
-import { Form, Input, Button, Checkbox, Card } from "antd";
-import { GithubOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
-import { sendRequest } from "../../utils/request";
-import { useState } from "react";
-import { useUserProfile } from "../../utils/hooks";
+import { Form, Input, Button, Checkbox, Card } from 'antd';
+import { GithubOutlined, PhoneOutlined, LockOutlined } from '@ant-design/icons';
+import { withRouter } from 'react-router-dom';
+import { sendRequest } from '../../utils/request';
+import { useState } from 'react';
+import { useUserProfile } from '../../utils/hooks';
 
 const LoginForm = ({ gotoRegister, initState, history }) => {
-  const [tips, setTips] = useState("");
+  const [tips, setTips] = useState('');
 
   // check if user state has already been saved
   let [user, setUserProfile] = useUserProfile();
   if (user) {
-    history.push("/clusterInfo");
+    history.push('/clusterInfo');
   }
 
   // login button callback
-  const onFinish = (values) => {
-    sendRequest("/login", values).then(
-      (res) => {
+  const onFinish = values => {
+    sendRequest('/login', values).then(
+      res => {
         setUserProfile(res);
         history.push({
-          pathname: "/clusterInfo",
+          pathname: '/clusterInfo',
           state: {
-            msg: "恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。",
-            type: "info",
+            msg: '恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。',
+            type: 'info',
             duration: 3,
           },
         });
       },
-      (err) => {
+      err => {
         setTips(err.toString());
       }
     );
@@ -42,8 +42,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           remember: true,
           // used when redirect from register success page
           // auto fill the mobilephone and token field
-          mobilephone:
-            initState && initState.spec && initState.spec.mobilephone,
+          mobilephone: initState && initState.spec && initState.spec.mobilephone,
           token: initState && initState.spec && initState.spec.token,
         }}
         onFinish={onFinish}
@@ -53,12 +52,12 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           rules={[
             {
               required: true,
-              message: "Please input your phone number!",
+              message: 'Please input your phone number!',
             },
             {
-              type: "string",
+              type: 'string',
               // pattern: /^1[3456789]\d{9}$/,
-              message: "This is not a valid phone number!",
+              message: 'This is not a valid phone number!',
             },
           ]}
         >
@@ -73,7 +72,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           rules={[
             {
               required: true,
-              message: "Please input your Password!",
+              message: 'Please input your Password!',
             },
           ]}
         >
@@ -89,11 +88,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
-          <Button
-            type="text"
-            onClick={() => gotoRegister()}
-            className="form-transfer"
-          >
+          <Button type="text" onClick={() => gotoRegister()} className="form-transfer">
             Register Now
           </Button>
         </Form.Item>
@@ -112,8 +107,8 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
             type="primary"
             href="https://github.com/login/oauth/authorize?client_id=4dd7d74594e273551935&scope=user"
             className="login-form-button"
-            icon={<GithubOutlined style={{ fontSize: "150%" }} />}
-            style={{ background: "#333333", borderColor: "#333333" }}
+            icon={<GithubOutlined style={{ fontSize: '150%' }} />}
+            style={{ background: '#333333', borderColor: '#333333' }}
           >
             Log in with Github
           </Button>
@@ -122,7 +117,7 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
 
       <div
         style={{
-          color: "red",
+          color: 'red',
         }}
       >
         {tips}
