@@ -4,7 +4,7 @@
 
 用户需要在本地配置 `kubeconfig` 后，才能通过`kubectl`管理集群。
 
-1. 在“集群信息”页面下“连接信息”tab 里复制`kubeconfig`信息
+1. 在"集群信息"页面下"连接信息"tab 里复制`kubeconfig`信息
 
 ![](../imgs/web_kubeconfig.png)
 
@@ -31,7 +31,7 @@ OpenYurt 针对边缘计算场景，允许用户将工作负载分组到分布�
 ```bash
 # 创建nodepool hangzhou
 cat <<EOF | kubectl apply -f -
-apiVersion: apps.openyurt.io/v1alpha1
+apiVersion: apps.openyurt.io/v1beta1
 kind: NodePool
 metadata:
   name: hangzhou
@@ -57,8 +57,8 @@ kubectl get nodepool
 ```bash
 # 单元化部署pod
 cat <<EOF | kubectl apply -f -
-apiVersion: apps.openyurt.io/v1alpha1
-kind: UnitedDeployment
+apiVersion: apps.openyurt.io/v1beta1
+kind: YurtAppSet
 metadata:
   labels:
     controller-tools.k8s.io: "1.0"

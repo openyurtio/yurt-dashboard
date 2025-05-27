@@ -42,32 +42,39 @@ spec:
             - --user-sync-period=30
             # user's validity period (in days)
             - --user-valid-period=7
+            # max number of nodes per user
+            - --max-node-num=3
+            # enable webhook
+            - --webhook-enabled=true
           command:
             - /manager
-          image: openyurt/yurt-user-controller:test
-          imagePullPolicy: IfNotPresent
+          image: openyurt/yurt-user-controller:v1.6.0
+          imagePullPolicy: Always
+          name: manager
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           livenessProbe:
             httpGet:
               path: /healthz
               port: 8081
             initialDelaySeconds: 15
             periodSeconds: 20
-          name: manager
           readinessProbe:
             httpGet:
               path: /readyz
               port: 8081
             initialDelaySeconds: 5
             periodSeconds: 10
-          resources:
-            limits:
-              cpu: 100m
-              memory: 30Mi
-            requests:
-              cpu: 100m
-              memory: 20Mi
-          securityContext:
-            allowPrivilegeEscalation: false
       securityContext:
         runAsNonRoot: true
       serviceAccountName: yurt-user-controller-controller-manager

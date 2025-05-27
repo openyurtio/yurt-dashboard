@@ -222,11 +222,10 @@ func getJobStatus(client *rest.RESTClient, namespace string) (status *ResourceSt
 }
 
 func createUser(user *UserSpec) []byte {
-
 	payload := User{
 		Spec: *user,
 	}
-	payload.APIVersion = "user.openyurt.io/v1alpha1"
+	payload.APIVersion = "user.openyurt.io/v1beta1"
 	payload.Kind = "User"
 	payload.Name = fmt.Sprintf("user-%s", user.Mobilephone)
 

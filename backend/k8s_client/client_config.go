@@ -60,10 +60,10 @@ var (
 		ResourceName: "deployments",
 	}
 
-	// request path: /apis/apps.openyurt.io/v1alpha1/nodepools
+	// request path: /apis/apps.openyurt.io/v1beta1/nodepools
 	NodepoolConfig = ResourceConfig{
 		APIPath:      "apis",
-		GroupVersion: &schema.GroupVersion{Group: "apps.openyurt.io", Version: "v1alpha1"},
+		GroupVersion: &schema.GroupVersion{Group: "apps.openyurt.io", Version: "v1beta1"},
 		ResourceName: "nodepools",
 	}
 
