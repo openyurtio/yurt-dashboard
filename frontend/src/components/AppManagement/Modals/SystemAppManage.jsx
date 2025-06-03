@@ -1,14 +1,8 @@
-import { Modal, Button, Form, message, Popconfirm } from "antd";
-import { useState } from "react";
-import { sendUserRequest } from "../../../utils/request";
+import { Modal, Button, Form, message, Popconfirm } from 'antd';
+import { useState } from 'react';
+import { sendUserRequest } from '../../../utils/request';
 
-export default function SystemAppManageModal({
-  data,
-  visible,
-  onClose,
-  onDealing,
-  onSuccess,
-}) {
+export default function SystemAppManageModal({ data, visible, onClose, onDealing, onSuccess }) {
   const [modalLoading, setModalLoading] = useState(false);
   const onModalClose = () => {
     setModalLoading(false);
@@ -23,15 +17,15 @@ export default function SystemAppManageModal({
   };
 
   const isOnlyUninstall = () => {
-    if (!data.supported || data.status === "failed") return true;
+    if (!data.supported || data.status === 'failed') return true;
     return false;
   };
 
   return (
     <Modal
       style={{
-        minWidth: "600px",
-        maxWidth: "45%",
+        minWidth: '600px',
+        maxWidth: '45%',
       }}
       title={data.title}
       visible={visible}
@@ -41,9 +35,9 @@ export default function SystemAppManageModal({
       footer={[
         <Button
           key="upgrade-button"
-          style={{ display: isOnlyUninstall() ? "none" : "" }}
+          style={{ display: isOnlyUninstall() ? 'none' : '' }}
           onClick={() => {
-            message.info("功能正在开发中，敬请期待");
+            message.info('功能正在开发中，敬请期待');
           }}
         >
           升级
@@ -76,24 +70,20 @@ export default function SystemAppManageModal({
         layout="horizontal"
       >
         <Form.Item label="介绍">{data.desc}</Form.Item>
-        <Form.Item label="当前版本">
-          {data.version && data.version.version}
-        </Form.Item>
-        <Form.Item label="APP版本">
-          {data.version && data.version.app_version}
-        </Form.Item>
+        <Form.Item label="当前版本">{data.version && data.version.version}</Form.Item>
+        <Form.Item label="APP版本">{data.version && data.version.app_version}</Form.Item>
       </Form>
     </Modal>
   );
 
   async function uninstallSystemApp(v) {
     onUninstallBegin();
-    sendUserRequest("/system/appUninstall", {
+    sendUserRequest('/system/appUninstall', {
       chart_name: data.title,
     })
-      .then((res) => {
+      .then(res => {
         if (res.status === true) {
-          setTimeout(() => message.info("卸载成功"), 1000);
+          setTimeout(() => message.info('卸载成功'), 1000);
         }
       })
       .finally(onUninstallSuccess);

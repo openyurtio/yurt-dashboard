@@ -1,38 +1,38 @@
-import { getJobs } from "../../utils/request";
-import { renderDictCell } from "../../utils/utils";
-import { Status } from "../Utils/Status";
-import Workload from "./WorkloadTemplate";
+import { getJobs } from '../../utils/request';
+import { renderDictCell } from '../../utils/utils';
+import { Status } from '../Utils/Status';
+import Workload from './WorkloadTemplate';
 
 const columns = [
   {
-    title: "名称",
-    dataIndex: "title",
+    title: '名称',
+    dataIndex: 'title',
   },
   {
-    title: "标签",
-    dataIndex: "tag",
+    title: '标签',
+    dataIndex: 'tag',
   },
   {
-    title: "状态",
-    dataIndex: "jobStatus",
-    render: (state) => <Status status={state}></Status>,
+    title: '状态',
+    dataIndex: 'jobStatus',
+    render: state => <Status status={state}></Status>,
   },
   {
-    title: "Pod状态",
-    dataIndex: "podStatus",
-    render: (job) => renderDictCell(job),
+    title: 'Pod状态',
+    dataIndex: 'podStatus',
+    render: job => renderDictCell(job),
   },
   {
-    title: "镜像",
-    dataIndex: "image",
+    title: '镜像',
+    dataIndex: 'image',
   },
   {
-    title: "创建时间",
-    dataIndex: "createTime",
+    title: '创建时间',
+    dataIndex: 'createTime',
   },
   {
-    title: "完成时间",
-    dataIndex: "completeTime",
+    title: '完成时间',
+    dataIndex: 'completeTime',
   },
   // {
   //   title: "操作",
@@ -77,7 +77,5 @@ const columns = [
 // ];
 
 export default function Job() {
-  return (
-    <Workload title="Job" table={{ columns, fetchData: getJobs }}></Workload>
-  );
+  return <Workload title="Job" table={{ columns, fetchData: getJobs }}></Workload>;
 }

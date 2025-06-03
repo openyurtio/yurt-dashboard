@@ -1,22 +1,12 @@
-import {
-  Button,
-  Input,
-  Modal,
-  Select,
-  Menu,
-  Dropdown,
-  Switch,
-  message,
-  Typography,
-} from "antd";
-import { MoreOutlined } from "@ant-design/icons";
-import { useCallback, useEffect, useState } from "react";
-import { getNodes, getNodepools, sendUserRequest } from "../../utils/request";
-import RSelect from "../Utils/RefreshableSelect";
-import STable from "../Utils/SelectableTable";
-import { renderDictCell, copy2clipboard } from "../../utils/utils";
-import { Status } from "../Utils/Status";
-import { useUserProfile } from "../../utils/hooks";
+import { Button, Input, Modal, Select, Menu, Dropdown, Switch, message, Typography } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
+import { useCallback, useEffect, useState } from 'react';
+import { getNodes, getNodepools, sendUserRequest } from '../../utils/request';
+import RSelect from '../Utils/RefreshableSelect';
+import STable from '../Utils/SelectableTable';
+import { renderDictCell, copy2clipboard } from '../../utils/utils';
+import { Status } from '../Utils/Status';
+import { useUserProfile } from '../../utils/hooks';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -27,9 +17,9 @@ export default function Nodes() {
   // table columns
   const columns = [
     {
-      title: "名称/IP地址/实例 ID",
-      dataIndex: "title",
-      render: (node) => {
+      title: '名称/IP地址/实例 ID',
+      dataIndex: 'title',
+      render: node => {
         return (
           <div>
             <div>{node.Name}</div>
@@ -40,18 +30,18 @@ export default function Nodes() {
       },
     },
     {
-      title: "所属节点池",
-      dataIndex: "nodePool",
+      title: '所属节点池',
+      dataIndex: 'nodePool',
     },
     {
-      title: "角色/状态",
-      dataIndex: "role",
-      render: (node) => {
+      title: '角色/状态',
+      dataIndex: 'role',
+      render: node => {
         return (
           <div>
             {node.role}
             <Status
-              status={node.condition.status === "True" ? "Ready" : "Unready"}
+              status={node.condition.status === 'True' ? 'Ready' : 'Unready'}
               tips={node.condition.message}
             />
           </div>
@@ -59,27 +49,27 @@ export default function Nodes() {
       },
     },
     {
-      title: "节点配置",
-      dataIndex: "config",
-      render: (node) => renderDictCell(node),
+      title: '节点配置',
+      dataIndex: 'config',
+      render: node => renderDictCell(node),
     },
     {
-      title: "节点状态",
-      dataIndex: "status",
-      render: (node) => renderDictCell(node),
+      title: '节点状态',
+      dataIndex: 'status',
+      render: node => renderDictCell(node),
     },
     {
-      title: "Kubelet版本/Runtime版本/OS版本",
-      dataIndex: "version",
-      render: (node) => renderDictCell(node),
+      title: 'Kubelet版本/Runtime版本/OS版本',
+      dataIndex: 'version',
+      render: node => renderDictCell(node),
     },
     {
-      title: "创建时间",
-      dataIndex: "createTime",
+      title: '创建时间',
+      dataIndex: 'createTime',
     },
     {
-      title: "操作",
-      dataIndex: "operations",
+      title: '操作',
+      dataIndex: 'operations',
       render: ({ Autonomy, NodeName }) => (
         <Dropdown
           placement="bottomCenter"
@@ -89,20 +79,18 @@ export default function Nodes() {
                 节点自治：
                 <Switch
                   size="small"
-                  defaultChecked={Autonomy === "true"}
-                  onChange={(checked) => {
-                    sendUserRequest("/setNodeAutonomy", {
+                  defaultChecked={Autonomy === 'true'}
+                  onChange={checked => {
+                    sendUserRequest('/setNodeAutonomy', {
                       NodeName,
                       Autonomy: String(checked),
-                    }).then((res) => {
+                    }).then(res => {
                       // if autonomy set fail, refresh the whole table
-                      if (res.status === "error") {
-                        message.info("节点自治设置失败：刷新Node列表");
+                      if (res.status === 'error') {
+                        message.info('节点自治设置失败：刷新Node列表');
                         onRefresh();
                       } else {
-                        message.info(
-                          `节点自治设置成功: ${checked ? "ON" : "OFF"}`
-                        );
+                        message.info(`节点自治设置成功: ${checked ? 'ON' : 'OFF'}`);
                       }
                     });
                   }}
@@ -111,7 +99,7 @@ export default function Nodes() {
             </Menu>
           }
         >
-          <MoreOutlined style={{ cursor: "pointer", width: "100%" }} />
+          <MoreOutlined style={{ cursor: 'pointer', width: '100%' }} />
         </Dropdown>
       ),
     },
@@ -119,9 +107,9 @@ export default function Nodes() {
 
   // filtering
   // for filter components
-  const [searchOption, setOption] = useState("title");
-  const [searchValue, setSearchVal] = useState("");
-  const [selectedNp, setNp] = useState("所有节点池");
+  const [searchOption, setOption] = useState('title');
+  const [searchValue, setSearchVal] = useState('');
+  const [selectedNp, setNp] = useState('所有节点池');
 
   const [allNodes, setAllNodes] = useState(null); // all nodes
   const [nodes, setNodes] = useState(allNodes); // display nodes after filtering
@@ -135,36 +123,35 @@ export default function Nodes() {
         allNodes
           .filter(
             // filter by search value
-            (node) =>
-              JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
+            node => JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
             // searchOptions could be an Object
           )
           .filter(
             // filter by selected nodepool
-            (node) => filterNp === "所有节点池" || node.nodePool === filterNp
+            node => filterNp === '所有节点池' || node.nodePool === filterNp
           )
     );
   };
 
-  const onSearch = (searchContent) => {
+  const onSearch = searchContent => {
     filterNodes(searchContent);
   };
 
   // filter options
   const options = [
-    { content: "名称", dataIndex: "title" },
-    { content: "标签", dataIndex: "tag" },
-    { content: "标注", dataIndex: "annotations" },
+    { content: '名称', dataIndex: 'title' },
+    { content: '标签', dataIndex: 'tag' },
+    { content: '标注', dataIndex: 'annotations' },
   ];
 
   // refresh the whole table and reset all filter options
   // Note: this won't update nodepool options ( this may cause problems )
   async function onRefresh() {
     setNodes(null);
-    setSearchVal("");
-    setOption("title");
-    setNp("所有节点池");
-    return getNodes().then((nodes) => {
+    setSearchVal('');
+    setOption('title');
+    setNp('所有节点池');
+    return getNodes().then(nodes => {
       setAllNodes(nodes);
       setNodes(nodes);
     });
@@ -175,12 +162,8 @@ export default function Nodes() {
   }, []);
 
   const filterComponents = (
-    <div style={{ display: "inline-block" }}>
-      <Select
-        defaultValue={searchOption}
-        style={{ width: 80 }}
-        onChange={(val) => setOption(val)}
-      >
+    <div style={{ display: 'inline-block' }}>
+      <Select defaultValue={searchOption} style={{ width: 80 }} onChange={val => setOption(val)}>
         {options.map((e, i) => (
           <Option key={i} value={e.dataIndex}>
             {e.content}
@@ -192,17 +175,17 @@ export default function Nodes() {
         onSearch={onSearch}
         style={{ width: 200 }}
         value={searchValue}
-        onChange={(e) => setSearchVal(e.target.value)}
+        onChange={e => setSearchVal(e.target.value)}
       />
 
       <RSelect
         handleRefresh={useCallback(async () => {
           // add "所有节点池" in select options anyway
-          return getNodepools().then((nps) => {
-            return ["所有节点池", ...nps.map((np) => np.title)];
+          return getNodepools().then(nps => {
+            return ['所有节点池', ...nps.map(np => np.title)];
           });
         }, [])}
-        handleChange={(selectedNodePool) => {
+        handleChange={selectedNodePool => {
           setNp(selectedNodePool);
           filterNodes(null, selectedNodePool);
         }}
@@ -219,7 +202,7 @@ export default function Nodes() {
   const [userProfile] = useUserProfile();
   const nodeAddScript = userProfile
     ? userProfile.spec.nodeAddScript
-    : "获取接入脚本失败，出现了一些问题";
+    : '获取接入脚本失败，出现了一些问题';
   const onCancel = () => {
     setVisible(false);
   };
@@ -227,10 +210,10 @@ export default function Nodes() {
   return (
     <div className="content">
       <div>
-        <h2 style={{ display: "inline-block" }}>Node</h2>
+        <h2 style={{ display: 'inline-block' }}>Node</h2>
         <Button
           type="default"
-          style={{ float: "right" }}
+          style={{ float: 'right' }}
           onClick={() => {
             setVisible(true);
           }}

@@ -1,0 +1,13 @@
+node_modules
+public
+**/**/public
+
+*.lock
+*.log
+*.test.ts
+
+.gitignore
+.npmignore
+.prettierignore
+.DS_Store
+.eslintignore

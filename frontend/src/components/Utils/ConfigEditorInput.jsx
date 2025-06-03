@@ -1,22 +1,12 @@
-import {
-  Button,
-  Space,
-  Popover,
-  Modal,
-  Upload,
-  Input,
-  message,
-  Form,
-  Popconfirm,
-} from "antd";
+import { Button, Space, Popover, Modal, Upload, Input, message, Form, Popconfirm } from 'antd';
 import {
   ToolOutlined,
   FileDoneOutlined,
   UploadOutlined,
   DownloadOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import { useForm } from "antd/lib/form/Form";
+} from '@ant-design/icons';
+import { useState } from 'react';
+import { useForm } from 'antd/lib/form/Form';
 const { TextArea } = Input;
 
 /**
@@ -25,17 +15,13 @@ const { TextArea } = Input;
  * @param getDefaultValueFunc     // Specify the function to get the default value, which needs to return a Promise object
  * @param downloadFileName        // Specifies the file name when saving the configuration file. Defaults to values.yaml
  */
-export default function ConfigEditorInput({
-  onChange,
-  getDefaultValueFunc,
-  downloadFileName,
-}) {
+export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downloadFileName }) {
   const [form] = useForm();
 
-  const [configValue, setConfigValue] = useState("");
+  const [configValue, setConfigValue] = useState('');
   const [showChangeLabel, setShowChangeLabel] = useState(false);
 
-  const [defaultValue, setDefaultValue] = useState("");
+  const [defaultValue, setDefaultValue] = useState('');
   const [hasDefaultValue, setHasDefaultValue] = useState(false);
 
   const [configChange, setConfigChange] = useState(false);
@@ -44,10 +30,10 @@ export default function ConfigEditorInput({
   const [cancelConfirmVisible, setCancelConfirmVisible] = useState(false);
 
   // form item support
-  const triggerChange = (newValue) => {
+  const triggerChange = newValue => {
     onChange?.(newValue);
   };
-  const saveConfigValue = (newValue) => {
+  const saveConfigValue = newValue => {
     setConfigValue(newValue);
     triggerChange(newValue);
   };
@@ -55,7 +41,7 @@ export default function ConfigEditorInput({
   // modal
   const openModal = async () => {
     setModalVisible(true);
-    if (configValue === "") {
+    if (configValue === '') {
       loadDefaultValue(false);
     } else {
       form.setFieldsValue({ value_file: configValue });
@@ -68,9 +54,9 @@ export default function ConfigEditorInput({
   };
   const onModalSave = () => {
     if (configChange) {
-      var formValue = form.getFieldValue("value_file");
+      var formValue = form.getFieldValue('value_file');
       if (formValue === defaultValue) {
-        saveConfigValue("");
+        saveConfigValue('');
         setShowChangeLabel(false);
       } else {
         saveConfigValue(formValue);
@@ -88,7 +74,7 @@ export default function ConfigEditorInput({
       <Button
         htmlType="button"
         style={{
-          margin: "0 8px",
+          margin: '0 8px',
         }}
         onClick={openModal}
       >
@@ -100,8 +86,8 @@ export default function ConfigEditorInput({
 
       <Modal
         style={{
-          minWidth: "600px",
-          maxWidth: "45%",
+          minWidth: '600px',
+          maxWidth: '45%',
         }}
         title="配置编辑"
         visible={modalVisible}
@@ -109,7 +95,7 @@ export default function ConfigEditorInput({
         destroyOnClose
         closable={false}
         footer={[
-          <span style={{ float: "left" }} key="config-operation">
+          <span style={{ float: 'left' }} key="config-operation">
             <Button
               icon={<ToolOutlined />}
               disabled={inputDisable}
@@ -122,15 +108,11 @@ export default function ConfigEditorInput({
             <Upload
               accept=".txt, .yaml"
               showUploadList={false}
-              beforeUpload={(file) => {
+              beforeUpload={file => {
                 return onFileUpload(file);
               }}
             >
-              <Button
-                style={{ marginLeft: 10 }}
-                icon={<UploadOutlined />}
-                disabled={inputDisable}
-              >
+              <Button style={{ marginLeft: 10 }} icon={<UploadOutlined />} disabled={inputDisable}>
                 上传配置
               </Button>
             </Upload>
@@ -157,7 +139,7 @@ export default function ConfigEditorInput({
             onCancel={() => {
               setCancelConfirmVisible(false);
             }}
-            onVisibleChange={(newVisible) => {
+            onVisibleChange={newVisible => {
               if (!newVisible) {
                 setCancelConfirmVisible(newVisible);
                 return;
@@ -187,14 +169,14 @@ export default function ConfigEditorInput({
           form={form}
           layout="vertical"
           initialValues={{
-            value_file: "",
+            value_file: '',
           }}
         >
           <Form.Item name="value_file">
             <TextArea
               rows={15}
               disabled={inputDisable}
-              onChange={(e) => {
+              onChange={e => {
                 setConfigChange(true);
               }}
             />
@@ -207,20 +189,20 @@ export default function ConfigEditorInput({
   async function loadDefaultValue(reload) {
     if (!hasDefaultValue || reload) {
       if (getDefaultValueFunc) {
-        form.setFieldsValue({ value_file: "loading values.yaml ..." });
+        form.setFieldsValue({ value_file: 'loading values.yaml ...' });
         setInputDisable(true);
 
-        await getDefaultValueFunc().then((res) => {
+        await getDefaultValueFunc().then(res => {
           setHasDefaultValue(true);
           setDefaultValue(res);
           setInputDisable(false);
           form.setFieldsValue({ value_file: res });
 
-          setConfigChange(configValue !== "");
+          setConfigChange(configValue !== '');
         });
       } else {
         setHasDefaultValue(true);
-        form.setFieldsValue({ value_file: "" });
+        form.setFieldsValue({ value_file: '' });
       }
     } else {
       form.setFieldsValue({ value_file: defaultValue });
@@ -229,7 +211,7 @@ export default function ConfigEditorInput({
 
   function onFileUpload(file) {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       form.setFieldsValue({
         value_file: e.target.result,
       });
@@ -240,14 +222,12 @@ export default function ConfigEditorInput({
   }
 
   function onDownload() {
-    const downloadLink = document.createElement("a");
-    const encodedData = encodeURIComponent(form.getFieldValue("value_file"));
-    const fileName = downloadFileName
-      ? downloadFileName + ".yaml"
-      : "values.yaml";
-    downloadLink.href = "data:text/plain;charset=UTF-8," + encodedData;
+    const downloadLink = document.createElement('a');
+    const encodedData = encodeURIComponent(form.getFieldValue('value_file'));
+    const fileName = downloadFileName ? downloadFileName + '.yaml' : 'values.yaml';
+    downloadLink.href = 'data:text/plain;charset=UTF-8,' + encodedData;
     downloadLink.download = fileName;
     downloadLink.click();
-    message.info("文件已开始下载，将保存为" + fileName);
+    message.info('文件已开始下载，将保存为' + fileName);
   }
 }

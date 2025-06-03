@@ -1,7 +1,7 @@
-import { Tabs } from "antd";
-import ConnectionInfo from "./ConnectionInfo";
-import ClusterOverview from "./Overview";
-import { useUserProfile } from "../../utils/hooks";
+import { Tabs } from 'antd';
+import ConnectionInfo from './ConnectionInfo';
+import ClusterOverview from './Overview';
+import { useUserProfile } from '../../utils/hooks';
 
 const { TabPane } = Tabs;
 
@@ -15,7 +15,7 @@ const ClusterInfo = () => {
           <TabPane tab="概览" key="1">
             <ClusterOverview></ClusterOverview>
           </TabPane>
-          {userProfile && userProfile.metadata.name !== "admin" && (
+          {userProfile && userProfile.metadata.name !== 'admin' && (
             <TabPane tab="连接信息" key="3">
               <ConnectionInfo></ConnectionInfo>
             </TabPane>

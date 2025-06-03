@@ -1,6 +1,6 @@
-import { Select } from "antd";
-import { SyncOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { Select } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 
 const { Option } = Select;
 
@@ -11,11 +11,7 @@ const { Option } = Select;
  * @param {Function} handleChange   called when selected option change
  * @param {Function} handleRefresh  called when refresh button change
  */
-export default function RSelect({
-  config,
-  handleRefresh: getOptions,
-  handleChange,
-}) {
+export default function RSelect({ config, handleRefresh: getOptions, handleChange }) {
   const [spin, setSpin] = useState(false);
   const [options, setOptions] = useState([]);
 
@@ -28,19 +24,14 @@ export default function RSelect({
     fetchOptions();
   }, [getOptions]);
 
-  const resetSelect = (options) => {
+  const resetSelect = options => {
     setOptions(options);
     handleChange(options.length > 0 ? options[0] : config.value);
   };
 
   return (
-    <div style={{ display: "inline-block", margin: "0 5px" }}>
-      <Select
-        value={config.value}
-        style={config.style}
-        onChange={handleChange}
-        disabled={spin}
-      >
+    <div style={{ display: 'inline-block', margin: '0 5px' }}>
+      <Select value={config.value} style={config.style} onChange={handleChange} disabled={spin}>
         {options.map((e, i) => (
           <Option key={i} value={e}>
             {e}

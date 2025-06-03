@@ -1,12 +1,12 @@
-import { useState } from "react";
-import "./login.css";
-import { CompleteBlock, IntroBlock, LoadingBlock } from "./pageStatus";
-import RegisterForm from "./RegisterForm";
-import LoginForm from "./LoginForm";
-import GithubLoginFinish from "./AuthLogin";
-import { sendRequest } from "../../utils/request";
-import { useLocation } from "react-router-dom";
-import { setUserProfile } from "../../utils/utils";
+import { useState } from 'react';
+import './login.css';
+import { CompleteBlock, IntroBlock, LoadingBlock } from './pageStatus';
+import RegisterForm from './RegisterForm';
+import LoginForm from './LoginForm';
+import GithubLoginFinish from './AuthLogin';
+import { sendRequest } from '../../utils/request';
+import { useLocation } from 'react-router-dom';
+import { setUserProfile } from '../../utils/utils';
 
 // the /login page
 // pageStatus ?
@@ -16,7 +16,7 @@ import { setUserProfile } from "../../utils/utils";
 //  = register: register form
 //  = githubAuth: waiting for github authorization login
 export default function LoginPage() {
-  const [pageStatus, setStatus] = useState("login");
+  const [pageStatus, setStatus] = useState('login');
 
   // completeBlockInfo struct definition
   //  .rstatus    "error"/"success"
@@ -25,79 +25,73 @@ export default function LoginPage() {
   const [completeBlockInfo, setComplete] = useState(null);
 
   // the authorization code from github redirect url
-  const code = useLocation().search.split("=")[1];
+  const code = useLocation().search.split('=')[1];
 
-  const doRegist = (formData) => {
-    setStatus("loading");
-    sendRequest("/register", formData)
+  const doRegist = formData => {
+    setStatus('loading');
+    sendRequest('/register', formData)
       .then(
-        (res) => {
+        res => {
           // success callback
-          res.rstatus = "success";
+          res.rstatus = 'success';
           res.buttonFn = () => {
-            setStatus("login");
+            setStatus('login');
           };
           setComplete(res);
         },
-        (err) => {
+        err => {
           // err callback
           setComplete({
-            rstatus: "error",
+            rstatus: 'error',
             msg: err.message,
             buttonFn: () => {
-              setStatus("register");
+              setStatus('register');
             },
           });
         }
       )
-      .then(() => setStatus("complete"));
+      .then(() => setStatus('complete'));
   };
 
-  const doGithubLogin = (code) => {
-    setStatus("loading");
-    sendRequest("/github", { code }).then(
-      (user) => {
+  const doGithubLogin = code => {
+    setStatus('loading');
+    sendRequest('/github', { code }).then(
+      user => {
         setUserProfile(user);
-        setStatus("githubAuth");
+        setStatus('githubAuth');
       },
-      (err) => {
+      err => {
         setComplete({
-          rstatus: "error",
+          rstatus: 'error',
           msg: err.message,
           buttonFn: () => {
-            setStatus("githubAuth");
+            setStatus('githubAuth');
           },
         });
-        setStatus("complete");
+        setStatus('complete');
       }
     );
   };
 
   return (
-    <div style={{ margin: "auto 0" }}>
-      {code !== undefined && pageStatus === "login" ? (
+    <div style={{ margin: 'auto 0' }}>
+      {code !== undefined && pageStatus === 'login' ? (
         doGithubLogin(code)
-      ) : pageStatus === "loading" ? (
+      ) : pageStatus === 'loading' ? (
         <LoadingBlock />
-      ) : pageStatus === "complete" ? (
+      ) : pageStatus === 'complete' ? (
         <CompleteBlock res={completeBlockInfo} />
-      ) : pageStatus === "githubAuth" ? (
+      ) : pageStatus === 'githubAuth' ? (
         <GithubLoginFinish />
-      ) : pageStatus === "register" ? (
+      ) : pageStatus === 'register' ? (
         <div className="login">
           <IntroBlock />
-          <RegisterForm
-            register={doRegist}
-            goToLogin={() => setStatus("login")}
-          />
+          <RegisterForm register={doRegist} goToLogin={() => setStatus('login')} />
         </div>
       ) : (
         <div className="login">
           <IntroBlock />
-          <LoginForm
-            gotoRegister={() => setStatus("register")}
-            initState={completeBlockInfo}
-          />
+          <LoginForm gotoRegister={() => setStatus('register')} initState={completeBlockInfo} />
         </div>
       )}
     </div>

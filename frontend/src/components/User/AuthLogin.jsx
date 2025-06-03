@@ -1,10 +1,10 @@
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 const GithubLoginFinish = ({ history }) => {
   history.push({
-    pathname: "/clusterInfo",
+    pathname: '/clusterInfo',
     state: {
-      type: "info",
+      type: 'info',
       duration: 3,
     },
   });

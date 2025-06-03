@@ -1,8 +1,8 @@
-import React from "react";
-import { Layout, Menu, Button, Dropdown, Card, Divider, Avatar } from "antd";
-import { Link } from "react-router-dom";
-import logo from "../../assets/OpenYurt.png";
-import { useSessionState, useUserProfile } from "../../utils/hooks";
+import React from 'react';
+import { Layout, Menu, Button, Dropdown, Card, Divider, Avatar } from 'antd';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/OpenYurt.png';
+import { useSessionState, useUserProfile } from '../../utils/hooks';
 import {
   InfoCircleOutlined,
   AppstoreOutlined,
@@ -11,8 +11,8 @@ import {
   DownOutlined,
   LogoutOutlined,
   QuestionOutlined,
-} from "@ant-design/icons";
-import { getUserLastTime } from "../../utils/utils";
+} from '@ant-design/icons';
+import { getUserLastTime } from '../../utils/utils';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -20,28 +20,19 @@ const { SubMenu } = Menu;
 const MySider = () => {
   const [userProfile] = useUserProfile();
 
-  const [collapsed, setCollapse] = useSessionState("collapsed", false);
-  const [openKeys, setOpenKeys] = useSessionState("openKeys", [
-    "nodemanagement",
-    "workload",
-  ]);
+  const [collapsed, setCollapse] = useSessionState('collapsed', false);
+  const [openKeys, setOpenKeys] = useSessionState('openKeys', ['nodemanagement', 'workload']);
 
-  const onCollapse = (collapsed) => {
+  const onCollapse = collapsed => {
     setCollapse(collapsed);
   };
 
-  const onOpenChange = (keys) => {
+  const onOpenChange = keys => {
     setOpenKeys(keys);
   };
 
   return (
-    <Sider
-      theme="light"
-      width="210"
-      collapsible
-      collapsed={collapsed}
-      onCollapse={onCollapse}
-    >
+    <Sider theme="light" width="210" collapsible collapsed={collapsed} onCollapse={onCollapse}>
       <Menu
         openKeys={openKeys}
         selectedKeys={[window.location.pathname.slice(1)]}
@@ -60,7 +51,7 @@ const MySider = () => {
           </Menu.Item>
         </SubMenu>
         <SubMenu key="workload" icon={<AppstoreOutlined />} title="工作负载">
-          {userProfile && userProfile.metadata.name === "admin" && (
+          {userProfile && userProfile.metadata.name === 'admin' && (
             <Menu.Item key="systemapp">
               <Link to="/systemapp">系统应用</Link>
             </Menu.Item>
@@ -87,15 +78,11 @@ const MySider = () => {
 };
 
 const contentFooter = (
-  <Footer style={{ textAlign: "center" }}>
-    OpenYurt Experience Center ©2021-2022
-  </Footer>
+  <Footer style={{ textAlign: 'center' }}>OpenYurt Experience Center ©2021-2022</Footer>
 );
 
 const helpEntrance = (
-  <div
-    style={{ position: "fixed", right: "3%", bottom: "10%", cursor: "pointer" }}
-  >
+  <div style={{ position: 'fixed', right: '3%', bottom: '10%', cursor: 'pointer' }}>
     <Dropdown
       overlay={
         <Menu>
@@ -125,10 +112,9 @@ const helpEntrance = (
       <Avatar
         icon={<QuestionOutlined />}
         style={{
-          color: "#000",
-          backgroundColor: "#fff",
-          boxShadow:
-            "0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d",
+          color: '#000',
+          backgroundColor: '#fff',
+          boxShadow: '0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d',
         }}
       />
     </Dropdown>
@@ -140,29 +126,28 @@ const ContentWithSider = ({ content, history }) => {
   // if there is no userProfile (not logged in)
   if (userProfile === null) {
     history.push({
-      pathname: "/login",
+      pathname: '/login',
     });
   }
 
   const userManager = (
-    <Card style={{ padding: "5% 3%" }}>
+    <Card style={{ padding: '5% 3%' }}>
       {userProfile && !!userProfile.status.effectiveTime && (
-        <div style={{ textAlign: "center" }}>
-          您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)}{" "}
-          天过期
+        <div style={{ textAlign: 'center' }}>
+          您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)} 天过期
         </div>
       )}
-      <Divider style={{ margin: "8px 0" }} />
+      <Divider style={{ margin: '8px 0' }} />
       <Button
         type="text"
         size="small"
         style={{
-          color: "red",
-          width: "100%",
+          color: 'red',
+          width: '100%',
         }}
         onClick={() => {
           setUserProfile(null);
-          history.push("/login");
+          history.push('/login');
         }}
       >
         <LogoutOutlined />
@@ -175,12 +160,12 @@ const ContentWithSider = ({ content, history }) => {
     <Layout>
       <Header className="header">
         <img src={logo} alt="logo" className="logo"></img>
-        <Dropdown overlay={userManager} trigger={["click", "hover"]}>
+        <Dropdown overlay={userManager} trigger={['click', 'hover']}>
           <Button
             type="text"
             style={{
-              float: "right",
-              color: "#1890FF",
+              float: 'right',
+              color: '#1890FF',
               marginTop: 13,
               marginRight: 5,
               minWidth: 170,
@@ -193,12 +178,12 @@ const ContentWithSider = ({ content, history }) => {
       <Layout>
         <MySider></MySider>
         <Layout>
-          <Content style={{ padding: "1% 2%", backgroundColor: "#F0F2F5" }}>
+          <Content style={{ padding: '1% 2%', backgroundColor: '#F0F2F5' }}>
             <div
               style={{
-                padding: "20px 30px",
-                backgroundColor: "white",
-                height: "100%",
+                padding: '20px 30px',
+                backgroundColor: 'white',
+                height: '100%',
               }}
             >
               {content}
@@ -216,8 +201,8 @@ const ContentWithoutSider = ({ content }) => {
   return (
     <Layout
       style={{
-        minHeight: "100vh",
-        justifyContent: "space-between",
+        minHeight: '100vh',
+        justifyContent: 'space-between',
       }}
     >
       {content}

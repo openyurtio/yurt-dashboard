@@ -1,10 +1,10 @@
-import { Button, Result } from "antd";
+import { Button, Result } from 'antd';
 
 // Step: Complete the guide.
 const CompleteGuide = ({ onStepFinish }) => {
   return (
     <Result
-      style={{ padding: "40px auto" }}
+      style={{ padding: '40px auto' }}
       status="success"
       title="初始化设置完成"
       subTitle="恭喜您设置成功，请开始体验吧!😀"
