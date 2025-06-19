@@ -1,17 +1,16 @@
-import { Button, Space, Popover, Modal, Upload, Input, message, Form, Popconfirm } from 'antd';
 import {
-  ToolOutlined,
-  FileDoneOutlined,
-  UploadOutlined,
   DownloadOutlined,
+  FileDoneOutlined,
+  ToolOutlined,
+  UploadOutlined,
 } from '@ant-design/icons';
-import { useState } from 'react';
+import { Button, Form, Input, message, Modal, Popconfirm, Popover, Space, Upload } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
+import { useState } from 'react';
 const { TextArea } = Input;
 
 /**
  * ConfigEditorInput: configuration edit input
- * @param onChange      // Support as a form item. When used as a form item, a string type data will be returned, and the initialValues ​​attribute of the form needs to be set.
  * @param getDefaultValueFunc     // Specify the function to get the default value, which needs to return a Promise object
  * @param downloadFileName        // Specifies the file name when saving the configuration file. Defaults to values.yaml
  */
@@ -54,7 +53,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
   };
   const onModalSave = () => {
     if (configChange) {
-      var formValue = form.getFieldValue('value_file');
+      const formValue = form.getFieldValue('value_file');
       if (formValue === defaultValue) {
         saveConfigValue('');
         setShowChangeLabel(false);
@@ -90,10 +89,10 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
           maxWidth: '45%',
         }}
         title="配置编辑"
-        visible={modalVisible}
+        open={modalVisible}
         maskClosable={false}
+        onCancel={onModalClose}
         destroyOnClose
-        closable={false}
         footer={[
           <span style={{ float: 'left' }} key="config-operation">
             <Button
@@ -128,7 +127,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
           <Popconfirm
             key="cancel-popconfirm"
             title="配置已变更，是否放弃变更？"
-            visible={cancelConfirmVisible}
+            open={cancelConfirmVisible}
             okText="放弃变更"
             okButtonProps={{ danger: true }}
             cancelText="取消"
@@ -139,7 +138,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
             onCancel={() => {
               setCancelConfirmVisible(false);
             }}
-            onVisibleChange={newVisible => {
+            onOpenChange={newVisible => {
               if (!newVisible) {
                 setCancelConfirmVisible(newVisible);
                 return;
@@ -179,6 +178,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               onChange={e => {
                 setConfigChange(true);
               }}
+              placeholder="Please input your configuration here"
             />
           </Form.Item>
         </Form>

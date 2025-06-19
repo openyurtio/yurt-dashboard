@@ -1,10 +1,9 @@
-import App from './App';
-import { Modal, Form, message, Typography } from 'antd';
-import { Input, Button, InputNumber, Switch } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
+import { Button, Form, Input, InputNumber, message, Modal, Switch, Typography } from 'antd';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getNodes, sendUserRequest } from '../../utils/request';
-import { withRouter } from 'react-router';
+import App from './App';
 
 const { Paragraph, Link } = Typography;
 
@@ -102,7 +101,8 @@ function updateConfigList(oldConfigList, appList) {
   return Object.keys(appInfo).map(combineItemByName);
 }
 
-function Lab({ history }) {
+function Lab() {
+  const navigate = useNavigate();
   const [isModalVisible, modalTip, appList, modalConfig, openModal, closeModal, setConfig, setTip] =
     useModalConfig(updateConfigList);
 
@@ -155,20 +155,21 @@ function Lab({ history }) {
         onCancel={closeModal}
         footer={[
           <Button
+            key="details"
             style={{
               float: 'left',
               display: modalConfig.created ? '' : 'none',
             }}
             onClick={() => {
-              history.push('/deployment');
+              navigate('/deployment');
             }}
           >
             更多详细信息 <RightOutlined />
           </Button>,
-          <Button type="primary" danger disabled={!modalConfig.created} onClick={uninstallApp}>
+          <Button key="uninstall" type="primary" danger disabled={!modalConfig.created} onClick={uninstallApp}>
             卸载
           </Button>,
-          <Button type="primary" disabled={modalConfig.created} onClick={installApp}>
+          <Button key="install" type="primary" disabled={modalConfig.created} onClick={installApp}>
             安装
           </Button>,
         ]}
@@ -305,4 +306,4 @@ function Lab({ history }) {
   }
 }
 
-export default withRouter(Lab);
+export default Lab;

@@ -1,12 +1,12 @@
-import { Button, Input, Modal, Select, Menu, Dropdown, Switch, message, Typography } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Input, message, Modal, Select, Switch, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { getNodes, getNodepools, sendUserRequest } from '../../utils/request';
+import { useUserProfile } from '../../utils/hooks';
+import { getNodepools, getNodes, sendUserRequest } from '../../utils/request';
+import { copy2clipboard, renderDictCell } from '../../utils/utils';
 import RSelect from '../Utils/RefreshableSelect';
 import STable from '../Utils/SelectableTable';
-import { renderDictCell, copy2clipboard } from '../../utils/utils';
 import { Status } from '../Utils/Status';
-import { useUserProfile } from '../../utils/hooks';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -73,31 +73,36 @@ export default function Nodes() {
       render: ({ Autonomy, NodeName }) => (
         <Dropdown
           placement="bottomCenter"
-          overlay={
-            <Menu>
-              <Menu.Item key="1">
-                节点自治：
-                <Switch
-                  size="small"
-                  defaultChecked={Autonomy === 'true'}
-                  onChange={checked => {
-                    sendUserRequest('/setNodeAutonomy', {
-                      NodeName,
-                      Autonomy: String(checked),
-                    }).then(res => {
-                      // if autonomy set fail, refresh the whole table
-                      if (res.status === 'error') {
-                        message.info('节点自治设置失败：刷新Node列表');
-                        onRefresh();
-                      } else {
-                        message.info(`节点自治设置成功: ${checked ? 'ON' : 'OFF'}`);
-                      }
-                    });
-                  }}
-                />
-              </Menu.Item>
-            </Menu>
-          }
+          menu={{
+            items: [
+              {
+                key: '1',
+                label: (
+                  <div>
+                    节点自治：
+                    <Switch
+                      size="small"
+                      defaultChecked={Autonomy === 'true'}
+                      onChange={checked => {
+                        sendUserRequest('/setNodeAutonomy', {
+                          NodeName,
+                          Autonomy: String(checked),
+                        }).then(res => {
+                          // if autonomy set fail, refresh the whole table
+                          if (res.status === 'error') {
+                            message.info('节点自治设置失败：刷新Node列表');
+                            onRefresh();
+                          } else {
+                            message.info(`节点自治设置成功: ${checked ? 'ON' : 'OFF'}`);
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                ),
+              },
+            ],
+          }}
         >
           <MoreOutlined style={{ cursor: 'pointer', width: '100%' }} />
         </Dropdown>
@@ -115,21 +120,21 @@ export default function Nodes() {
   const [nodes, setNodes] = useState(allNodes); // display nodes after filtering
 
   const filterNodes = (searchContent, selectedNodePool) => {
-    let filterValue = searchContent ? searchContent : searchValue;
-    let filterNp = selectedNodePool ? selectedNodePool : selectedNp;
+    const filterValue = searchContent || searchValue;
+    const filterNp = selectedNodePool || selectedNp;
 
     setNodes(
       allNodes &&
-        allNodes
-          .filter(
-            // filter by search value
-            node => JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
-            // searchOptions could be an Object
-          )
-          .filter(
-            // filter by selected nodepool
-            node => filterNp === '所有节点池' || node.nodePool === filterNp
-          )
+      allNodes
+        .filter(
+          // filter by search value
+          node => JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
+          // searchOptions could be an Object
+        )
+        .filter(
+          // filter by selected nodepool
+          node => filterNp === '所有节点池' || node.nodePool === filterNp
+        )
     );
   };
 

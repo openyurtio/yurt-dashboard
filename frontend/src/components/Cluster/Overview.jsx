@@ -1,6 +1,6 @@
 import { message, Select } from 'antd';
 import './cluster.css';
-import { Dashboard } from './Dashborad';
+import { Dashboard } from './Dashboard';
 // import { EventTable } from "./EventTable";
 import { Status } from '../Utils/Status';
 import { useCallback, useState } from 'react';

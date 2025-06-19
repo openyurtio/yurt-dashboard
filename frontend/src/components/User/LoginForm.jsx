@@ -1,26 +1,27 @@
-import { Form, Input, Button, Checkbox, Card } from 'antd';
-import { GithubOutlined, PhoneOutlined, LockOutlined } from '@ant-design/icons';
-import { withRouter } from 'react-router-dom';
-import { sendRequest } from '../../utils/request';
-import { useState } from 'react';
+import { GithubOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Button, Card, Checkbox, Form, Input } from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUserProfile } from '../../utils/hooks';
+import { sendRequest } from '../../utils/request';
 
-const LoginForm = ({ gotoRegister, initState, history }) => {
+const LoginForm = ({ gotoRegister, initState }) => {
+  const navigate = useNavigate();
   const [tips, setTips] = useState('');
+  const [user, setUserProfile] = useUserProfile();
 
-  // check if user state has already been saved
-  let [user, setUserProfile] = useUserProfile();
-  if (user) {
-    history.push('/clusterInfo');
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/clusterInfo');
+    }
+  }, [user, navigate]);
 
   // login button callback
   const onFinish = values => {
     sendRequest('/login', values).then(
       res => {
         setUserProfile(res);
-        history.push({
-          pathname: '/clusterInfo',
+        navigate('/clusterInfo', {
           state: {
             msg: '恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。',
             type: 'info',
@@ -42,8 +43,8 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
           remember: true,
           // used when redirect from register success page
           // auto fill the mobilephone and token field
-          mobilephone: initState && initState.spec && initState.spec.mobilephone,
-          token: initState && initState.spec && initState.spec.token,
+          mobilephone: initState?.spec?.mobilephone,
+          token: initState?.spec?.token,
         }}
         onFinish={onFinish}
       >
@@ -126,4 +127,4 @@ const LoginForm = ({ gotoRegister, initState, history }) => {
   );
 };
 
-export default withRouter(LoginForm);
+export default LoginForm;

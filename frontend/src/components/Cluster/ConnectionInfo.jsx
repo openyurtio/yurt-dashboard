@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
-import Certificate from './Certificate';
-import { getUserExpireTime } from '../../utils/utils';
 import { useUserProfile } from '../../utils/hooks';
+import { getUserExpireTime } from '../../utils/utils';
+import Certificate from './Certificate';
 
 export default function ConnectionInfo() {
   const [userProfile] = useUserProfile();
@@ -25,14 +25,19 @@ export default function ConnectionInfo() {
           onChange={e => {
             console.log(e);
           }}
-        >
-          <Tabs.TabPane tab="公网访问" key="1">
-            <Certificate
-              content={kubeConfig}
-              time={getUserExpireTime(effectiveTime, 7)}
-            ></Certificate>
-          </Tabs.TabPane>
-        </Tabs>
+          items={[
+            {
+              key: '1',
+              label: '公网访问',
+              children: (
+                <Certificate
+                  content={kubeConfig}
+                  time={getUserExpireTime(effectiveTime, 7)}
+                ></Certificate>
+              ),
+            },
+          ]}
+        />
       </div>
     </div>
   );

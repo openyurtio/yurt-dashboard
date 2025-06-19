@@ -1,14 +1,19 @@
-import { withRouter } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const GithubLoginFinish = ({ history }) => {
-  history.push({
-    pathname: '/clusterInfo',
-    state: {
-      type: 'info',
-      duration: 3,
-    },
-  });
-  return <></>;
+const GithubLoginFinish = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/clusterInfo', {
+      state: {
+        type: 'info',
+        duration: 3,
+      },
+    });
+  }, [navigate]);
+
+  return null;
 };
 
-export default withRouter(GithubLoginFinish);
+export default GithubLoginFinish;

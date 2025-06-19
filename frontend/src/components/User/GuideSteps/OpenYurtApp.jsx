@@ -13,7 +13,7 @@ const compareApps = (a, b) => {
 };
 
 const getAllChecked = appList => {
-  let a = [];
+  const a = [];
   appList.forEach(item => {
     a.push(item.name);
   });
@@ -21,7 +21,7 @@ const getAllChecked = appList => {
 };
 
 const getDefaultChecked = appList => {
-  let a = [];
+  const a = [];
   appList.forEach(item => {
     if (item.required) {
       a.push(item.name);
@@ -38,8 +38,8 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [isErrorTip, setIsErrorTip] = useState(false);
   const [appDesc, setAppDesc] = useState('');
 
-  let allChecked = getAllChecked(guideInfo.openyurt_apps);
-  let defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
+  const allChecked = getAllChecked(guideInfo.openyurt_apps);
+  const defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
   const [checkedList, setCheckedList] = useState(defaultChecked);
   const [indeterminate, setIndeterminate] = useState(
     defaultChecked.length && defaultChecked.length < allChecked.length
@@ -102,7 +102,20 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
           <Checkbox.Group
             style={{ display: 'grid', gridGap: '10px' }}
             options={guideInfo.openyurt_apps.sort(compareApps).map(info => ({
-              label: <label onClick={() => setAppDesc(info.desc)}>{info.name}</label>,
+              label: (
+                <button
+                  type="button"
+                  onClick={() => setAppDesc(info.desc)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setAppDesc(info.desc);
+                    }
+                  }}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                >
+                  {info.name}
+                </button>
+              ),
               value: info.name,
               disabled: info.required,
             }))}

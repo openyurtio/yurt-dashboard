@@ -1,4 +1,4 @@
-import { Modal, Button, Form, message, Select } from 'antd';
+import { Button, Form, message, Modal, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { getNodes, sendUserRequest, sendUserRequestWithTimeout } from '../../../utils/request';
 import ConfigEditorInput from '../../Utils/ConfigEditorInput';
@@ -38,7 +38,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
         maxWidth: '45%',
       }}
       title={data.title}
-      visible={visible}
+      open={visible}
       maskClosable={false}
       onCancel={onModalClose}
       destroyOnClose

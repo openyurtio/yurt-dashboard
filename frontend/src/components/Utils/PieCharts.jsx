@@ -44,7 +44,7 @@ const generateConfig = (data, extendConfig) => {
 };
 
 const PieChart = ({ name, status }) => {
-  let data = status ? status : mockData;
+  const data = status ? status : mockData;
 
   return (
     <div>
@@ -78,7 +78,7 @@ const PieChart = ({ name, status }) => {
 };
 
 const HalfPieChart = ({ status }) => {
-  let data = status ? status : mockData;
+  const data = status ? status : mockData;
   return (
     <div>
       <div style={{ textAlign: 'center', margin: '20px 0' }}>

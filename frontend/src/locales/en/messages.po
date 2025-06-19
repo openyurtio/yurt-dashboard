@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-06-19 01:56-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/Cluster/Overview.jsx:35
+#~ msgid "命名空间"
+#~ msgstr "te"
+
+#: src/components/Cluster/Dashboard.jsx:51
+msgid "应用状态"
+msgstr "ts"
+
+#: src/components/Cluster/Dashboard.jsx:77
+msgid "节点状态"
+msgstr "ttt"
+
+#: src/components/Cluster/ClusterInfo.jsx:27
+msgid "集群概览"
+msgstr "Cluster Overview"

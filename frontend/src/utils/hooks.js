@@ -1,9 +1,9 @@
 // customized hooks
 import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
-import { getUserLastTime, getUserProfile, clearUserProfile, setUserProfile } from './utils';
+import { clearUserProfile, getUserLastTime, getUserProfile, setUserProfile } from './utils';
 
 // use sessionStorage to cache state
 export function useSessionState(cache_key, default_val) {

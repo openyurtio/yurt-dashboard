@@ -1,19 +1,23 @@
+import {  useLingui } from '@lingui/react';
+import { Card, message, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { sendUserRequest } from '../../utils/request';
-import { PieChart, HalfPieChart } from '../Utils/PieCharts';
-import { Card, message, Typography } from 'antd';
+import { HalfPieChart, PieChart } from '../Utils/PieCharts';
+import { Trans } from '@lingui/react/macro';
 
 const { Link } = Typography;
 
 function getResourceStatus(clusterStatus, resourceName) {
   if (clusterStatus) {
-    let res = clusterStatus.filter(item => item.Kind === resourceName && item.Status === true);
+    const res = clusterStatus.filter(item => item.Kind === resourceName && item.Status === true);
     return res.length > 0 ? res[0] : null;
   }
   return null;
 }
 
 export function Dashboard({ setConnStatus }) {
+
+  const { _ } = useLingui();
   const [clusterStatus, setClusterStatus] = useState(null);
 
   useEffect(() => {
@@ -44,7 +48,7 @@ export function Dashboard({ setConnStatus }) {
         style={{ maxWidth: 800, minWidth: 500 }}
         loading={clusterStatus == null}
       >
-        <h3>应用状态</h3>
+        <h3><Trans>应用状态</Trans></h3>
         <div
           style={{
             marginTop: 18,
@@ -67,11 +71,10 @@ export function Dashboard({ setConnStatus }) {
       </Card>
       <Card
         className="cluster-card"
-        style={{ minWidth: 210 }}
-        bodyStyle={{ width: '100%' }}
+        style={{ minWidth: 210 }} 
         loading={clusterStatus == null}
       >
-        <h3>节点状态</h3>
+        <h3><Trans>节点状态</Trans></h3>
         <HalfPieChart status={getResourceStatus(clusterStatus, 'nodes')}></HalfPieChart>
       </Card>
     </div>
