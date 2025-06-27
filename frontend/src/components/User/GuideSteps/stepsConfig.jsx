@@ -1,21 +1,22 @@
+import { Trans } from '@lingui/react/macro';
+import CompleteGuide from './Complete';
 import ConnectClusterGuide from './ConnectCluster';
 import OpenYurtAppGuide from './OpenYurtApp';
-import CompleteGuide from './Complete';
 
 export const GuideSteps = [
   {
     key: 'ConnectCluster',
-    title: '集群接入',
+    title: <Trans>集群接入</Trans>,
     Content: attr => <ConnectClusterGuide {...attr} />,
   },
   {
     key: 'OpenYurtApp',
-    title: '组件安装',
+    title: <Trans>组件安装</Trans>,
     Content: attr => <OpenYurtAppGuide {...attr} />,
   },
   {
     key: 'Complete',
-    title: '完成',
+    title: <Trans>完成</Trans>,
     Content: attr => <CompleteGuide {...attr} />,
   },
 ];

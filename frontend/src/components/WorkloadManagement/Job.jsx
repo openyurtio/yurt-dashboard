@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { getJobs } from '../../utils/request';
 import { renderDictCell } from '../../utils/utils';
 import { Status } from '../Utils/Status';
@@ -5,33 +6,33 @@ import Workload from './WorkloadTemplate';
 
 const columns = [
   {
-    title: '名称',
+    title: <Trans>名称</Trans>,
     dataIndex: 'title',
   },
   {
-    title: '标签',
+    title: <Trans>标签</Trans>,
     dataIndex: 'tag',
   },
   {
-    title: '状态',
+    title: <Trans>状态</Trans>,
     dataIndex: 'jobStatus',
     render: state => <Status status={state}></Status>,
   },
   {
-    title: 'Pod状态',
+    title: <Trans>Pod状态</Trans>,
     dataIndex: 'podStatus',
     render: job => renderDictCell(job),
   },
   {
-    title: '镜像',
+    title: <Trans>镜像</Trans>,
     dataIndex: 'image',
   },
   {
-    title: '创建时间',
+    title: <Trans>创建时间</Trans>,
     dataIndex: 'createTime',
   },
   {
-    title: '完成时间',
+    title: <Trans>完成时间</Trans>,
     dataIndex: 'completeTime',
   },
   // {
@@ -39,7 +40,7 @@ const columns = [
   //   dataIndex: "operation",
   //   render: () => (
   //     <div>
-  //       <a>详情</a> |<a>编辑</a> | <a>更多</a>
+  //       <a><Trans>详情</Trans></a> |<a><Trans>编辑</Trans></a> | <a><Trans>更多</Trans></a>
   //     </div>
   //   ),
   // },

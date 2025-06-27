@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Card, message } from 'antd';
 import { useState } from 'react';
 import { useUserProfile } from '../../utils/hooks';
@@ -32,7 +33,7 @@ const GuidePage = ({ guideInfo, history }) => {
         history.push({
           pathname: '/clusterInfo',
           state: {
-            msg: '恭喜您设置成功，请开始体验吧😀。',
+            msg: <Trans>恭喜您设置成功，请开始体验吧😀。</Trans>,
             type: 'info',
             duration: 3,
           },
@@ -47,7 +48,7 @@ const GuidePage = ({ guideInfo, history }) => {
 
   return (
     <Card className="guide-content">
-      <div className="guide-title-box">快速设置</div>
+      <div className="guide-title-box"><Trans>快速设置</Trans></div>
       <div className="guide-progress-box">
         {GuideSteps.map((item, index) => (
           <div key={'guide-progress-' + index} className={index <= currentStep ? 'active' : ''}>

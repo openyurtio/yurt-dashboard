@@ -23,7 +23,7 @@ const LoginForm = ({ gotoRegister, initState }) => {
         setUserProfile(res);
         navigate('/clusterInfo', {
           state: {
-            msg: '恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。',
+            msg: <Trans>恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。</Trans>,
             type: 'info',
             duration: 3,
           },

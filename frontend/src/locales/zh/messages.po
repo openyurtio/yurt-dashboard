@@ -13,18 +13,358 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
+msgid "app版本"
+msgstr "app版本"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:75
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
+msgid "APP版本"
+msgstr "APP版本"
+
+#: src/components/Lab/Lab.jsx:187
+msgid "Name"
+msgstr "Name"
+
+#: src/components/WorkloadManagement/Job.jsx:22
+msgid "Pod状态"
+msgstr "Pod状态"
+
+#: src/components/Lab/Lab.jsx:199
+msgid "Replicas"
+msgstr "Replicas"
+
+#: src/components/Lab/Lab.jsx:15
+msgid "RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容。"
+msgstr "RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容。"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:130
+msgid "Tips: 请您先至少接入一个节点， 然后再尝试安装功能😄。"
+msgstr "Tips: 请您先至少接入一个节点， 然后再尝试安装功能😄。"
+
+#: src/components/Lab/Lab.jsx:22
+msgid "WordPress是一个以PHP和MySQL为平台的自由开源的博客软件和内容管理系统。WordPress是最受欢迎的网站内容管理系统。全球有大约30%的网站都是使用WordPress架设网站的。"
+msgstr "WordPress是一个以PHP和MySQL为平台的自由开源的博客软件和内容管理系统。WordPress是最受欢迎的网站内容管理系统。全球有大约30%的网站都是使用WordPress架设网站的。"
+
+#: src/components/Lab/Lab.jsx:116
+msgid "一键部署样例程序到你的OpenYurt集群。不知道如何部署？请参考"
+msgstr "一键部署样例程序到你的OpenYurt集群。不知道如何部署？请参考"
+
+#: src/components/Utils/ConfigEditorInput.jsx:116
+msgid "上传配置"
+msgstr "上传配置"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:73
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:77
+msgid "介绍"
+msgstr "介绍"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:104
+msgid "使用配置文件"
+msgstr "使用配置文件"
+
+#: src/components/Utils/ConfigEditorInput.jsx:163
+msgid "保存"
+msgstr "保存"
+
+#: src/components/Utils/ConfigEditorInput.jsx:125
+msgid "保存配置"
+msgstr "保存配置"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:100
+msgid "全选"
+msgstr "全选"
+
+#: src/components/Utils/PieCharts.jsx:87
+msgid "全部"
+msgstr "全部"
+
+#: src/components/Cluster/ConnectionInfo.jsx:32
+msgid "公网访问"
+msgstr "公网访问"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:93
+msgid "共"
+msgstr "共"
+
+#: src/components/Utils/ConfigEditorInput.jsx:154
+msgid "关闭"
+msgstr "关闭"
+
+#: src/components/Cluster/Certificate.jsx:17
+msgid "凭证过期时间："
+msgstr "凭证过期时间："
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:35
+#: src/components/WorkloadManagement/Pod.jsx:41
+#: src/components/WorkloadManagement/Job.jsx:31
+msgid "创建时间"
+msgstr "创建时间"
+
+#: src/components/Utils/SelectableTable.jsx:43
+msgid "功能开发中，敬请期待"
+msgstr "功能开发中，敬请期待"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:41
+msgid "功能正在开发中，敬请期待"
+msgstr "功能正在开发中，敬请期待"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:44
+msgid "升级"
+msgstr "升级"
+
+#: src/components/Lab/Lab.jsx:171
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:58
+msgid "卸载"
+msgstr "卸载"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:87
+msgid "卸载成功"
+msgstr "卸载成功"
+
+#: src/components/Utils/ConfigEditorInput.jsx:134
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:50
+msgid "取消"
+msgstr "取消"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:11
+#: src/components/WorkloadManagement/Job.jsx:9
+msgid "名称"
+msgstr "名称"
+
+#: src/components/WorkloadManagement/Pod.jsx:9
+msgid "名称/IP地址/实例 ID"
+msgstr "名称/IP地址/实例 ID"
+
 #: src/components/Cluster/Overview.jsx:35
-#~ msgid "命名空间"
-#~ msgstr "命名空间"
+msgid "命名空间"
+msgstr "命名空间"
+
+#: src/components/Lab/Lab.jsx:174
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:56
+msgid "安装"
+msgstr "安装"
+
+#: src/components/Cluster/ConnectionInfo.jsx:21
+msgid "安装和设置 kubectl"
+msgstr "安装和设置 kubectl"
+
+#: src/components/Cluster/ConnectionInfo.jsx:17
+msgid "安装和设置kubectl客户端， 有关详细信息请参考"
+msgstr "安装和设置kubectl客户端， 有关详细信息请参考"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:81
+msgid "安装失败："
+msgstr "安装失败："
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:142
+msgid "安装成功"
+msgstr "安装成功"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:76
+msgid "安装成功！已安装组件："
+msgstr "安装成功！已安装组件："
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:165
+msgid "安装组件"
+msgstr "安装组件"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:73
+msgid "安装过程受网络环境影响，预计耗时2分钟。"
+msgstr "安装过程受网络环境影响，预计耗时2分钟。"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:19
+msgid "完成"
+msgstr "完成"
+
+#: src/components/WorkloadManagement/Job.jsx:35
+msgid "完成时间"
+msgstr "完成时间"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:20
+msgid "容器组数量"
+msgstr "容器组数量"
+
+#: src/components/Cluster/Certificate.jsx:15
+msgid "将以下内容复制到计算机 $HOME/.kube/config 文件下"
+msgstr "将以下内容复制到计算机 $HOME/.kube/config 文件下"
 
 #: src/components/Cluster/Dashboard.jsx:51
 msgid "应用状态"
 msgstr "应用状态"
 
+#: src/components/Utils/PieCharts.jsx:22
+msgid "异常"
+msgstr "异常"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:74
+msgid "当前版本"
+msgstr "当前版本"
+
+#: src/components/User/Guide.jsx:51
+msgid "快速设置"
+msgstr "快速设置"
+
+#: src/components/User/Guide.jsx:36
+msgid "恭喜您设置成功，请开始体验吧😀。"
+msgstr "恭喜您设置成功，请开始体验吧😀。"
+
+#: src/components/Utils/SelectableTable.jsx:47
+msgid "批量移除"
+msgstr "批量移除"
+
+#: src/components/Utils/ConfigEditorInput.jsx:132
+msgid "放弃变更"
+msgstr "放弃变更"
+
+#: src/components/Utils/ConfigEditorInput.jsx:232
+msgid "文件已开始下载，将保存为"
+msgstr "文件已开始下载，将保存为"
+
+#: src/components/Lab/Lab.jsx:121
+msgid "文档➡️"
+msgstr "文档➡️"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:48
+msgid "是否确认卸载组件？"
+msgstr "是否确认卸载组件？"
+
+#: src/components/Lab/Lab.jsx:124
+msgid "更多样例程序即将上线，敬请期待😁！"
+msgstr "更多样例程序即将上线，敬请期待😁！"
+
+#: src/components/Lab/Lab.jsx:168
+msgid "更多详细信息"
+msgstr "更多详细信息"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:15
+#: src/components/WorkloadManagement/Pod.jsx:22
+#: src/components/WorkloadManagement/Job.jsx:13
+msgid "标签"
+msgstr "标签"
+
+#: src/components/Cluster/ClusterInfo.jsx:13
+msgid "概览"
+msgstr "概览"
+
+#: src/components/User/GuideSteps/ConnectCluster.jsx:39
+msgid "正在测试集群连通性..."
+msgstr "正在测试集群连通性..."
+
+#: src/components/Utils/Status.jsx:8
+#: src/components/Utils/PieCharts.jsx:21
+#: src/components/Utils/PieCharts.jsx:86
+msgid "正常"
+msgstr "正常"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
+msgid "版本"
+msgstr "版本"
+
+#: src/components/WorkloadManagement/Pod.jsx:27
+#: src/components/WorkloadManagement/Job.jsx:17
+msgid "状态"
+msgstr "状态"
+
+#: src/components/Cluster/ConnectionInfo.jsx:19
+msgid "相关文档"
+msgstr "相关文档"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:49
+msgid "确认卸载"
+msgstr "确认卸载"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:14
+msgid "组件安装"
+msgstr "组件安装"
+
+#: src/components/Utils/ConfigEditorInput.jsx:81
+msgid "编辑配置"
+msgstr "编辑配置"
+
+#: src/components/WorkloadManagement/Pod.jsx:32
+msgid "节点"
+msgstr "节点"
+
 #: src/components/Cluster/Dashboard.jsx:77
 msgid "节点状态"
 msgstr "节点状态"
 
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:161
+msgid "跳过"
+msgstr "跳过"
+
+#: src/components/Cluster/ClusterInfo.jsx:19
+msgid "连接信息"
+msgstr "连接信息"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
+msgid "选择安装的Chart包版本"
+msgstr "选择安装的Chart包版本"
+
+#: src/components/Cluster/ConnectionInfo.jsx:14
+msgid "通过 kubectl 连接 Kubernetes 集群"
+msgstr "通过 kubectl 连接 Kubernetes 集群"
+
+#: src/components/Lab/Lab.jsx:187
+msgid "部署Deployment名称"
+msgstr "部署Deployment名称"
+
+#: src/components/Lab/Lab.jsx:199
+msgid "部署实例数"
+msgstr "部署实例数"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:100
+msgid "配置"
+msgstr "配置"
+
+#: src/components/Utils/ConfigEditorInput.jsx:130
+msgid "配置已变更，是否放弃变更？"
+msgstr "配置已变更，是否放弃变更？"
+
+#: src/components/Utils/ConfigEditorInput.jsx:83
+msgid "配置已更改"
+msgstr "配置已更改"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:116
+msgid "配置文件"
+msgstr "配置文件"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:100
+msgid "配置方式"
+msgstr "配置方式"
+
+#: src/components/Utils/ConfigEditorInput.jsx:92
+msgid "配置编辑"
+msgstr "配置编辑"
+
+#: src/components/Cluster/ConnectionInfo.jsx:23
+msgid "配置集群凭据："
+msgstr "配置集群凭据："
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:159
+msgid "重试安装"
+msgstr "重试安装"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:31
+#: src/components/WorkloadManagement/Pod.jsx:37
+#: src/components/WorkloadManagement/Job.jsx:27
+msgid "镜像"
+msgstr "镜像"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:9
+msgid "集群接入"
+msgstr "集群接入"
+
 #: src/components/Cluster/ClusterInfo.jsx:27
 msgid "集群概览"
 msgstr "集群概览"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:93
+msgid "项"
+msgstr "项"
+
+#: src/components/Utils/ConfigEditorInput.jsx:106
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:103
+msgid "默认配置"
+msgstr "默认配置"

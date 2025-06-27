@@ -1,22 +1,23 @@
-import STable from '../Utils/SelectableTable';
-import { Input } from 'antd';
-import { renderDictCell } from '../../utils/utils';
-import { useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
+import { Input } from 'antd';
+import { useState } from 'react';
 import { useResourceState } from '../../utils/hooks';
+import { renderDictCell } from '../../utils/utils';
+import STable from '../Utils/SelectableTable';
 
 const columns = [
   {
-    title: '名称',
+    title: <Trans>名称</Trans>,
     dataIndex: 'title',
   },
   {
-    title: '标签',
+    title: <Trans>标签</Trans>,
     dataIndex: 'tag',
     render: dp => renderDictCell(dp),
   },
   {
-    title: '容器组数量',
+    title: <Trans>容器组数量</Trans>,
     dataIndex: 'status',
     render: status => {
       return (
@@ -27,11 +28,11 @@ const columns = [
     },
   },
   {
-    title: '镜像',
+    title: <Trans>镜像</Trans>,
     dataIndex: 'image',
   },
   {
-    title: '创建时间',
+    title: <Trans>创建时间</Trans>,
     dataIndex: 'createTime',
   },
   // {

@@ -1,4 +1,5 @@
-import { Table, Button, message } from 'antd';
+import { Trans } from '@lingui/react/macro';
+import { Button, message, Table } from 'antd';
 import { useState } from 'react';
 import { RefreshButton } from './RefreshButton';
 
@@ -39,11 +40,11 @@ function STable({ config }) {
         <div style={{ position: 'relative', bottom: 42, width: 'fit-content' }}>
           <Button
             onClick={() => {
-              message.info('功能开发中，敬请期待');
+              message.info(<Trans>功能开发中，敬请期待</Trans>);
             }}
             disabled={selected.length === 0}
           >
-            批量移除
+            <Trans>批量移除</Trans>
           </Button>
         </div>
       ) : null}

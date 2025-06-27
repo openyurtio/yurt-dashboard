@@ -1,11 +1,12 @@
-import Workload from './WorkloadTemplate';
-import { Status } from '../Utils/Status';
+import { Trans } from '@lingui/react/macro';
 import { getPods } from '../../utils/request';
 import { renderDictCell } from '../../utils/utils';
+import { Status } from '../Utils/Status';
+import Workload from './WorkloadTemplate';
 
 const columns = [
   {
-    title: '名称/IP地址/实例 ID',
+    title: <Trans>名称/IP地址/实例 ID</Trans>,
     dataIndex: 'title',
     render: pod => {
       return (
@@ -18,26 +19,26 @@ const columns = [
     },
   },
   {
-    title: '标签',
+    title: <Trans>标签</Trans>,
     dataIndex: 'tag',
     render: pod => renderDictCell(pod),
   },
   {
-    title: '状态',
+    title: <Trans>状态</Trans>,
     dataIndex: 'podStatus',
     render: state => <Status status={state}></Status>,
   },
   {
-    title: '节点',
+    title: <Trans>节点</Trans>,
     dataIndex: 'node',
     render: pod => renderDictCell(pod),
   },
   {
-    title: '镜像',
+    title: <Trans>镜像</Trans>,
     dataIndex: 'containers',
   },
   {
-    title: '创建时间',
+    title: <Trans>创建时间</Trans>,
     dataIndex: 'createTime',
   },
 ];

@@ -1,4 +1,5 @@
 import { RightOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Button, Form, Input, InputNumber, message, Modal, Switch, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,14 +12,14 @@ const appInfo = {
   RSSHub: {
     avatar:
       'https://camo.githubusercontent.com/79f2dcf6fb41b71619186b12eed25495fa55e20d3f21355798a2cb22703c6f8b/68747470733a2f2f692e6c6f6c692e6e65742f323031392f30342f32332f356362656237653431343134632e706e67',
-    desc: 'RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容。',
+    desc: <Trans>RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容。</Trans>,
     img: 'https://store-images.s-microsoft.com/image/apps.26097.717f8ad3-f5cc-479d-8b33-e34b63ca5b78.48a82a81-a971-4050-876d-2cdd1190f1e8.debf4886-b41e-4d62-b442-ebd6b7f6b2c9',
     container: ['diygod/rsshub'],
   },
   WordPress: {
     avatar:
       'https://th.bing.com/th/id/OIP.Q5K3ZcL44_iWH0CfOeyh-AHaHW?w=169&h=180&c=7&r=0&o=5&dpr=2&pid=1.7',
-    desc: 'WordPress是一个以PHP和MySQL为平台的自由开源的博客软件和内容管理系统。WordPress是最受欢迎的网站内容管理系统。全球有大约30%的网站都是使用WordPress架设网站的。',
+    desc: <Trans>WordPress是一个以PHP和MySQL为平台的自由开源的博客软件和内容管理系统。WordPress是最受欢迎的网站内容管理系统。全球有大约30%的网站都是使用WordPress架设网站的。</Trans>,
     img: 'https://websitesetup.org/wp-content/uploads/2018/03/cms-comparison-wordpress-vs-joomla-vs-drupal-wordpress-dashboard-1024x640.jpg',
     container: ['wordpress', 'mysql:5.7'],
   },
@@ -112,15 +113,15 @@ function Lab() {
         <h2>OpenYurt Lab</h2>
         <Paragraph>
           <blockquote>
-            一键部署样例程序到你的OpenYurt集群。不知道如何部署？请参考
+            <Trans>一键部署样例程序到你的OpenYurt集群。不知道如何部署？请参考</Trans>
             <Link
               href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
               target="_blank"
             >
-              文档➡️
+              <Trans>文档➡️</Trans>
             </Link>
             <br></br>
-            更多样例程序即将上线，敬请期待😁！
+            <Trans>更多样例程序即将上线，敬请期待😁！</Trans>
           </blockquote>
         </Paragraph>
       </div>
@@ -164,13 +165,13 @@ function Lab() {
               navigate('/deployment');
             }}
           >
-            更多详细信息 <RightOutlined />
+            <Trans>更多详细信息</Trans> <RightOutlined />
           </Button>,
           <Button key="uninstall" type="primary" danger disabled={!modalConfig.created} onClick={uninstallApp}>
-            卸载
+            <Trans>卸载</Trans>
           </Button>,
           <Button key="install" type="primary" disabled={modalConfig.created} onClick={installApp}>
-            安装
+            <Trans>安装</Trans>
           </Button>,
         ]}
       >
@@ -183,7 +184,7 @@ function Lab() {
           }}
           layout="horizontal"
         >
-          <Form.Item label="Name" tooltip="部署Deployment名称">
+          <Form.Item label={<Trans>Name</Trans>} tooltip={<Trans>部署Deployment名称</Trans>}>
             <Input
               value={modalConfig.dpName}
               disabled={modalConfig.created}
@@ -195,7 +196,7 @@ function Lab() {
             />
           </Form.Item>
 
-          <Form.Item label="Replicas" tooltip="部署实例数">
+          <Form.Item label={<Trans>Replicas</Trans>} tooltip={<Trans>部署实例数</Trans>}>
             <InputNumber
               disabled={modalConfig.created}
               value={modalConfig.replicas}

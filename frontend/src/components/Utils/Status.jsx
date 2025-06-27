@@ -1,10 +1,11 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Tooltip } from 'antd';
 
 const colorState = {
   success: '#62CB35',
   ready: '#62CB35',
-  正常: '#62CB35',
+  [<Trans>正常</Trans>]: '#62CB35',
   fail: '#F74336',
   loading: '#27e844',
   running: '#62CB35',

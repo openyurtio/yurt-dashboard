@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Button, Checkbox, message } from 'antd';
 import { useState } from 'react';
 import { sendRequest } from '../../../utils/request';
@@ -69,15 +70,15 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   const installOpenYurtApp = () => {
     setLoading(true);
-    setTips('安装过程受网络环境影响，预计耗时2分钟。');
+    setTips(<Trans>安装过程受网络环境影响，预计耗时2分钟。</Trans>);
     sendRequest('/system/appInstallFromGuide', { apps_name: checkedList }).then(
       res => {
-        message.success('安装成功！已安装组件：' + res.msg);
+        message.success(<Trans>安装成功！已安装组件：</Trans> + res.msg);
         onStepFinish();
       },
       err => {
         console.log(err);
-        setErrorTips('安装失败：' + err.message);
+        setErrorTips(<Trans>安装失败：</Trans> + err.message);
         setInstallFailed(true);
         setLoading(false);
       }
@@ -89,14 +90,14 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       <div style={{ display: 'flex', height: 200 }}>
         <div style={{ width: 150 }}>
           <div style={{ display: 'flex' }}>
-            <p>共{guideInfo.openyurt_apps.length}项</p>
+            <p><Trans>共</Trans>{guideInfo.openyurt_apps.length}<Trans>项</Trans></p>
             <Checkbox
               style={{ marginLeft: 10 }}
               indeterminate={indeterminate}
               onChange={onCheckAllChange}
               checked={checkAll}
             >
-              全选
+              <Trans>全选</Trans>
             </Checkbox>
           </div>
           <Checkbox.Group
@@ -155,13 +156,13 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
               onClick={installOpenYurtApp}
               loading={loading}
             >
-              重试安装
+              <Trans>重试安装</Trans>
             </Button>
-            <Button onClick={onStepFinish}>跳过</Button>
+            <Button onClick={onStepFinish}><Trans>跳过</Trans></Button>
           </div>
         ) : (
           <Button type="primary" loading={loading} onClick={installOpenYurtApp}>
-            安装组件
+            <Trans>安装组件</Trans>
           </Button>
         )}
       </div>

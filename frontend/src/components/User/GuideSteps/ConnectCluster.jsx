@@ -1,8 +1,8 @@
-import { Button, Spin, Result } from 'antd';
-import '../Guide.css';
+import { Trans } from '@lingui/react/macro';
+import { Button, Result, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { sendRequest } from '../../../utils/request';
-
+import '../Guide.css';
 // Step: Test cluster connectivity.
 const ConnectClusterGuide = ({ onStepFinish }) => {
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const ConnectClusterGuide = ({ onStepFinish }) => {
   return (
     <div>
       {loading ? (
-        <Spin tip="正在测试集群连通性..." />
+        <Spin tip={<Trans>正在测试集群连通性...</Trans>} />
       ) : result ? (
         <Result
           style={{ padding: '40px auto' }}

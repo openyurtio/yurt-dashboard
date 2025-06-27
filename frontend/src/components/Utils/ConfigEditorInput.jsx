@@ -4,6 +4,7 @@ import {
   ToolOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Button, Form, Input, message, Modal, Popconfirm, Popover, Space, Upload } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useState } from 'react';
@@ -77,9 +78,9 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
         }}
         onClick={openModal}
       >
-        编辑配置
+        <Trans>编辑配置</Trans>
       </Button>
-      <Popover content="配置已更改">
+      <Popover content={<Trans>配置已更改</Trans>}>
         <FileDoneOutlined hidden={!showChangeLabel} />
       </Popover>
 
@@ -88,7 +89,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
           minWidth: '600px',
           maxWidth: '45%',
         }}
-        title="配置编辑"
+        title={<Trans>配置编辑</Trans>}
         open={modalVisible}
         maskClosable={false}
         onCancel={onModalClose}
@@ -102,7 +103,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
                 loadDefaultValue(true);
               }}
             >
-              默认配置
+              <Trans>默认配置</Trans>
             </Button>
             <Upload
               accept=".txt, .yaml"
@@ -112,7 +113,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               }}
             >
               <Button style={{ marginLeft: 10 }} icon={<UploadOutlined />} disabled={inputDisable}>
-                上传配置
+                <Trans>上传配置</Trans>
               </Button>
             </Upload>
             <Button
@@ -121,16 +122,16 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               disabled={inputDisable}
               onClick={onDownload}
             >
-              保存配置
+              <Trans>保存配置</Trans>
             </Button>
           </span>,
           <Popconfirm
             key="cancel-popconfirm"
-            title="配置已变更，是否放弃变更？"
+            title={<Trans>配置已变更，是否放弃变更？</Trans>}
             open={cancelConfirmVisible}
-            okText="放弃变更"
+            okText={<Trans>放弃变更</Trans>}
             okButtonProps={{ danger: true }}
-            cancelText="取消"
+            cancelText={<Trans>取消</Trans>}
             onConfirm={() => {
               setCancelConfirmVisible(false);
               onModalCancel();
@@ -150,7 +151,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               }
             }}
           >
-            <Button disabled={inputDisable}>关闭</Button>
+            <Button disabled={inputDisable}><Trans>关闭</Trans></Button>
           </Popconfirm>,
           <Button
             key="confirm-button"
@@ -159,7 +160,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
             type="primary"
             onClick={onModalSave}
           >
-            保存
+            <Trans>保存</Trans>
           </Button>,
         ]}
       >
@@ -228,6 +229,6 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
     downloadLink.href = 'data:text/plain;charset=UTF-8,' + encodedData;
     downloadLink.download = fileName;
     downloadLink.click();
-    message.info('文件已开始下载，将保存为' + fileName);
+    message.info(<Trans>文件已开始下载，将保存为</Trans> + fileName);
   }
 }

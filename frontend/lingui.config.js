@@ -8,5 +8,5 @@ export default {
             include: ['src'],
         },
     ],
-    // compileNamespace: 'es'
+    compileNamespace: 'es'
 }; 

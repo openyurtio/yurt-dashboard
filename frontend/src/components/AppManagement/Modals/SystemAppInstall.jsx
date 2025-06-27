@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Button, Form, message, Modal, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { getNodes, sendUserRequest, sendUserRequestWithTimeout } from '../../../utils/request';
@@ -52,7 +53,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
             installSystemApp(form.getFieldsValue());
           }}
         >
-          安装
+          <Trans>安装</Trans>
         </Button>,
       ]}
     >
@@ -73,8 +74,8 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
           config_file: '',
         }}
       >
-        <Form.Item label="介绍">{data.desc}</Form.Item>
-        <Form.Item label="版本" name="version" tooltip="选择安装的Chart包版本">
+        <Form.Item label={<Trans>介绍</Trans>}>{data.desc}</Form.Item>
+        <Form.Item label={<Trans>版本</Trans>} name="version" tooltip={<Trans>选择安装的Chart包版本</Trans>}>
           <Select
             style={{ width: 120 }}
             options={
@@ -93,14 +94,14 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
             }}
           />
         </Form.Item>
-        <Form.Item label="APP版本" tooltip="app版本">
+        <Form.Item label={<Trans>APP版本</Trans>} tooltip={<Trans>app版本</Trans>}>
           {appVersion}
         </Form.Item>
-        <Form.Item label="配置" name="config" tooltip="配置方式">
+        <Form.Item label={<Trans>配置</Trans>} name="config" tooltip={<Trans>配置方式</Trans>}>
           <Select
             options={[
-              { label: '默认配置', value: 'defaultConfig' },
-              { label: '使用配置文件', value: 'configFile' },
+              { label: <Trans>默认配置</Trans>, value: 'defaultConfig' },
+              { label: <Trans>使用配置文件</Trans>, value: 'configFile' },
             ]}
             onChange={value => {
               if (value === 'configFile') {
@@ -112,7 +113,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
           />
         </Form.Item>
         {showConfigFileItem && (
-          <Form.Item label="配置文件" name="config_file">
+          <Form.Item label={<Trans>配置文件</Trans>} name="config_file">
             <ConfigEditorInput
               downloadFileName={data.title}
               getDefaultValueFunc={getConfigDefaultValue}
@@ -126,7 +127,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
   async function installSystemApp(v) {
     const nodeList = await getNodes();
     if (nodeList.length === 0) {
-      message.info('Tips: 请您先至少接入一个节点， 然后再尝试安装功能😄。');
+      message.info(<Trans>Tips: 请您先至少接入一个节点， 然后再尝试安装功能😄。</Trans>);
       return;
     }
     onInstallBegin();
@@ -138,7 +139,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
     })
       .then(res => {
         if (res.status === true) {
-          setTimeout(() => message.info('安装成功'), 1000);
+          setTimeout(() => message.info(<Trans>安装成功</Trans>), 1000);
         }
       })
       .finally(onInstallSuccess);

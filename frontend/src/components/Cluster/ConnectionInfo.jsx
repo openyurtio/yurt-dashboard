@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Tabs } from 'antd';
 import { useUserProfile } from '../../utils/hooks';
 import { getUserExpireTime } from '../../utils/utils';
@@ -10,16 +11,16 @@ export default function ConnectionInfo() {
 
   return (
     <div>
-      <div>通过 kubectl 连接 Kubernetes 集群</div>
+      <div><Trans>通过 kubectl 连接 Kubernetes 集群</Trans></div>
       <div style={{ padding: '15px', position: 'relative' }}>
         <div>
-          1. 安装和设置kubectl客户端， 有关详细信息请参考
+          1. <Trans>安装和设置kubectl客户端， 有关详细信息请参考</Trans>
           <a target="_blank" href="https://kubernetes.io/docs/tasks/tools/" rel="noreferrer">
-            相关文档
+            <Trans>相关文档</Trans>
           </a>
-          安装和设置 kubectl
+          <Trans>安装和设置 kubectl</Trans>
         </div>
-        <div>2. 配置集群凭据：</div>
+        <div>2. <Trans>配置集群凭据：</Trans></div>
         <Tabs
           defaultActiveKey="1"
           onChange={e => {
@@ -28,7 +29,7 @@ export default function ConnectionInfo() {
           items={[
             {
               key: '1',
-              label: '公网访问',
+              label: <Trans>公网访问</Trans>,
               children: (
                 <Certificate
                   content={kubeConfig}
