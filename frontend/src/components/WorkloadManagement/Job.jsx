@@ -51,7 +51,7 @@ const columns = [
 //     key: "1",
 //     title: "dataset-controller",
 //     tag: "control-plane:default-nodepool",
-//     jobStatus: "正常",
+//     jobStatus: <Trans>正常</Trans>,
 //     podStatus: {
 //       succeeded: 2,
 //       failed: 0,
@@ -67,8 +67,8 @@ const columns = [
 //     key: "2",
 //     title: "dataset-controller",
 //     tag: "control-plane:default-nodepool",
-//     jobStatus: "正常",
-//     podStatus: "正常",
+//     jobStatus: <Trans>正常</Trans>,
+//     podStatus: <Trans>正常</Trans>,
 //     image:
 //       "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
 //     createTime: "2021-08-10 19:19:22",

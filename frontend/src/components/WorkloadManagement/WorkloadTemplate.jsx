@@ -36,11 +36,11 @@ const columns = [
     dataIndex: 'createTime',
   },
   // {
-  //   title: "操作",
+  //   title: <Trans>操作</Trans>,
   //   dataIndex: "operation",
   //   render: () => (
   //     <div>
-  //       <a>详情</a> |<a>编辑</a> |<a>伸缩</a> |<a>监控</a> | <a>更多</a>
+  //       <a><Trans>详情</Trans></a> |<a><Trans>编辑</Trans></a> |<a><Trans>伸缩</Trans></a> |<a><Trans>监控</Trans></a> | <a><Trans>更多</Trans></a>
   //     </div>
   //   ),
   // },

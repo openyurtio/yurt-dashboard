@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   QuestionOutlined
 } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Avatar, Button, Card, Divider, Dropdown, Layout, Menu } from 'antd';
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -14,7 +15,6 @@ import logo from '../../assets/OpenYurt.png';
 import { useSessionState, useUserProfile } from '../../utils/hooks';
 import { getUserLastTime } from '../../utils/utils';
 import LanguageSwitcher from '../LanguageSwitcher';
-
 const { Header, Content, Footer, Sider } = Layout;
 
 const MySider = () => {
@@ -43,56 +43,56 @@ const MySider = () => {
           {
             key: 'clusterInfo',
             icon: <InfoCircleOutlined />,
-            label: <Link to="/clusterInfo">集群信息</Link>,
+            label: <Link to="/clusterInfo"><Trans>集群信息</Trans></Link>,
           },
           {
             key: 'nodemanagement',
             icon: <GoldOutlined />,
-            label: '节点管理',
+            label: <Trans>节点管理</Trans>,
             children: [
               {
                 key: 'nodepool',
-                label: <Link to="/nodepool">节点池</Link>,
+                label: <Link to="/nodepool"><Trans>节点池</Trans></Link>,
               },
               {
                 key: 'nodes',
-                label: <Link to="/nodes">节点</Link>,
+                label: <Link to="/nodes"><Trans>节点</Trans></Link>,
               },
             ],
           },
           {
             key: 'workload',
             icon: <AppstoreOutlined />,
-            label: '工作负载',
+            label: <Trans>工作负载</Trans>,
             children: [
               ...(userProfile && userProfile.metadata.name === 'admin' ? [
                 {
                   key: 'systemapp',
-                  label: <Link to="/systemapp">系统应用</Link>,
+                  label: <Link to="/systemapp"><Trans>系统应用</Trans></Link>,
                 }
               ] : []),
               {
                 key: 'pod',
-                label: <Link to="/pod">容器组</Link>,
+                label: <Link to="/pod"><Trans>容器组</Trans></Link>,
               },
               {
                 key: 'deployment',
-                label: <Link to="/deployment">无状态</Link>,
+                label: <Link to="/deployment"><Trans>无状态</Trans></Link>,
               },
               {
                 key: 'statefulset',
-                label: <Link to="/statefulset">有状态</Link>,
+                label: <Link to="/statefulset"><Trans>有状态</Trans></Link>,
               },
               {
                 key: 'job',
-                label: <Link to="/job">任务</Link>,
+                label: <Link to="/job"><Trans>任务</Trans></Link>,
               },
             ],
           },
           {
             key: 'lab',
             icon: <ExperimentOutlined />,
-            label: <Link to="/lab">实验室</Link>,
+            label: <Link to="/lab"><Trans>实验室</Trans></Link>,
           },
         ]}
       />
@@ -117,7 +117,7 @@ const helpEntrance = (
                 rel="noopener noreferrer"
                 href="https://github.com/openyurtio/yurt-dashboard#contact"
               >
-                反馈入口
+                <Trans>反馈入口</Trans>
               </a>
             ),
           },
@@ -129,7 +129,7 @@ const helpEntrance = (
                 rel="noopener noreferrer"
                 href="https://openyurt.io/docs/installation/openyurt-experience-center/overview/#/"
               >
-                帮助文档
+                <Trans>帮助文档</Trans>
               </a>
             ),
           },
@@ -164,7 +164,7 @@ const ContentWithSider = ({ children }) => {
     <Card style={{ padding: '5% 3%' }}>
       {userProfile && !!userProfile.status.effectiveTime && (
         <div style={{ textAlign: 'center' }}>
-          您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)} 天过期
+          <Trans>您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)} 天过期</Trans>
         </div>
       )}
       <Divider style={{ margin: '8px 0' }} />
@@ -181,7 +181,7 @@ const ContentWithSider = ({ children }) => {
         }}
       >
         <LogoutOutlined />
-        退出
+        <Trans>退出</Trans>
       </Button>
     </Card>
   );

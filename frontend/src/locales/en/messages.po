@@ -13,6 +13,22 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/NodeManagement/NodePool.jsx:98
+msgid "，展示如何使用节点池来进行单元化部署。"
+msgstr ", demonstrating how to use node pools for unitized deployment."
+
+#: src/components/Cluster/EventTable.jsx:68
+msgid "100条"
+msgstr "100 items"
+
+#: src/components/Cluster/EventTable.jsx:69
+msgid "200条"
+msgstr "200 items"
+
+#: src/components/Cluster/EventTable.jsx:70
+msgid "500条"
+msgstr "500 items"
+
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
 msgid "app版本"
 msgstr "App Version"
@@ -21,6 +37,10 @@ msgstr "App Version"
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
 msgid "APP版本"
 msgstr "APP Version"
+
+#: src/components/NodeManagement/Nodes.jsx:63
+msgid "Kubelet版本/Runtime版本/OS版本"
+msgstr "Kubelet Version/Runtime Version/OS Version"
 
 #: src/components/Lab/Lab.jsx:187
 msgid "Name"
@@ -54,10 +74,30 @@ msgstr "One-click deployment of sample applications to your OpenYurt cluster. Do
 msgid "上传配置"
 msgstr "Upload Configuration"
 
+#: src/components/Cluster/EventTable.jsx:74
+msgid "下载"
+msgstr "Download"
+
+#: src/components/NodeManagement/Nodes.jsx:234
+msgid "不知道如何添加节点😕?参考"
+msgstr "Don't know how to add nodes😕? Refer to"
+
+#: src/components/Cluster/EventTable.jsx:61
+msgid "事件"
+msgstr "Events"
+
 #: src/components/AppManagement/Modals/SystemAppManage.jsx:73
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:77
 msgid "介绍"
 msgstr "Introduction"
+
+#: src/components/Utils/ContentWrapper.jsx:88
+msgid "任务"
+msgstr "Tasks"
+
+#: src/components/NodeManagement/NodePool.jsx:91
+msgid "体验中心提供了一个简单的"
+msgstr "The experience center provides a simple"
 
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:104
 msgid "使用配置文件"
@@ -70,6 +110,10 @@ msgstr "Save"
 #: src/components/Utils/ConfigEditorInput.jsx:125
 msgid "保存配置"
 msgstr "Save Configuration"
+
+#: src/components/Cluster/EventTable.jsx:19
+msgid "信息"
+msgstr "Information"
 
 #: src/components/User/GuideSteps/OpenYurtApp.jsx:100
 msgid "全选"
@@ -88,8 +132,13 @@ msgid "共"
 msgstr "Total"
 
 #: src/components/Utils/ConfigEditorInput.jsx:154
+#: src/components/NodeManagement/Nodes.jsx:263
 msgid "关闭"
 msgstr "Close"
+
+#: src/components/Cluster/EventTable.jsx:23
+msgid "内容"
+msgstr "Content"
 
 #: src/components/Cluster/Certificate.jsx:17
 msgid "凭证过期时间："
@@ -98,6 +147,8 @@ msgstr "Certificate Expiry Time:"
 #: src/components/WorkloadManagement/WorkloadTemplate.jsx:35
 #: src/components/WorkloadManagement/Pod.jsx:41
 #: src/components/WorkloadManagement/Job.jsx:31
+#: src/components/NodeManagement/Nodes.jsx:68
+#: src/components/NodeManagement/NodePool.jsx:36
 msgid "创建时间"
 msgstr "Creation Time"
 
@@ -113,6 +164,14 @@ msgstr "Feature is under development, please stay tuned"
 msgid "升级"
 msgstr "Upgrade"
 
+#: src/components/NodeManagement/NodePool.jsx:82
+msgid "单元化DaemonSet："
+msgstr "Unitized DaemonSet:"
+
+#: src/components/NodeManagement/NodePool.jsx:73
+msgid "单元化部署："
+msgstr "Unitized Deployment:"
+
 #: src/components/Lab/Lab.jsx:171
 #: src/components/AppManagement/Modals/SystemAppManage.jsx:58
 msgid "卸载"
@@ -122,6 +181,10 @@ msgstr "Uninstall"
 msgid "卸载成功"
 msgstr "Uninstalled Successfully"
 
+#: src/components/Utils/ContentWrapper.jsx:120
+msgid "反馈入口"
+msgstr "Feedback Portal"
+
 #: src/components/Utils/ConfigEditorInput.jsx:134
 #: src/components/AppManagement/Modals/SystemAppManage.jsx:50
 msgid "取消"
@@ -129,16 +192,31 @@ msgstr "Cancel"
 
 #: src/components/WorkloadManagement/WorkloadTemplate.jsx:11
 #: src/components/WorkloadManagement/Job.jsx:9
+#: src/components/NodeManagement/Nodes.jsx:148
+#: src/components/NodeManagement/NodePool.jsx:10
 msgid "名称"
 msgstr "Name"
 
 #: src/components/WorkloadManagement/Pod.jsx:9
+#: src/components/NodeManagement/Nodes.jsx:21
 msgid "名称/IP地址/实例 ID"
 msgstr "Name/IP Address/Instance ID"
 
 #: src/components/Cluster/Overview.jsx:35
 msgid "命名空间"
 msgstr "Namespace"
+
+#: src/components/NodeManagement/NodePool.jsx:70
+msgid "在应用管理层面，OpenYurt围绕节点池设计了一整套应用部署模型，例如："
+msgstr "At the application management level, OpenYurt has designed a complete application deployment model around node pools, such as:"
+
+#: src/components/NodeManagement/Nodes.jsx:260
+msgid "复制并关闭"
+msgstr "Copy and Close"
+
+#: src/components/NodeManagement/NodePool.jsx:32
+msgid "失败"
+msgstr "Failed"
 
 #: src/components/Lab/Lab.jsx:174
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:56
@@ -181,18 +259,43 @@ msgstr "Complete"
 msgid "完成时间"
 msgstr "Completion Time"
 
+#: src/components/Utils/ContentWrapper.jsx:95
+msgid "实验室"
+msgstr "Lab"
+
+#: src/components/Utils/ContentWrapper.jsx:76
+msgid "容器组"
+msgstr "Pods"
+
 #: src/components/WorkloadManagement/WorkloadTemplate.jsx:20
 msgid "容器组数量"
 msgstr "Pod Count"
+
+#: src/utils/hooks.js:80
+msgid "对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。"
+msgstr "Sorry, your trial account has reached 7 days, and the platform will clear the resources under the account. You can choose to register a new account to continue experiencing OpenYurt capabilities."
+
+#: src/components/Cluster/EventTable.jsx:15
+msgid "对象"
+msgstr "Object"
 
 #: src/components/Cluster/Certificate.jsx:15
 msgid "将以下内容复制到计算机 $HOME/.kube/config 文件下"
 msgstr "Copy the following content to your computer's $HOME/.kube/config file"
 
+#: src/components/Utils/ContentWrapper.jsx:66
+msgid "工作负载"
+msgstr "Workloads"
+
+#: src/components/Utils/ContentWrapper.jsx:132
+msgid "帮助文档"
+msgstr "Help Documentation"
+
 #: src/components/Cluster/Dashboard.jsx:51
 msgid "应用状态"
 msgstr "Application Status"
 
+#: src/utils/request.js:205
 #: src/components/Utils/PieCharts.jsx:22
 msgid "异常"
 msgstr "Abnormal"
@@ -201,17 +304,49 @@ msgstr "Abnormal"
 msgid "当前版本"
 msgstr "Current Version"
 
+#: src/components/NodeManagement/Nodes.jsx:241
+msgid "快速上手体验中心"
+msgstr "Quick Start Experience Center"
+
 #: src/components/User/Guide.jsx:51
 msgid "快速设置"
 msgstr "Quick Setup"
+
+#: src/components/NodeManagement/NodePool.jsx:30
+msgid "总计"
+msgstr "Total"
 
 #: src/components/User/Guide.jsx:36
 msgid "恭喜您设置成功，请开始体验吧😀。"
 msgstr "Congratulations on successful setup, please start experiencing😀."
 
+#. placeholder {0}: getUserLastTime(userProfile.status.effectiveTime)
+#: src/components/Utils/ContentWrapper.jsx:167
+msgid "您的账号还剩 {0} 天过期"
+msgstr "Your account expires in {0} days"
+
+#: src/utils/hooks.js:91
+msgid "您的账户将在{lastTime}日后过期"
+msgstr "Your account will expire in {lastTime} days"
+
+#: src/components/NodeManagement/Nodes.jsx:34
+msgid "所属节点池"
+msgstr "Node Pool"
+
+#: src/components/NodeManagement/Nodes.jsx:118
+#: src/components/NodeManagement/Nodes.jsx:137
+#: src/components/NodeManagement/Nodes.jsx:159
+#: src/components/NodeManagement/Nodes.jsx:191
+msgid "所有节点池"
+msgstr "All Node Pools"
+
 #: src/components/Utils/SelectableTable.jsx:47
 msgid "批量移除"
 msgstr "Batch Remove"
+
+#: src/components/NodeManagement/Nodes.jsx:72
+msgid "操作"
+msgstr "Operations"
 
 #: src/components/Utils/ConfigEditorInput.jsx:132
 msgid "放弃变更"
@@ -221,9 +356,24 @@ msgstr "Discard Changes"
 msgid "文件已开始下载，将保存为"
 msgstr "File download has started, will be saved as"
 
+#: src/components/NodeManagement/Nodes.jsx:239
 #: src/components/Lab/Lab.jsx:121
 msgid "文档➡️"
 msgstr "Documentation➡️"
+
+#: src/utils/request.js:145
+#: src/utils/request.js:217
+#: src/utils/request.js:218
+msgid "无"
+msgstr "None"
+
+#: src/components/Utils/ContentWrapper.jsx:80
+msgid "无状态"
+msgstr "Stateless"
+
+#: src/components/Cluster/EventTable.jsx:27
+msgid "时间"
+msgstr "Time"
 
 #: src/components/AppManagement/Modals/SystemAppManage.jsx:48
 msgid "是否确认卸载组件？"
@@ -237,9 +387,18 @@ msgstr "More sample applications coming soon, please stay tuned😁!"
 msgid "更多详细信息"
 msgstr "More Details"
 
+#: src/components/Utils/ContentWrapper.jsx:84
+msgid "有状态"
+msgstr "Stateful"
+
+#: src/components/NodeManagement/Nodes.jsx:150
+msgid "标注"
+msgstr "Annotations"
+
 #: src/components/WorkloadManagement/WorkloadTemplate.jsx:15
 #: src/components/WorkloadManagement/Pod.jsx:22
 #: src/components/WorkloadManagement/Job.jsx:13
+#: src/components/NodeManagement/Nodes.jsx:149
 msgid "标签"
 msgstr "Labels"
 
@@ -251,11 +410,17 @@ msgstr "Overview"
 msgid "正在测试集群连通性..."
 msgstr "Testing cluster connectivity..."
 
+#: src/utils/request.js:205
 #: src/components/Utils/Status.jsx:8
 #: src/components/Utils/PieCharts.jsx:21
 #: src/components/Utils/PieCharts.jsx:86
+#: src/components/NodeManagement/NodePool.jsx:31
 msgid "正常"
 msgstr "Normal"
+
+#: src/components/NodeManagement/Nodes.jsx:227
+msgid "添加已有节点"
+msgstr "Add Existing Node"
 
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
 msgid "版本"
@@ -274,6 +439,19 @@ msgstr "Related Documentation"
 msgid "确认卸载"
 msgstr "Confirm Uninstall"
 
+#: src/components/NodeManagement/NodePool.jsx:96
+msgid "示例"
+msgstr "Example"
+
+#: src/components/NodeManagement/NodePool.jsx:11
+#: src/components/Cluster/EventTable.jsx:11
+msgid "类型"
+msgstr "Type"
+
+#: src/components/Utils/ContentWrapper.jsx:71
+msgid "系统应用"
+msgstr "System Applications"
+
 #: src/components/User/GuideSteps/stepsConfig.jsx:14
 msgid "组件安装"
 msgstr "Component Installation"
@@ -282,13 +460,64 @@ msgstr "Component Installation"
 msgid "编辑配置"
 msgstr "Edit Configuration"
 
+#: src/utils/request.js:19
+msgid "网络问题，请检查您的网络连接"
+msgstr "Network issue, please check your network connection"
+
 #: src/components/WorkloadManagement/Pod.jsx:32
+#: src/components/Utils/ContentWrapper.jsx:59
 msgid "节点"
 msgstr "Node"
 
+#: src/components/NodeManagement/Nodes.jsx:250
+msgid "节点接入脚本"
+msgstr "Node Join Script"
+
+#: src/components/NodeManagement/NodePool.jsx:26
+msgid "节点数"
+msgstr "Node Count"
+
+#: src/components/Utils/ContentWrapper.jsx:55
+msgid "节点池"
+msgstr "Node Pool"
+
+#: src/components/NodeManagement/NodePool.jsx:68
+msgid "节点池是OpenYurt为边缘资源管理场景设计的能力。边缘站点资源可以根据地域分布进行分类，划分到不同的节点池中。"
+msgstr "Node Pool is a capability designed by OpenYurt for edge resource management scenarios. Edge site resources can be classified according to geographical distribution and divided into different node pools."
+
+#: src/components/NodeManagement/Nodes.jsx:58
 #: src/components/Cluster/Dashboard.jsx:77
 msgid "节点状态"
 msgstr "Node Status"
+
+#: src/components/Utils/ContentWrapper.jsx:51
+msgid "节点管理"
+msgstr "Node Management"
+
+#: src/components/NodeManagement/Nodes.jsx:83
+msgid "节点自治："
+msgstr "Node Autonomy:"
+
+#: src/components/NodeManagement/Nodes.jsx:94
+msgid "节点自治设置失败：刷新Node列表"
+msgstr "Node autonomy setting failed: refresh Node list"
+
+#. placeholder {0}: checked ? 'ON' : 'OFF'
+#: src/components/NodeManagement/Nodes.jsx:97
+msgid "节点自治设置成功: {0}"
+msgstr "Node autonomy setting successful: {0}"
+
+#: src/components/NodeManagement/Nodes.jsx:53
+msgid "节点配置"
+msgstr "Node Configuration"
+
+#: src/components/NodeManagement/Nodes.jsx:211
+msgid "获取接入脚本失败，出现了一些问题"
+msgstr "Failed to get join script, some issues occurred"
+
+#: src/components/NodeManagement/Nodes.jsx:38
+msgid "角色/状态"
+msgstr "Role/Status"
 
 #: src/components/User/GuideSteps/OpenYurtApp.jsx:161
 msgid "跳过"
@@ -297,6 +526,10 @@ msgstr "Skip"
 #: src/components/Cluster/ClusterInfo.jsx:19
 msgid "连接信息"
 msgstr "Connection Information"
+
+#: src/components/Utils/ContentWrapper.jsx:184
+msgid "退出"
+msgstr "Exit"
 
 #: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
 msgid "选择安装的Chart包版本"
@@ -351,6 +584,10 @@ msgstr "Retry Installation"
 #: src/components/WorkloadManagement/Job.jsx:27
 msgid "镜像"
 msgstr "Image"
+
+#: src/components/Utils/ContentWrapper.jsx:46
+msgid "集群信息"
+msgstr "Cluster Information"
 
 #: src/components/User/GuideSteps/stepsConfig.jsx:9
 msgid "集群接入"

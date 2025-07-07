@@ -7,6 +7,7 @@ import { copy2clipboard, renderDictCell } from '../../utils/utils';
 import RSelect from '../Utils/RefreshableSelect';
 import STable from '../Utils/SelectableTable';
 import { Status } from '../Utils/Status';
+import { Trans } from '@lingui/react/macro';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -17,7 +18,7 @@ export default function Nodes() {
   // table columns
   const columns = [
     {
-      title: '名称/IP地址/实例 ID',
+      title: <Trans>名称/IP地址/实例 ID</Trans>,
       dataIndex: 'title',
       render: node => {
         return (
@@ -30,11 +31,11 @@ export default function Nodes() {
       },
     },
     {
-      title: '所属节点池',
+      title: <Trans>所属节点池</Trans>,
       dataIndex: 'nodePool',
     },
     {
-      title: '角色/状态',
+      title: <Trans>角色/状态</Trans>,
       dataIndex: 'role',
       render: node => {
         return (
@@ -49,26 +50,26 @@ export default function Nodes() {
       },
     },
     {
-      title: '节点配置',
+      title: <Trans>节点配置</Trans>,
       dataIndex: 'config',
       render: node => renderDictCell(node),
     },
     {
-      title: '节点状态',
+      title: <Trans>节点状态</Trans>,
       dataIndex: 'status',
       render: node => renderDictCell(node),
     },
     {
-      title: 'Kubelet版本/Runtime版本/OS版本',
+      title: <Trans>Kubelet版本/Runtime版本/OS版本</Trans>,
       dataIndex: 'version',
       render: node => renderDictCell(node),
     },
     {
-      title: '创建时间',
+      title: <Trans>创建时间</Trans>,
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
+      title: <Trans>操作</Trans>,
       dataIndex: 'operations',
       render: ({ Autonomy, NodeName }) => (
         <Dropdown
@@ -79,7 +80,7 @@ export default function Nodes() {
                 key: '1',
                 label: (
                   <div>
-                    节点自治：
+                    <Trans>节点自治：</Trans>
                     <Switch
                       size="small"
                       defaultChecked={Autonomy === 'true'}
@@ -90,10 +91,10 @@ export default function Nodes() {
                         }).then(res => {
                           // if autonomy set fail, refresh the whole table
                           if (res.status === 'error') {
-                            message.info('节点自治设置失败：刷新Node列表');
+                            message.info(<Trans>节点自治设置失败：刷新Node列表</Trans>);
                             onRefresh();
                           } else {
-                            message.info(`节点自治设置成功: ${checked ? 'ON' : 'OFF'}`);
+                            message.info(<Trans>节点自治设置成功: {checked ? 'ON' : 'OFF'}</Trans>);
                           }
                         });
                       }}
@@ -114,7 +115,7 @@ export default function Nodes() {
   // for filter components
   const [searchOption, setOption] = useState('title');
   const [searchValue, setSearchVal] = useState('');
-  const [selectedNp, setNp] = useState('所有节点池');
+  const [selectedNp, setNp] = useState(<Trans>所有节点池</Trans>);
 
   const [allNodes, setAllNodes] = useState(null); // all nodes
   const [nodes, setNodes] = useState(allNodes); // display nodes after filtering
@@ -133,7 +134,7 @@ export default function Nodes() {
         )
         .filter(
           // filter by selected nodepool
-          node => filterNp === '所有节点池' || node.nodePool === filterNp
+          node => filterNp === <Trans>所有节点池</Trans> || node.nodePool === filterNp
         )
     );
   };
@@ -144,9 +145,9 @@ export default function Nodes() {
 
   // filter options
   const options = [
-    { content: '名称', dataIndex: 'title' },
-    { content: '标签', dataIndex: 'tag' },
-    { content: '标注', dataIndex: 'annotations' },
+    { content: <Trans>名称</Trans>, dataIndex: 'title' },
+    { content: <Trans>标签</Trans>, dataIndex: 'tag' },
+    { content: <Trans>标注</Trans>, dataIndex: 'annotations' },
   ];
 
   // refresh the whole table and reset all filter options
@@ -155,7 +156,7 @@ export default function Nodes() {
     setNodes(null);
     setSearchVal('');
     setOption('title');
-    setNp('所有节点池');
+    setNp(<Trans>所有节点池</Trans>);
     return getNodes().then(nodes => {
       setAllNodes(nodes);
       setNodes(nodes);
@@ -187,7 +188,7 @@ export default function Nodes() {
         handleRefresh={useCallback(async () => {
           // add "所有节点池" in select options anyway
           return getNodepools().then(nps => {
-            return ['所有节点池', ...nps.map(np => np.title)];
+            return [<Trans>所有节点池</Trans>, ...nps.map(np => np.title)];
           });
         }, [])}
         handleChange={selectedNodePool => {
@@ -207,7 +208,7 @@ export default function Nodes() {
   const [userProfile] = useUserProfile();
   const nodeAddScript = userProfile
     ? userProfile.spec.nodeAddScript
-    : '获取接入脚本失败，出现了一些问题';
+    : <Trans>获取接入脚本失败，出现了一些问题</Trans>;
   const onCancel = () => {
     setVisible(false);
   };
@@ -223,21 +224,21 @@ export default function Nodes() {
             setVisible(true);
           }}
         >
-          添加已有节点
+          <Trans>添加已有节点</Trans>
         </Button>
         {
           // display help information for users has no nodes joined
           allNodes && allNodes.length === 0 ? (
             <Paragraph>
               <blockquote>
-                不知道如何添加节点😕?参考
+                <Trans>不知道如何添加节点😕?参考</Trans>
                 <Link
                   href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
                   target="_blank"
                 >
-                  文档➡️
+                  <Trans>文档➡️</Trans>
                 </Link>
-                快速上手体验中心
+                <Trans>快速上手体验中心</Trans>
               </blockquote>
             </Paragraph>
           ) : null
@@ -246,7 +247,7 @@ export default function Nodes() {
 
       <Modal
         visible={visible}
-        title="节点接入脚本"
+        title={<Trans>节点接入脚本</Trans>}
         onCancel={onCancel}
         footer={[
           <Button
@@ -256,10 +257,10 @@ export default function Nodes() {
               setVisible(false);
             }}
           >
-            复制并关闭
+            <Trans>复制并关闭</Trans>
           </Button>,
           <Button key="close" type="primary" onClick={onCancel}>
-            关闭
+            <Trans>关闭</Trans>
           </Button>,
         ]}
       >
