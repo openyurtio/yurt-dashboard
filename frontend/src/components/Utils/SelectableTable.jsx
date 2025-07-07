@@ -40,11 +40,11 @@ function STable({ config }) {
         <div style={{ position: 'relative', bottom: 42, width: 'fit-content' }}>
           <Button
             onClick={() => {
-              message.info(<Trans>功能开发中，敬请期待</Trans>);
+              message.info(<Trans>Feature under development, please stay tuned</Trans>);
             }}
             disabled={selected.length === 0}
           >
-            <Trans>批量移除</Trans>
+            <Trans>Batch Remove</Trans>
           </Button>
         </div>
       ) : null}

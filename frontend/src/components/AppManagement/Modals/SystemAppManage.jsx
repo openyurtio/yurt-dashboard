@@ -38,16 +38,16 @@ export default function SystemAppManageModal({ data, visible, onClose, onDealing
           key="upgrade-button"
           style={{ display: isOnlyUninstall() ? 'none' : '' }}
           onClick={() => {
-            message.info(<Trans>功能正在开发中，敬请期待</Trans>);
+            message.info(<Trans>Feature is under development, please stay tuned</Trans>);
           }}
         >
-          <Trans>升级</Trans>
+          <Trans>Upgrade</Trans>
         </Button>,
         <Popconfirm
           key="uninstall-popconfirm"
-          title={<Trans>是否确认卸载组件？</Trans>}
-          okText={<Trans>确认卸载</Trans>}
-          cancelText={<Trans>取消</Trans>}
+          title={<Trans>Are you sure you want to uninstall the component?</Trans>}
+          okText={<Trans>Confirm Uninstall</Trans>}
+          cancelText={<Trans>Cancel</Trans>}
           okButtonProps={{ danger: true }}
           onConfirm={() => {
             setModalLoading(true);
@@ -55,7 +55,7 @@ export default function SystemAppManageModal({ data, visible, onClose, onDealing
           }}
         >
           <Button type="primary" danger loading={modalLoading}>
-            <Trans>卸载</Trans>
+            <Trans>Uninstall</Trans>
           </Button>
         </Popconfirm>,
       ]}
@@ -70,9 +70,13 @@ export default function SystemAppManageModal({ data, visible, onClose, onDealing
         }}
         layout="horizontal"
       >
-        <Form.Item label={<Trans>介绍</Trans>}>{data.desc}</Form.Item>
-        <Form.Item label={<Trans>当前版本</Trans>}>{data.version && data.version.version}</Form.Item>
-        <Form.Item label={<Trans>APP版本</Trans>}>{data.version && data.version.app_version}</Form.Item>
+        <Form.Item label={<Trans>Introduction</Trans>}>{data.desc}</Form.Item>
+        <Form.Item label={<Trans>Current Version</Trans>}>
+          {data.version && data.version.version}
+        </Form.Item>
+        <Form.Item label={<Trans>APP Version</Trans>}>
+          {data.version && data.version.app_version}
+        </Form.Item>
       </Form>
     </Modal>
   );
@@ -84,7 +88,7 @@ export default function SystemAppManageModal({ data, visible, onClose, onDealing
     })
       .then(res => {
         if (res.status === true) {
-          setTimeout(() => message.info(<Trans>卸载成功</Trans>), 1000);
+          setTimeout(() => message.info(<Trans>Uninstalled Successfully</Trans>), 1000);
         }
       })
       .finally(onUninstallSuccess);

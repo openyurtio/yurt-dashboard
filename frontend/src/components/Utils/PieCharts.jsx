@@ -18,8 +18,8 @@ function getTotalNum(status) {
 function convertStatus(status) {
   return (
     status && [
-      { type: <Trans>正常</Trans>, value: status.HealthyNum },
-      { type: <Trans>异常</Trans>, value: status.TotalNum - status.HealthyNum },
+      { type: <Trans>Normal</Trans>, value: status.HealthyNum },
+      { type: <Trans>Abnormal</Trans>, value: status.TotalNum - status.HealthyNum },
     ]
   );
 }
@@ -65,7 +65,7 @@ const PieChart = ({ name, status }) => {
                 textOverflow: 'ellipsis',
                 fontSize: 18,
               },
-              content: `${getNormalNum(data)}\n<Trans>正常</Trans>`,
+              content: `${getNormalNum(data)}\n<Trans>Normal</Trans>`,
             },
           },
           legend: {
@@ -83,8 +83,8 @@ const HalfPieChart = ({ status }) => {
   return (
     <div>
       <div style={{ textAlign: 'center', margin: '20px 0' }}>
-        <Trans>正常</Trans>：{getNormalNum(data)} <br />
-        <Trans>全部</Trans>：{getTotalNum(data)}
+        <Trans>Normal</Trans>：{getNormalNum(data)} <br />
+        <Trans>All</Trans>：{getTotalNum(data)}
       </div>
       <Pie
         {...generateConfig(convertStatus(data), {
@@ -105,4 +105,3 @@ const HalfPieChart = ({ status }) => {
 };
 
 export { HalfPieChart, PieChart };
-

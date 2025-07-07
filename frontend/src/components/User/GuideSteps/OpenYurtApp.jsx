@@ -70,15 +70,19 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   const installOpenYurtApp = () => {
     setLoading(true);
-    setTips(<Trans>安装过程受网络环境影响，预计耗时2分钟。</Trans>);
+    setTips(
+      <Trans>
+        Installation process is affected by network environment, estimated to take 2 minutes.
+      </Trans>
+    );
     sendRequest('/system/appInstallFromGuide', { apps_name: checkedList }).then(
       res => {
-        message.success(<Trans>安装成功！已安装组件：</Trans> + res.msg);
+        message.success(<Trans>Installation Successful! Installed Components:</Trans> + res.msg);
         onStepFinish();
       },
       err => {
         console.log(err);
-        setErrorTips(<Trans>安装失败：</Trans> + err.message);
+        setErrorTips(<Trans>Installation Failed:</Trans> + err.message);
         setInstallFailed(true);
         setLoading(false);
       }
@@ -90,14 +94,18 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       <div style={{ display: 'flex', height: 200 }}>
         <div style={{ width: 150 }}>
           <div style={{ display: 'flex' }}>
-            <p><Trans>共</Trans>{guideInfo.openyurt_apps.length}<Trans>项</Trans></p>
+            <p>
+              <Trans>Total</Trans>
+              {guideInfo.openyurt_apps.length}
+              <Trans>items</Trans>
+            </p>
             <Checkbox
               style={{ marginLeft: 10 }}
               indeterminate={indeterminate}
               onChange={onCheckAllChange}
               checked={checkAll}
             >
-              <Trans>全选</Trans>
+              <Trans>Select All</Trans>
             </Checkbox>
           </div>
           <Checkbox.Group
@@ -107,7 +115,7 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
                 <button
                   type="button"
                   onClick={() => setAppDesc(info.desc)}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       setAppDesc(info.desc);
                     }
@@ -156,13 +164,15 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
               onClick={installOpenYurtApp}
               loading={loading}
             >
-              <Trans>重试安装</Trans>
+              <Trans>Retry Installation</Trans>
             </Button>
-            <Button onClick={onStepFinish}><Trans>跳过</Trans></Button>
+            <Button onClick={onStepFinish}>
+              <Trans>Skip</Trans>
+            </Button>
           </div>
         ) : (
           <Button type="primary" loading={loading} onClick={installOpenYurtApp}>
-            <Trans>安装组件</Trans>
+            <Trans>Install Components</Trans>
           </Button>
         )}
       </div>

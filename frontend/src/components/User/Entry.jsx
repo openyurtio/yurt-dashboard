@@ -59,7 +59,6 @@ const EntryPage = () => {
     }
   }, [userProfile]);
 
-
   if (loading) {
     return (
       <div>

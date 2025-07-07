@@ -112,7 +112,9 @@ export function CompleteBlock({ res }) {
       buttonTxt: 'Go to Login',
       tipTitle: '在进入Web控制台前，请先阅读以下说明:',
       tips: [
-        <span key="tip1">您的试用平台账号默认有效期为7天，7天之后系统会自动注销您的账号，并清空相关资源</span>,
+        <span key="tip1">
+          您的试用平台账号默认有效期为7天，7天之后系统会自动注销您的账号，并清空相关资源
+        </span>,
         <span key="tip2">
           您的试用平台账号为您注册时填写的手机号📱
           <Text mark>{res.spec.mobilephone} </Text>，密码🔑 <Text mark>{res.spec.token}</Text>

@@ -6,7 +6,7 @@ import Workload from './WorkloadTemplate';
 
 const columns = [
   {
-    title: <Trans>名称/IP地址/实例 ID</Trans>,
+    title: <Trans>Name/IP Address/Instance ID</Trans>,
     dataIndex: 'title',
     render: pod => {
       return (
@@ -19,26 +19,26 @@ const columns = [
     },
   },
   {
-    title: <Trans>标签</Trans>,
+    title: <Trans>Labels</Trans>,
     dataIndex: 'tag',
     render: pod => renderDictCell(pod),
   },
   {
-    title: <Trans>状态</Trans>,
+    title: <Trans>Status</Trans>,
     dataIndex: 'podStatus',
     render: state => <Status status={state}></Status>,
   },
   {
-    title: <Trans>节点</Trans>,
+    title: <Trans>Node</Trans>,
     dataIndex: 'node',
     render: pod => renderDictCell(pod),
   },
   {
-    title: <Trans>镜像</Trans>,
+    title: <Trans>Image</Trans>,
     dataIndex: 'containers',
   },
   {
-    title: <Trans>创建时间</Trans>,
+    title: <Trans>Creation Time</Trans>,
     dataIndex: 'createTime',
   },
 ];

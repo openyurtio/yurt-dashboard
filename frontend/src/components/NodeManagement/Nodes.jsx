@@ -1,4 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Button, Dropdown, Input, message, Modal, Select, Switch, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useUserProfile } from '../../utils/hooks';
@@ -7,7 +8,6 @@ import { copy2clipboard, renderDictCell } from '../../utils/utils';
 import RSelect from '../Utils/RefreshableSelect';
 import STable from '../Utils/SelectableTable';
 import { Status } from '../Utils/Status';
-import { Trans } from '@lingui/react/macro';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -18,7 +18,7 @@ export default function Nodes() {
   // table columns
   const columns = [
     {
-      title: <Trans>名称/IP地址/实例 ID</Trans>,
+      title: <Trans>Name/IP Address/Instance ID</Trans>,
       dataIndex: 'title',
       render: node => {
         return (
@@ -31,11 +31,11 @@ export default function Nodes() {
       },
     },
     {
-      title: <Trans>所属节点池</Trans>,
+      title: <Trans>Node Pool</Trans>,
       dataIndex: 'nodePool',
     },
     {
-      title: <Trans>角色/状态</Trans>,
+      title: <Trans>Role/Status</Trans>,
       dataIndex: 'role',
       render: node => {
         return (
@@ -50,26 +50,26 @@ export default function Nodes() {
       },
     },
     {
-      title: <Trans>节点配置</Trans>,
+      title: <Trans>Node Configuration</Trans>,
       dataIndex: 'config',
       render: node => renderDictCell(node),
     },
     {
-      title: <Trans>节点状态</Trans>,
+      title: <Trans>Node Status</Trans>,
       dataIndex: 'status',
       render: node => renderDictCell(node),
     },
     {
-      title: <Trans>Kubelet版本/Runtime版本/OS版本</Trans>,
+      title: <Trans>Kubelet Version/Runtime Version/OS Version</Trans>,
       dataIndex: 'version',
       render: node => renderDictCell(node),
     },
     {
-      title: <Trans>创建时间</Trans>,
+      title: <Trans>Creation Time</Trans>,
       dataIndex: 'createTime',
     },
     {
-      title: <Trans>操作</Trans>,
+      title: <Trans>Operations</Trans>,
       dataIndex: 'operations',
       render: ({ Autonomy, NodeName }) => (
         <Dropdown
@@ -80,7 +80,7 @@ export default function Nodes() {
                 key: '1',
                 label: (
                   <div>
-                    <Trans>节点自治：</Trans>
+                    <Trans>Node Autonomy:</Trans>
                     <Switch
                       size="small"
                       defaultChecked={Autonomy === 'true'}
@@ -91,10 +91,16 @@ export default function Nodes() {
                         }).then(res => {
                           // if autonomy set fail, refresh the whole table
                           if (res.status === 'error') {
-                            message.info(<Trans>节点自治设置失败：刷新Node列表</Trans>);
+                            message.info(
+                              <Trans>Node autonomy setting failed: refresh Node list</Trans>
+                            );
                             onRefresh();
                           } else {
-                            message.info(<Trans>节点自治设置成功: {checked ? 'ON' : 'OFF'}</Trans>);
+                            message.info(
+                              <Trans>
+                                Node autonomy setting successful: {checked ? 'ON' : 'OFF'}
+                              </Trans>
+                            );
                           }
                         });
                       }}
@@ -115,7 +121,7 @@ export default function Nodes() {
   // for filter components
   const [searchOption, setOption] = useState('title');
   const [searchValue, setSearchVal] = useState('');
-  const [selectedNp, setNp] = useState(<Trans>所有节点池</Trans>);
+  const [selectedNp, setNp] = useState(<Trans>All Node Pools</Trans>);
 
   const [allNodes, setAllNodes] = useState(null); // all nodes
   const [nodes, setNodes] = useState(allNodes); // display nodes after filtering
@@ -126,16 +132,16 @@ export default function Nodes() {
 
     setNodes(
       allNodes &&
-      allNodes
-        .filter(
-          // filter by search value
-          node => JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
-          // searchOptions could be an Object
-        )
-        .filter(
-          // filter by selected nodepool
-          node => filterNp === <Trans>所有节点池</Trans> || node.nodePool === filterNp
-        )
+        allNodes
+          .filter(
+            // filter by search value
+            node => JSON.stringify(node[searchOption]).indexOf(filterValue) >= 0
+            // searchOptions could be an Object
+          )
+          .filter(
+            // filter by selected nodepool
+            node => filterNp === <Trans>All Node Pools</Trans> || node.nodePool === filterNp
+          )
     );
   };
 
@@ -145,9 +151,9 @@ export default function Nodes() {
 
   // filter options
   const options = [
-    { content: <Trans>名称</Trans>, dataIndex: 'title' },
-    { content: <Trans>标签</Trans>, dataIndex: 'tag' },
-    { content: <Trans>标注</Trans>, dataIndex: 'annotations' },
+    { content: <Trans>Name</Trans>, dataIndex: 'title' },
+    { content: <Trans>Labels</Trans>, dataIndex: 'tag' },
+    { content: <Trans>Annotations</Trans>, dataIndex: 'annotations' },
   ];
 
   // refresh the whole table and reset all filter options
@@ -156,7 +162,7 @@ export default function Nodes() {
     setNodes(null);
     setSearchVal('');
     setOption('title');
-    setNp(<Trans>所有节点池</Trans>);
+    setNp(<Trans>All Node Pools</Trans>);
     return getNodes().then(nodes => {
       setAllNodes(nodes);
       setNodes(nodes);
@@ -186,9 +192,9 @@ export default function Nodes() {
 
       <RSelect
         handleRefresh={useCallback(async () => {
-          // add "所有节点池" in select options anyway
+          // add "All Node Pools" in select options anyway
           return getNodepools().then(nps => {
-            return [<Trans>所有节点池</Trans>, ...nps.map(np => np.title)];
+            return [<Trans>All Node Pools</Trans>, ...nps.map(np => np.title)];
           });
         }, [])}
         handleChange={selectedNodePool => {
@@ -206,9 +212,11 @@ export default function Nodes() {
   // nodeaddscript modal
   const [visible, setVisible] = useState(false);
   const [userProfile] = useUserProfile();
-  const nodeAddScript = userProfile
-    ? userProfile.spec.nodeAddScript
-    : <Trans>获取接入脚本失败，出现了一些问题</Trans>;
+  const nodeAddScript = userProfile ? (
+    userProfile.spec.nodeAddScript
+  ) : (
+    <Trans>Failed to get join script, some issues occurred</Trans>
+  );
   const onCancel = () => {
     setVisible(false);
   };
@@ -224,21 +232,21 @@ export default function Nodes() {
             setVisible(true);
           }}
         >
-          <Trans>添加已有节点</Trans>
+          <Trans>Add Existing Node</Trans>
         </Button>
         {
           // display help information for users has no nodes joined
           allNodes && allNodes.length === 0 ? (
             <Paragraph>
               <blockquote>
-                <Trans>不知道如何添加节点😕?参考</Trans>
+                <Trans>Don't know how to add nodes😕? Refer to</Trans>
                 <Link
                   href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
                   target="_blank"
                 >
-                  <Trans>文档➡️</Trans>
+                  <Trans>Documentation➡️</Trans>
                 </Link>
-                <Trans>快速上手体验中心</Trans>
+                <Trans>Quick Start Experience Center</Trans>
               </blockquote>
             </Paragraph>
           ) : null
@@ -247,7 +255,7 @@ export default function Nodes() {
 
       <Modal
         visible={visible}
-        title={<Trans>节点接入脚本</Trans>}
+        title={<Trans>Node Join Script</Trans>}
         onCancel={onCancel}
         footer={[
           <Button
@@ -257,10 +265,10 @@ export default function Nodes() {
               setVisible(false);
             }}
           >
-            <Trans>复制并关闭</Trans>
+            <Trans>Copy and Close</Trans>
           </Button>,
           <Button key="close" type="primary" onClick={onCancel}>
-            <Trans>关闭</Trans>
+            <Trans>Close</Trans>
           </Button>,
         ]}
       >

@@ -8,16 +8,16 @@ import STable from '../Utils/SelectableTable';
 
 const columns = [
   {
-    title: <Trans>名称</Trans>,
+    title: <Trans>Name</Trans>,
     dataIndex: 'title',
   },
   {
-    title: <Trans>标签</Trans>,
+    title: <Trans>Labels</Trans>,
     dataIndex: 'tag',
     render: dp => renderDictCell(dp),
   },
   {
-    title: <Trans>容器组数量</Trans>,
+    title: <Trans>Pod Count</Trans>,
     dataIndex: 'status',
     render: status => {
       return (
@@ -28,19 +28,19 @@ const columns = [
     },
   },
   {
-    title: <Trans>镜像</Trans>,
+    title: <Trans>Image</Trans>,
     dataIndex: 'image',
   },
   {
-    title: <Trans>创建时间</Trans>,
+    title: <Trans>Creation Time</Trans>,
     dataIndex: 'createTime',
   },
   // {
-  //   title: <Trans>操作</Trans>,
+  //   title: <Trans>Operations</Trans>,
   //   dataIndex: "operation",
   //   render: () => (
   //     <div>
-  //       <a><Trans>详情</Trans></a> |<a><Trans>编辑</Trans></a> |<a><Trans>伸缩</Trans></a> |<a><Trans>监控</Trans></a> | <a><Trans>更多</Trans></a>
+  //       <a><Trans>Details</Trans></a> |<a><Trans>Edit</Trans></a> |<a><Trans>Scale</Trans></a> |<a><Trans>Monitor</Trans></a> | <a><Trans>More</Trans></a>
   //     </div>
   //   ),
   // },

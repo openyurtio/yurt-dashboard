@@ -53,7 +53,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
             installSystemApp(form.getFieldsValue());
           }}
         >
-          <Trans>安装</Trans>
+          <Trans>Install</Trans>
         </Button>,
       ]}
     >
@@ -74,8 +74,12 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
           config_file: '',
         }}
       >
-        <Form.Item label={<Trans>介绍</Trans>}>{data.desc}</Form.Item>
-        <Form.Item label={<Trans>版本</Trans>} name="version" tooltip={<Trans>选择安装的Chart包版本</Trans>}>
+        <Form.Item label={<Trans>Introduction</Trans>}>{data.desc}</Form.Item>
+        <Form.Item
+          label={<Trans>Version</Trans>}
+          name="version"
+          tooltip={<Trans>Select Chart Package Version to Install</Trans>}
+        >
           <Select
             style={{ width: 120 }}
             options={
@@ -94,14 +98,18 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
             }}
           />
         </Form.Item>
-        <Form.Item label={<Trans>APP版本</Trans>} tooltip={<Trans>app版本</Trans>}>
+        <Form.Item label={<Trans>APP Version</Trans>} tooltip={<Trans>App Version</Trans>}>
           {appVersion}
         </Form.Item>
-        <Form.Item label={<Trans>配置</Trans>} name="config" tooltip={<Trans>配置方式</Trans>}>
+        <Form.Item
+          label={<Trans>Configuration</Trans>}
+          name="config"
+          tooltip={<Trans>Configuration Method</Trans>}
+        >
           <Select
             options={[
-              { label: <Trans>默认配置</Trans>, value: 'defaultConfig' },
-              { label: <Trans>使用配置文件</Trans>, value: 'configFile' },
+              { label: <Trans>Default Configuration</Trans>, value: 'defaultConfig' },
+              { label: <Trans>Use Configuration File</Trans>, value: 'configFile' },
             ]}
             onChange={value => {
               if (value === 'configFile') {
@@ -113,7 +121,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
           />
         </Form.Item>
         {showConfigFileItem && (
-          <Form.Item label={<Trans>配置文件</Trans>} name="config_file">
+          <Form.Item label={<Trans>Configuration File</Trans>} name="config_file">
             <ConfigEditorInput
               downloadFileName={data.title}
               getDefaultValueFunc={getConfigDefaultValue}
@@ -127,7 +135,11 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
   async function installSystemApp(v) {
     const nodeList = await getNodes();
     if (nodeList.length === 0) {
-      message.info(<Trans>Tips: 请您先至少接入一个节点， 然后再尝试安装功能😄。</Trans>);
+      message.info(
+        <Trans>
+          Tips: Please connect at least one node first, then try to install the feature😄.
+        </Trans>
+      );
       return;
     }
     onInstallBegin();
@@ -139,7 +151,7 @@ export default function SystemAppInstallModal({ data, visible, onClose, onDealin
     })
       .then(res => {
         if (res.status === true) {
-          setTimeout(() => message.info(<Trans>安装成功</Trans>), 1000);
+          setTimeout(() => message.info(<Trans>Installation Successful</Trans>), 1000);
         }
       })
       .finally(onInstallSuccess);

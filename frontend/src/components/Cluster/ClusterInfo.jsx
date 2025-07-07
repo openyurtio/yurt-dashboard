@@ -10,21 +10,25 @@ const ClusterInfo = () => {
   const tabItems = [
     {
       key: '1',
-      label: <Trans>概览</Trans>,
+      label: <Trans>Overview</Trans>,
       children: <ClusterOverview></ClusterOverview>,
     },
-    ...(userProfile && userProfile.metadata.name !== 'admin' ? [
-      {
-        key: '3',
-        label: <Trans>连接信息</Trans>,
-        children: <ConnectionInfo></ConnectionInfo>,
-      }
-    ] : []),
+    ...(userProfile && userProfile.metadata.name !== 'admin'
+      ? [
+          {
+            key: '3',
+            label: <Trans>Connection Information</Trans>,
+            children: <ConnectionInfo></ConnectionInfo>,
+          },
+        ]
+      : []),
   ];
 
   return (
     <div className="content">
-      <h3><Trans>集群概览</Trans></h3>
+      <h3>
+        <Trans>Cluster Overview</Trans>
+      </h3>
       <div>
         <Tabs defaultActiveKey="1" items={tabItems} />
       </div>

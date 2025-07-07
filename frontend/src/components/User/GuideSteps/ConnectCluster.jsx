@@ -36,7 +36,7 @@ const ConnectClusterGuide = ({ onStepFinish }) => {
   return (
     <div>
       {loading ? (
-        <Spin tip={<Trans>正在测试集群连通性...</Trans>} />
+        <Spin tip={<Trans>Testing cluster connectivity...</Trans>} />
       ) : result ? (
         <Result
           style={{ padding: '40px auto' }}

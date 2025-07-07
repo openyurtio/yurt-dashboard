@@ -1,4 +1,5 @@
 import { GithubOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Button, Card, Checkbox, Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +24,12 @@ const LoginForm = ({ gotoRegister, initState }) => {
         setUserProfile(res);
         navigate('/clusterInfo', {
           state: {
-            msg: <Trans>恭喜您登录成功，已经为您分配了一个OpenYurt集群！请开始体验吧😀。</Trans>,
+            msg: (
+              <Trans>
+                Congratulations on successful login, an OpenYurt cluster has been allocated for you!
+                Please start experiencing😀.
+              </Trans>
+            ),
             type: 'info',
             duration: 3,
           },

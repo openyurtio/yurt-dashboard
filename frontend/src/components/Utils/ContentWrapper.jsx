@@ -5,7 +5,7 @@ import {
   GoldOutlined,
   InfoCircleOutlined,
   LogoutOutlined,
-  QuestionOutlined
+  QuestionOutlined,
 } from '@ant-design/icons';
 import { Trans } from '@lingui/react/macro';
 import { Avatar, Button, Card, Divider, Dropdown, Layout, Menu } from 'antd';
@@ -43,56 +43,94 @@ const MySider = () => {
           {
             key: 'clusterInfo',
             icon: <InfoCircleOutlined />,
-            label: <Link to="/clusterInfo"><Trans>集群信息</Trans></Link>,
+            label: (
+              <Link to="/clusterInfo">
+                <Trans>Cluster Information</Trans>
+              </Link>
+            ),
           },
           {
             key: 'nodemanagement',
             icon: <GoldOutlined />,
-            label: <Trans>节点管理</Trans>,
+            label: <Trans>Node Management</Trans>,
             children: [
               {
                 key: 'nodepool',
-                label: <Link to="/nodepool"><Trans>节点池</Trans></Link>,
+                label: (
+                  <Link to="/nodepool">
+                    <Trans>Node Pool</Trans>
+                  </Link>
+                ),
               },
               {
                 key: 'nodes',
-                label: <Link to="/nodes"><Trans>节点</Trans></Link>,
+                label: (
+                  <Link to="/nodes">
+                    <Trans>Node</Trans>
+                  </Link>
+                ),
               },
             ],
           },
           {
             key: 'workload',
             icon: <AppstoreOutlined />,
-            label: <Trans>工作负载</Trans>,
+            label: <Trans>Workloads</Trans>,
             children: [
-              ...(userProfile && userProfile.metadata.name === 'admin' ? [
-                {
-                  key: 'systemapp',
-                  label: <Link to="/systemapp"><Trans>系统应用</Trans></Link>,
-                }
-              ] : []),
+              ...(userProfile && userProfile.metadata.name === 'admin'
+                ? [
+                    {
+                      key: 'systemapp',
+                      label: (
+                        <Link to="/systemapp">
+                          <Trans>System Applications</Trans>
+                        </Link>
+                      ),
+                    },
+                  ]
+                : []),
               {
                 key: 'pod',
-                label: <Link to="/pod"><Trans>容器组</Trans></Link>,
+                label: (
+                  <Link to="/pod">
+                    <Trans>Pods</Trans>
+                  </Link>
+                ),
               },
               {
                 key: 'deployment',
-                label: <Link to="/deployment"><Trans>无状态</Trans></Link>,
+                label: (
+                  <Link to="/deployment">
+                    <Trans>Stateless</Trans>
+                  </Link>
+                ),
               },
               {
                 key: 'statefulset',
-                label: <Link to="/statefulset"><Trans>有状态</Trans></Link>,
+                label: (
+                  <Link to="/statefulset">
+                    <Trans>Stateful</Trans>
+                  </Link>
+                ),
               },
               {
                 key: 'job',
-                label: <Link to="/job"><Trans>任务</Trans></Link>,
+                label: (
+                  <Link to="/job">
+                    <Trans>Tasks</Trans>
+                  </Link>
+                ),
               },
             ],
           },
           {
             key: 'lab',
             icon: <ExperimentOutlined />,
-            label: <Link to="/lab"><Trans>实验室</Trans></Link>,
+            label: (
+              <Link to="/lab">
+                <Trans>Lab</Trans>
+              </Link>
+            ),
           },
         ]}
       />
@@ -117,7 +155,7 @@ const helpEntrance = (
                 rel="noopener noreferrer"
                 href="https://github.com/openyurtio/yurt-dashboard#contact"
               >
-                <Trans>反馈入口</Trans>
+                <Trans>Feedback Portal</Trans>
               </a>
             ),
           },
@@ -129,7 +167,7 @@ const helpEntrance = (
                 rel="noopener noreferrer"
                 href="https://openyurt.io/docs/installation/openyurt-experience-center/overview/#/"
               >
-                <Trans>帮助文档</Trans>
+                <Trans>Help Documentation</Trans>
               </a>
             ),
           },
@@ -164,7 +202,9 @@ const ContentWithSider = ({ children }) => {
     <Card style={{ padding: '5% 3%' }}>
       {userProfile && !!userProfile.status.effectiveTime && (
         <div style={{ textAlign: 'center' }}>
-          <Trans>您的账号还剩 {getUserLastTime(userProfile.status.effectiveTime)} 天过期</Trans>
+          <Trans>
+            Your account expires in {getUserLastTime(userProfile.status.effectiveTime)} days
+          </Trans>
         </div>
       )}
       <Divider style={{ margin: '8px 0' }} />
@@ -181,7 +221,7 @@ const ContentWithSider = ({ children }) => {
         }}
       >
         <LogoutOutlined />
-        <Trans>退出</Trans>
+        <Trans>Exit</Trans>
       </Button>
     </Card>
   );
@@ -192,7 +232,10 @@ const ContentWithSider = ({ children }) => {
         <img src={logo} alt="logo" className="logo"></img>
         <div style={{ float: 'right', display: 'flex', alignItems: 'center' }}>
           <LanguageSwitcher />
-          <Dropdown menu={{ items: [{ key: 'user', label: userManager }] }} trigger={['click', 'hover']}>
+          <Dropdown
+            menu={{ items: [{ key: 'user', label: userManager }] }}
+            trigger={['click', 'hover']}
+          >
             <Button
               type="text"
               style={{
@@ -245,4 +288,3 @@ const ContentWithoutSider = ({ children }) => {
 };
 
 export { ContentWithoutSider, ContentWithSider };
-

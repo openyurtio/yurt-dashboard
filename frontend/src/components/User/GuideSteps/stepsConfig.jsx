@@ -6,17 +6,17 @@ import OpenYurtAppGuide from './OpenYurtApp';
 export const GuideSteps = [
   {
     key: 'ConnectCluster',
-    title: <Trans>集群接入</Trans>,
+    title: <Trans>Cluster Access</Trans>,
     Content: attr => <ConnectClusterGuide {...attr} />,
   },
   {
     key: 'OpenYurtApp',
-    title: <Trans>组件安装</Trans>,
+    title: <Trans>Component Installation</Trans>,
     Content: attr => <OpenYurtAppGuide {...attr} />,
   },
   {
     key: 'Complete',
-    title: <Trans>完成</Trans>,
+    title: <Trans>Complete</Trans>,
     Content: attr => <CompleteGuide {...attr} />,
   },
 ];

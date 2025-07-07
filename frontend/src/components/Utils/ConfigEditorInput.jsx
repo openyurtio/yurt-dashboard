@@ -78,9 +78,9 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
         }}
         onClick={openModal}
       >
-        <Trans>编辑配置</Trans>
+        <Trans>Edit Configuration</Trans>
       </Button>
-      <Popover content={<Trans>配置已更改</Trans>}>
+      <Popover content={<Trans>Configuration Changed</Trans>}>
         <FileDoneOutlined hidden={!showChangeLabel} />
       </Popover>
 
@@ -89,7 +89,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
           minWidth: '600px',
           maxWidth: '45%',
         }}
-        title={<Trans>配置编辑</Trans>}
+        title={<Trans>Configuration Editing</Trans>}
         open={modalVisible}
         maskClosable={false}
         onCancel={onModalClose}
@@ -103,7 +103,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
                 loadDefaultValue(true);
               }}
             >
-              <Trans>默认配置</Trans>
+              <Trans>Default Configuration</Trans>
             </Button>
             <Upload
               accept=".txt, .yaml"
@@ -113,7 +113,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               }}
             >
               <Button style={{ marginLeft: 10 }} icon={<UploadOutlined />} disabled={inputDisable}>
-                <Trans>上传配置</Trans>
+                <Trans>Upload Configuration</Trans>
               </Button>
             </Upload>
             <Button
@@ -122,16 +122,16 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               disabled={inputDisable}
               onClick={onDownload}
             >
-              <Trans>保存配置</Trans>
+              <Trans>Save Configuration</Trans>
             </Button>
           </span>,
           <Popconfirm
             key="cancel-popconfirm"
-            title={<Trans>配置已变更，是否放弃变更？</Trans>}
+            title={<Trans>Configuration has been changed, discard changes?</Trans>}
             open={cancelConfirmVisible}
-            okText={<Trans>放弃变更</Trans>}
+            okText={<Trans>Discard Changes</Trans>}
             okButtonProps={{ danger: true }}
-            cancelText={<Trans>取消</Trans>}
+            cancelText={<Trans>Cancel</Trans>}
             onConfirm={() => {
               setCancelConfirmVisible(false);
               onModalCancel();
@@ -151,7 +151,9 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
               }
             }}
           >
-            <Button disabled={inputDisable}><Trans>关闭</Trans></Button>
+            <Button disabled={inputDisable}>
+              <Trans>Close</Trans>
+            </Button>
           </Popconfirm>,
           <Button
             key="confirm-button"
@@ -160,7 +162,7 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
             type="primary"
             onClick={onModalSave}
           >
-            <Trans>保存</Trans>
+            <Trans>Save</Trans>
           </Button>,
         ]}
       >
@@ -229,6 +231,6 @@ export default function ConfigEditorInput({ onChange, getDefaultValueFunc, downl
     downloadLink.href = 'data:text/plain;charset=UTF-8,' + encodedData;
     downloadLink.download = fileName;
     downloadLink.click();
-    message.info(<Trans>文件已开始下载，将保存为</Trans> + fileName);
+    message.info(<Trans>File download has started, will be saved as</Trans> + fileName);
   }
 }

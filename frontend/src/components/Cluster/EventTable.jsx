@@ -1,30 +1,30 @@
 import { DownloadOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
 import { Button, Card, Select, Table } from 'antd';
 import { useState } from 'react';
-import { Trans } from '@lingui/react/macro';
 import { downloadTable, tableData2txt } from '../../utils/utils';
 
 const { Option } = Select;
 
 const columns = [
   {
-    title: <Trans>类型</Trans>,
+    title: <Trans>Type</Trans>,
     dataIndex: 'type',
   },
   {
-    title: <Trans>对象</Trans>,
+    title: <Trans>Object</Trans>,
     dataIndex: 'object',
   },
   {
-    title: <Trans>信息</Trans>,
+    title: <Trans>Information</Trans>,
     dataIndex: 'info',
   },
   {
-    title: <Trans>内容</Trans>,
+    title: <Trans>Content</Trans>,
     dataIndex: 'content',
   },
   {
-    title: <Trans>时间</Trans>,
+    title: <Trans>Time</Trans>,
     dataIndex: 'timestamp',
   },
 ];
@@ -58,20 +58,28 @@ export function EventTable() {
 
   return (
     <Card style={{ margin: '20px 0' }}>
-      <h3><Trans>事件</Trans></h3>
+      <h3>
+        <Trans>Events</Trans>
+      </h3>
       <div style={{ float: 'right', margin: '5px 0' }}>
         <Select
           defaultValue={downloadLimit}
           style={{ width: 120, marginRight: '5px' }}
           onChange={handleChange}
         >
-          <Option value="100"><Trans>100条</Trans></Option>
-          <Option value="200"><Trans>200条</Trans></Option>
-          <Option value="500"><Trans>500条</Trans></Option>
+          <Option value="100">
+            <Trans>100 items</Trans>
+          </Option>
+          <Option value="200">
+            <Trans>200 items</Trans>
+          </Option>
+          <Option value="500">
+            <Trans>500 items</Trans>
+          </Option>
         </Select>
         <Button onClick={handleClick}>
           <DownloadOutlined />
-          <Trans>下载</Trans>
+          <Trans>Download</Trans>
         </Button>
       </div>
 

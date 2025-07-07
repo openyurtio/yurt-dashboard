@@ -6,33 +6,33 @@ import Workload from './WorkloadTemplate';
 
 const columns = [
   {
-    title: <Trans>名称</Trans>,
+    title: <Trans>Name</Trans>,
     dataIndex: 'title',
   },
   {
-    title: <Trans>标签</Trans>,
+    title: <Trans>Labels</Trans>,
     dataIndex: 'tag',
   },
   {
-    title: <Trans>状态</Trans>,
+    title: <Trans>Status</Trans>,
     dataIndex: 'jobStatus',
     render: state => <Status status={state}></Status>,
   },
   {
-    title: <Trans>Pod状态</Trans>,
+    title: <Trans>Pod Status</Trans>,
     dataIndex: 'podStatus',
     render: job => renderDictCell(job),
   },
   {
-    title: <Trans>镜像</Trans>,
+    title: <Trans>Image</Trans>,
     dataIndex: 'image',
   },
   {
-    title: <Trans>创建时间</Trans>,
+    title: <Trans>Creation Time</Trans>,
     dataIndex: 'createTime',
   },
   {
-    title: <Trans>完成时间</Trans>,
+    title: <Trans>Completion Time</Trans>,
     dataIndex: 'completeTime',
   },
   // {
@@ -40,7 +40,7 @@ const columns = [
   //   dataIndex: "operation",
   //   render: () => (
   //     <div>
-  //       <a><Trans>详情</Trans></a> |<a><Trans>编辑</Trans></a> | <a><Trans>更多</Trans></a>
+  //       <a><Trans>Details</Trans></a> |<a><Trans>Edit</Trans></a> | <a><Trans>More</Trans></a>
   //     </div>
   //   ),
   // },
@@ -51,7 +51,7 @@ const columns = [
 //     key: "1",
 //     title: "dataset-controller",
 //     tag: "control-plane:default-nodepool",
-//     jobStatus: <Trans>正常</Trans>,
+//     jobStatus: <Trans>Normal</Trans>,
 //     podStatus: {
 //       succeeded: 2,
 //       failed: 0,
@@ -67,8 +67,8 @@ const columns = [
 //     key: "2",
 //     title: "dataset-controller",
 //     tag: "control-plane:default-nodepool",
-//     jobStatus: <Trans>正常</Trans>,
-//     podStatus: <Trans>正常</Trans>,
+//     jobStatus: <Trans>Normal</Trans>,
+//     podStatus: <Trans>Normal</Trans>,
 //     image:
 //       "registry-vpc.cn-beijing.aliyuncs.com/fluid/alluxioruntime-controller:vO.6.0-1c250b2",
 //     createTime: "2021-08-10 19:19:22",

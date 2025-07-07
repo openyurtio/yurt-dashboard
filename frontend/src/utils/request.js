@@ -1,5 +1,5 @@
-import { message } from 'antd';
 import { Trans } from '@lingui/react/macro';
+import { message } from 'antd';
 
 import { baseURL } from '../config';
 
@@ -16,7 +16,7 @@ export function sendRequest(path, data) {
     .then(
       res => res.json(),
       () => {
-        throw new Error(<Trans>网络问题，请检查您的网络连接</Trans>);
+        throw new Error(<Trans>Network issue, please check your network connection</Trans>);
       }
     )
     .then(res => {
@@ -142,7 +142,11 @@ export function getNodes(paras) {
         uid: rawNode.metadata.uid,
       },
       nodePool:
-        nodePoolKey in rawNode.metadata.labels ? rawNode.metadata.labels[nodePoolKey] : <Trans>无</Trans>,
+        nodePoolKey in rawNode.metadata.labels ? (
+          rawNode.metadata.labels[nodePoolKey]
+        ) : (
+          <Trans>None</Trans>
+        ),
       role: {
         role: nodeRoleKey in rawNode.metadata.labels ? 'master' : 'node',
         condition: getNodeCondition(rawNode),
@@ -202,7 +206,7 @@ export function getJobs(paras) {
         failed: job.status.failed,
         active: job.status.active,
       },
-      jobStatus: job.status.failed === 0 ? <Trans>正常</Trans> : <Trans>异常</Trans>,
+      jobStatus: job.status.failed === 0 ? <Trans>Normal</Trans> : <Trans>Abnormal</Trans>,
     };
   };
 
@@ -214,8 +218,8 @@ export function getPods(paras) {
     ...transformObject(pod, i),
     containers: pod.spec.containers.map(container => container.image),
     node: {
-      Name: pod.spec.nodeName ? pod.spec.nodeName : <Trans>无</Trans>,
-      IP: pod.status.hostIP ? pod.status.hostIP : <Trans>无</Trans>,
+      Name: pod.spec.nodeName ? pod.spec.nodeName : <Trans>None</Trans>,
+      IP: pod.status.hostIP ? pod.status.hostIP : <Trans>None</Trans>,
     },
     title: {
       Name: pod.metadata.name,

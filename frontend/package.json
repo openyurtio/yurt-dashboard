@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint ./src --fix",
+    "lint:check": "eslint ./src",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,scss,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,scss,md}\"",
@@ -33,6 +34,8 @@
     "@babel/preset-react": "^7.23.3",
     "@lingui/format-json": "^5.3.2",
     "@lingui/vite-plugin": "^5.3.2",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -50,13 +53,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "post-commit": "bic"
+      "pre-commit": "lint-staged"
     }
   },
-  "bic": [
-    "src"
-  ],
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
