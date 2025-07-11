@@ -139,7 +139,7 @@ const MySider = () => {
 };
 
 const contentFooter = (
-  <Footer style={{ textAlign: 'center' }}>OpenYurt Experience Center ©2021-2022</Footer>
+  <Footer style={{ textAlign: 'center' }}>OpenYurt ©2021-2022</Footer>
 );
 
 const helpEntrance = (

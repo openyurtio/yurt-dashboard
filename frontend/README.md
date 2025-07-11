@@ -1,6 +1,6 @@
-# OpenYurt Experience Center
+# OpenYurt
 
-This is the frontend application for the OpenYurt Experience Center, built with Vite + React.
+This is the frontend application for the OpenYurt, built with Vite + React.
 
 ## Features
 
