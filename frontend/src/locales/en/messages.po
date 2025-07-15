@@ -1,0 +1,596 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-07-07 07:28-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#: src/components/NodeManagement/NodePool.jsx:98
+msgid ", demonstrating how to use node pools for unitized deployment."
+msgstr ", demonstrating how to use node pools for unitized deployment."
+
+#: src/components/Cluster/EventTable.jsx:68
+msgid "100 items"
+msgstr "100 items"
+
+#: src/components/Cluster/EventTable.jsx:69
+msgid "200 items"
+msgstr "200 items"
+
+#: src/components/Cluster/EventTable.jsx:70
+msgid "500 items"
+msgstr "500 items"
+
+#: src/utils/request.js:205
+#: src/components/Utils/PieCharts.jsx:22
+msgid "Abnormal"
+msgstr "Abnormal"
+
+#: src/components/NodeManagement/Nodes.jsx:227
+msgid "Add Existing Node"
+msgstr "Add Existing Node"
+
+#: src/components/Utils/PieCharts.jsx:87
+msgid "All"
+msgstr "All"
+
+#: src/components/NodeManagement/Nodes.jsx:118
+#: src/components/NodeManagement/Nodes.jsx:137
+#: src/components/NodeManagement/Nodes.jsx:159
+#: src/components/NodeManagement/Nodes.jsx:191
+msgid "All Node Pools"
+msgstr "All Node Pools"
+
+#: src/components/NodeManagement/Nodes.jsx:150
+msgid "Annotations"
+msgstr "Annotations"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
+msgid "App Version"
+msgstr "App Version"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:75
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:97
+msgid "APP Version"
+msgstr "APP Version"
+
+#: src/components/Cluster/Dashboard.jsx:51
+msgid "Application Status"
+msgstr "Application Status"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:48
+msgid "Are you sure you want to uninstall the component?"
+msgstr "Are you sure you want to uninstall the component?"
+
+#: src/components/NodeManagement/NodePool.jsx:70
+msgid "At the application management level, OpenYurt has designed a complete application deployment model around node pools, such as:"
+msgstr "At the application management level, OpenYurt has designed a complete application deployment model around node pools, such as:"
+
+#: src/components/Utils/SelectableTable.jsx:47
+msgid "Batch Remove"
+msgstr "Batch Remove"
+
+#: src/components/Utils/ConfigEditorInput.jsx:134
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:50
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/components/Cluster/Certificate.jsx:17
+msgid "Certificate Expiry Time:"
+msgstr "Certificate Expiry Time:"
+
+#: src/components/Utils/ConfigEditorInput.jsx:154
+#: src/components/NodeManagement/Nodes.jsx:263
+msgid "Close"
+msgstr "Close"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:9
+msgid "Cluster Access"
+msgstr "Cluster Access"
+
+#: src/components/Utils/ContentWrapper.jsx:46
+msgid "Cluster Information"
+msgstr "Cluster Information"
+
+#: src/components/Cluster/ClusterInfo.jsx:27
+msgid "Cluster Overview"
+msgstr "Cluster Overview"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:19
+msgid "Complete"
+msgstr "Complete"
+
+#: src/components/WorkloadManagement/Job.jsx:35
+msgid "Completion Time"
+msgstr "Completion Time"
+
+#: src/components/User/GuideSteps/stepsConfig.jsx:14
+msgid "Component Installation"
+msgstr "Component Installation"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:100
+msgid "Configuration"
+msgstr "Configuration"
+
+#: src/components/Utils/ConfigEditorInput.jsx:83
+msgid "Configuration Changed"
+msgstr "Configuration Changed"
+
+#: src/components/Utils/ConfigEditorInput.jsx:92
+msgid "Configuration Editing"
+msgstr "Configuration Editing"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:116
+msgid "Configuration File"
+msgstr "Configuration File"
+
+#: src/components/Utils/ConfigEditorInput.jsx:130
+msgid "Configuration has been changed, discard changes?"
+msgstr "Configuration has been changed, discard changes?"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:100
+msgid "Configuration Method"
+msgstr "Configuration Method"
+
+#: src/components/Cluster/ConnectionInfo.jsx:23
+msgid "Configure Cluster Credentials:"
+msgstr "Configure Cluster Credentials:"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:49
+msgid "Confirm Uninstall"
+msgstr "Confirm Uninstall"
+
+#: src/components/User/LoginForm.jsx:27
+msgid "Congratulations on successful login, an OpenYurt cluster has been allocated for you! Please start experiencing😀."
+msgstr "Congratulations on successful login, an OpenYurt cluster has been allocated for you! Please start experiencing😀."
+
+#: src/components/User/Guide.jsx:36
+msgid "Congratulations on successful setup, please start experiencing😀."
+msgstr "Congratulations on successful setup, please start experiencing😀."
+
+#: src/components/Cluster/ConnectionInfo.jsx:14
+msgid "Connect to Kubernetes Cluster via kubectl"
+msgstr "Connect to Kubernetes Cluster via kubectl"
+
+#: src/components/Cluster/ClusterInfo.jsx:19
+msgid "Connection Information"
+msgstr "Connection Information"
+
+#: src/components/Cluster/EventTable.jsx:23
+msgid "Content"
+msgstr "Content"
+
+#: src/components/NodeManagement/Nodes.jsx:260
+msgid "Copy and Close"
+msgstr "Copy and Close"
+
+#: src/components/Cluster/Certificate.jsx:15
+msgid "Copy the following content to your computer's $HOME/.kube/config file"
+msgstr "Copy the following content to your computer's $HOME/.kube/config file"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:35
+#: src/components/WorkloadManagement/Pod.jsx:41
+#: src/components/WorkloadManagement/Job.jsx:31
+#: src/components/NodeManagement/Nodes.jsx:68
+#: src/components/NodeManagement/NodePool.jsx:36
+msgid "Creation Time"
+msgstr "Creation Time"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:74
+msgid "Current Version"
+msgstr "Current Version"
+
+#: src/components/Utils/ConfigEditorInput.jsx:106
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:103
+msgid "Default Configuration"
+msgstr "Default Configuration"
+
+#: src/components/Lab/Lab.jsx:187
+msgid "Deployment Name"
+msgstr "Deployment Name"
+
+#: src/components/Utils/ConfigEditorInput.jsx:132
+msgid "Discard Changes"
+msgstr "Discard Changes"
+
+#: src/components/NodeManagement/Nodes.jsx:239
+#: src/components/Lab/Lab.jsx:121
+msgid "Documentation➡️"
+msgstr "Documentation➡️"
+
+#: src/components/NodeManagement/Nodes.jsx:234
+msgid "Don't know how to add nodes😕? Refer to"
+msgstr "Don't know how to add nodes😕? Refer to"
+
+#: src/components/Cluster/EventTable.jsx:74
+msgid "Download"
+msgstr "Download"
+
+#: src/components/Utils/ConfigEditorInput.jsx:81
+msgid "Edit Configuration"
+msgstr "Edit Configuration"
+
+#: src/components/Cluster/EventTable.jsx:61
+msgid "Events"
+msgstr "Events"
+
+#: src/components/NodeManagement/NodePool.jsx:96
+msgid "Example"
+msgstr "Example"
+
+#: src/components/Utils/ContentWrapper.jsx:184
+msgid "Exit"
+msgstr "Exit"
+
+#: src/components/NodeManagement/NodePool.jsx:32
+msgid "Failed"
+msgstr "Failed"
+
+#: src/components/NodeManagement/Nodes.jsx:211
+msgid "Failed to get join script, some issues occurred"
+msgstr "Failed to get join script, some issues occurred"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:41
+msgid "Feature is under development, please stay tuned"
+msgstr "Feature is under development, please stay tuned"
+
+#: src/components/Utils/SelectableTable.jsx:43
+msgid "Feature under development, please stay tuned"
+msgstr "Feature under development, please stay tuned"
+
+#: src/components/Utils/ContentWrapper.jsx:120
+msgid "Feedback Portal"
+msgstr "Feedback Portal"
+
+#: src/components/Utils/ConfigEditorInput.jsx:232
+msgid "File download has started, will be saved as"
+msgstr "File download has started, will be saved as"
+
+#: src/components/Utils/ContentWrapper.jsx:132
+msgid "Help Documentation"
+msgstr "Help Documentation"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:31
+#: src/components/WorkloadManagement/Pod.jsx:37
+#: src/components/WorkloadManagement/Job.jsx:27
+msgid "Image"
+msgstr "Image"
+
+#: src/components/Cluster/EventTable.jsx:19
+msgid "Information"
+msgstr "Information"
+
+#: src/components/Lab/Lab.jsx:174
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:56
+msgid "Install"
+msgstr "Install"
+
+#: src/components/Cluster/ConnectionInfo.jsx:21
+msgid "Install and Configure kubectl"
+msgstr "Install and Configure kubectl"
+
+#: src/components/Cluster/ConnectionInfo.jsx:17
+msgid "Install and configure kubectl client, for detailed information please refer to"
+msgstr "Install and configure kubectl client, for detailed information please refer to"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:165
+msgid "Install Components"
+msgstr "Install Components"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:81
+msgid "Installation Failed:"
+msgstr "Installation Failed:"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:73
+msgid "Installation process is affected by network environment, estimated to take 2 minutes."
+msgstr "Installation process is affected by network environment, estimated to take 2 minutes."
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:142
+msgid "Installation Successful"
+msgstr "Installation Successful"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:76
+msgid "Installation Successful! Installed Components:"
+msgstr "Installation Successful! Installed Components:"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:73
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:77
+msgid "Introduction"
+msgstr "Introduction"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:93
+msgid "items"
+msgstr "items"
+
+#: src/components/NodeManagement/Nodes.jsx:63
+msgid "Kubelet Version/Runtime Version/OS Version"
+msgstr "Kubelet Version/Runtime Version/OS Version"
+
+#: src/components/Utils/ContentWrapper.jsx:95
+msgid "Lab"
+msgstr "Lab"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:15
+#: src/components/WorkloadManagement/Pod.jsx:22
+#: src/components/WorkloadManagement/Job.jsx:13
+#: src/components/NodeManagement/Nodes.jsx:149
+msgid "Labels"
+msgstr "Labels"
+
+#: src/components/Lab/Lab.jsx:168
+msgid "More Details"
+msgstr "More Details"
+
+#: src/components/Lab/Lab.jsx:124
+msgid "More sample applications coming soon, please stay tuned😁!"
+msgstr "More sample applications coming soon, please stay tuned😁!"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:11
+#: src/components/WorkloadManagement/Job.jsx:9
+#: src/components/NodeManagement/Nodes.jsx:148
+#: src/components/NodeManagement/NodePool.jsx:10
+#: src/components/Lab/Lab.jsx:187
+msgid "Name"
+msgstr "Name"
+
+#: src/components/WorkloadManagement/Pod.jsx:9
+#: src/components/NodeManagement/Nodes.jsx:21
+msgid "Name/IP Address/Instance ID"
+msgstr "Name/IP Address/Instance ID"
+
+#: src/components/Cluster/Overview.jsx:35
+msgid "Namespace"
+msgstr "Namespace"
+
+#: src/utils/request.js:19
+msgid "Network issue, please check your network connection"
+msgstr "Network issue, please check your network connection"
+
+#: src/components/WorkloadManagement/Pod.jsx:32
+#: src/components/Utils/ContentWrapper.jsx:59
+msgid "Node"
+msgstr "Node"
+
+#: src/components/NodeManagement/Nodes.jsx:94
+msgid "Node autonomy setting failed: refresh Node list"
+msgstr "Node autonomy setting failed: refresh Node list"
+
+#. placeholder {0}: checked ? 'ON' : 'OFF'
+#: src/components/NodeManagement/Nodes.jsx:97
+msgid "Node autonomy setting successful: {0}"
+msgstr "Node autonomy setting successful: {0}"
+
+#: src/components/NodeManagement/Nodes.jsx:83
+msgid "Node Autonomy:"
+msgstr "Node Autonomy:"
+
+#: src/components/NodeManagement/Nodes.jsx:53
+msgid "Node Configuration"
+msgstr "Node Configuration"
+
+#: src/components/NodeManagement/NodePool.jsx:26
+msgid "Node Count"
+msgstr "Node Count"
+
+#: src/components/NodeManagement/Nodes.jsx:250
+msgid "Node Join Script"
+msgstr "Node Join Script"
+
+#: src/components/Utils/ContentWrapper.jsx:51
+msgid "Node Management"
+msgstr "Node Management"
+
+#: src/components/Utils/ContentWrapper.jsx:55
+#: src/components/NodeManagement/Nodes.jsx:34
+msgid "Node Pool"
+msgstr "Node Pool"
+
+#: src/components/NodeManagement/NodePool.jsx:68
+msgid "Node Pool is a capability designed by OpenYurt for edge resource management scenarios. Edge site resources can be classified according to geographical distribution and divided into different node pools."
+msgstr "Node Pool is a capability designed by OpenYurt for edge resource management scenarios. Edge site resources can be classified according to geographical distribution and divided into different node pools."
+
+#: src/components/NodeManagement/Nodes.jsx:58
+#: src/components/Cluster/Dashboard.jsx:77
+msgid "Node Status"
+msgstr "Node Status"
+
+#: src/utils/request.js:145
+#: src/utils/request.js:221
+#: src/utils/request.js:222
+msgid "None"
+msgstr "None"
+
+#: src/utils/request.js:205
+#: src/components/Utils/Status.jsx:8
+#: src/components/Utils/PieCharts.jsx:21
+#: src/components/Utils/PieCharts.jsx:86
+#: src/components/NodeManagement/NodePool.jsx:31
+msgid "Normal"
+msgstr "Normal"
+
+#: src/components/Lab/Lab.jsx:199
+msgid "Number of Deployment Instances"
+msgstr "Number of Deployment Instances"
+
+#: src/components/Cluster/EventTable.jsx:15
+msgid "Object"
+msgstr "Object"
+
+#: src/components/Lab/Lab.jsx:116
+msgid "One-click deployment of sample applications to your OpenYurt cluster. Don't know how to deploy? Please refer to"
+msgstr "One-click deployment of sample applications to your OpenYurt cluster. Don't know how to deploy? Please refer to"
+
+#: src/components/NodeManagement/Nodes.jsx:72
+msgid "Operations"
+msgstr "Operations"
+
+#: src/components/Cluster/ClusterInfo.jsx:13
+msgid "Overview"
+msgstr "Overview"
+
+#: src/components/WorkloadManagement/WorkloadTemplate.jsx:20
+msgid "Pod Count"
+msgstr "Pod Count"
+
+#: src/components/WorkloadManagement/Job.jsx:22
+msgid "Pod Status"
+msgstr "Pod Status"
+
+#: src/components/Utils/ContentWrapper.jsx:76
+msgid "Pods"
+msgstr "Pods"
+
+#: src/components/Cluster/ConnectionInfo.jsx:32
+msgid "Public Network Access"
+msgstr "Public Network Access"
+
+#: src/components/User/Guide.jsx:51
+msgid "Quick Setup"
+msgstr "Quick Setup"
+
+#: src/components/NodeManagement/Nodes.jsx:241
+msgid "Quick Start Experience Center"
+msgstr "Quick Start Experience Center"
+
+#: src/components/Cluster/ConnectionInfo.jsx:19
+msgid "Related Documentation"
+msgstr "Related Documentation"
+
+#: src/components/Lab/Lab.jsx:199
+msgid "Replicas"
+msgstr "Replicas"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:159
+msgid "Retry Installation"
+msgstr "Retry Installation"
+
+#: src/components/NodeManagement/Nodes.jsx:38
+msgid "Role/Status"
+msgstr "Role/Status"
+
+#: src/components/Lab/Lab.jsx:15
+msgid "RSSHub is an open source, simple and easy-to-use, easily extensible RSS generator that can generate RSS feeds for any strange content. RSSHub is rapidly developing with the power of the open source community and has currently adapted thousands of content from hundreds of websites."
+msgstr "RSSHub is an open source, simple and easy-to-use, easily extensible RSS generator that can generate RSS feeds for any strange content. RSSHub is rapidly developing with the power of the open source community and has currently adapted thousands of content from hundreds of websites."
+
+#: src/components/Utils/ConfigEditorInput.jsx:163
+msgid "Save"
+msgstr "Save"
+
+#: src/components/Utils/ConfigEditorInput.jsx:125
+msgid "Save Configuration"
+msgstr "Save Configuration"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:100
+msgid "Select All"
+msgstr "Select All"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
+msgid "Select Chart Package Version to Install"
+msgstr "Select Chart Package Version to Install"
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:161
+msgid "Skip"
+msgstr "Skip"
+
+#: src/utils/hooks.js:80
+msgid "Sorry, your trial account has reached 7 days, and the platform will clear the resources under the account. You can choose to register a new account to continue experiencing OpenYurt capabilities."
+msgstr "Sorry, your trial account has reached 7 days, and the platform will clear the resources under the account. You can choose to register a new account to continue experiencing OpenYurt capabilities."
+
+#: src/components/Utils/ContentWrapper.jsx:84
+msgid "Stateful"
+msgstr "Stateful"
+
+#: src/components/Utils/ContentWrapper.jsx:80
+msgid "Stateless"
+msgstr "Stateless"
+
+#: src/components/WorkloadManagement/Pod.jsx:27
+#: src/components/WorkloadManagement/Job.jsx:17
+msgid "Status"
+msgstr "Status"
+
+#: src/components/Utils/ContentWrapper.jsx:71
+msgid "System Applications"
+msgstr "System Applications"
+
+#: src/components/Utils/ContentWrapper.jsx:88
+msgid "Tasks"
+msgstr "Tasks"
+
+#: src/components/User/GuideSteps/ConnectCluster.jsx:39
+msgid "Testing cluster connectivity..."
+msgstr "Testing cluster connectivity..."
+
+#: src/components/NodeManagement/NodePool.jsx:91
+msgid "The experience center provides a simple"
+msgstr "The experience center provides a simple"
+
+#: src/components/Cluster/EventTable.jsx:27
+msgid "Time"
+msgstr "Time"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:130
+msgid "Tips: Please connect at least one node first, then try to install the feature😄."
+msgstr "Tips: Please connect at least one node first, then try to install the feature😄."
+
+#: src/components/User/GuideSteps/OpenYurtApp.jsx:93
+#: src/components/NodeManagement/NodePool.jsx:30
+msgid "Total"
+msgstr "Total"
+
+#: src/components/NodeManagement/NodePool.jsx:11
+#: src/components/Cluster/EventTable.jsx:11
+msgid "Type"
+msgstr "Type"
+
+#: src/components/Lab/Lab.jsx:171
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:58
+msgid "Uninstall"
+msgstr "Uninstall"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:87
+msgid "Uninstalled Successfully"
+msgstr "Uninstalled Successfully"
+
+#: src/components/NodeManagement/NodePool.jsx:82
+msgid "Unitized DaemonSet:"
+msgstr "Unitized DaemonSet:"
+
+#: src/components/NodeManagement/NodePool.jsx:73
+msgid "Unitized Deployment:"
+msgstr "Unitized Deployment:"
+
+#: src/components/AppManagement/Modals/SystemAppManage.jsx:44
+msgid "Upgrade"
+msgstr "Upgrade"
+
+#: src/components/Utils/ConfigEditorInput.jsx:116
+msgid "Upload Configuration"
+msgstr "Upload Configuration"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:104
+msgid "Use Configuration File"
+msgstr "Use Configuration File"
+
+#: src/components/AppManagement/Modals/SystemAppInstall.jsx:78
+msgid "Version"
+msgstr "Version"
+
+#: src/components/Lab/Lab.jsx:22
+msgid "WordPress is a free and open source blog software and content management system based on PHP and MySQL. WordPress is the most popular website content management system. About 30% of websites worldwide are built using WordPress."
+msgstr "WordPress is a free and open source blog software and content management system based on PHP and MySQL. WordPress is the most popular website content management system. About 30% of websites worldwide are built using WordPress."
+
+#: src/components/Utils/ContentWrapper.jsx:66
+msgid "Workloads"
+msgstr "Workloads"
+
+#. placeholder {0}: getUserLastTime(userProfile.status.effectiveTime)
+#: src/components/Utils/ContentWrapper.jsx:167
+msgid "Your account expires in {0} days"
+msgstr "Your account expires in {0} days"
+
+#: src/utils/hooks.js:91
+msgid "Your account will expire in {lastTime} days"
+msgstr "Your account will expire in {lastTime} days"

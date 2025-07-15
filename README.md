@@ -68,7 +68,7 @@ yurt-dashboard is the web console for OpenYurt Novice Trial Platform.
 
 ## Documentation
 
-- [x] [OpenYurt Experience Center overall introduction](https://openyurt.io/docs/next/installation/openyurt-experience-center/overview)
+- [x] [OpenYurt overall introduction](https://openyurt.io/docs/next/installation/openyurt-experience-center/overview)
 - [x] [How to create an account in the experience center and get an out-of-box OpenYurt cluster](https://openyurt.io/docs/next/installation/openyurt-experience-center/user)
 - [x] [How to join an user's node to the cluster and quickly deploy an app with one click](https://openyurt.io/docs/next/installation/openyurt-experience-center/web_console)
 - [x] [How to use `kubeconfig` to experience OpenYurt capabilities](https://openyurt.io/docs/next/installation/openyurt-experience-center/kubeconfig)

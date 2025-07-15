@@ -1,12 +1,12 @@
+import { BulbOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Result, Typography } from 'antd';
+import Animate from 'rc-animate';
+import { useEffect, useState } from 'react';
 import arch from '../../assets/architecture.png';
 import autonomy from '../../assets/autonomy.png';
 import easy from '../../assets/easy.png';
-import unit from '../../assets/unit.png';
 import tunnel from '../../assets/tunnel.png';
-import Animate from 'rc-animate';
-import { useEffect, useState } from 'react';
-import { LoadingOutlined, BulbOutlined } from '@ant-design/icons';
-import { Result, Button, Typography } from 'antd';
+import unit from '../../assets/unit.png';
 
 const { Paragraph, Text, Link } = Typography;
 
@@ -58,7 +58,7 @@ export function LoadingBlock() {
 
   // switch the gallary content every 4s
   useEffect(() => {
-    let handler = setInterval(() => setId(i => (i + 1) % introList.length), 3000);
+    const handler = setInterval(() => setId(i => (i + 1) % introList.length), 3000);
     return handler ? () => clearInterval(handler) : null;
   }, []);
 
@@ -112,13 +112,15 @@ export function CompleteBlock({ res }) {
       buttonTxt: 'Go to Login',
       tipTitle: '在进入Web控制台前，请先阅读以下说明:',
       tips: [
-        <span>您的试用平台账号默认有效期为7天，7天之后系统会自动注销您的账号，并清空相关资源</span>,
-        <span>
+        <span key="tip1">
+          您的试用平台账号默认有效期为7天，7天之后系统会自动注销您的账号，并清空相关资源
+        </span>,
+        <span key="tip2">
           您的试用平台账号为您注册时填写的手机号📱
           <Text mark>{res.spec.mobilephone} </Text>，密码🔑 <Text mark>{res.spec.token}</Text>
           ，请妥善保管
         </span>,
-        <span>
+        <span key="tip3">
           若您还有其他问题可向
           <Link
             target="_blank"

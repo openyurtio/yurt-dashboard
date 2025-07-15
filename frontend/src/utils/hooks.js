@@ -1,9 +1,10 @@
 // customized hooks
+import { Trans } from '@lingui/react/macro';
 import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
-import { getUserLastTime, getUserProfile, clearUserProfile, setUserProfile } from './utils';
+import { clearUserProfile, getUserLastTime, getUserProfile, setUserProfile } from './utils';
 
 // use sessionStorage to cache state
 export function useSessionState(cache_key, default_val) {
@@ -76,7 +77,11 @@ export function useUserProfile() {
     if (lastTime <= 0) {
       // show expire tips
       message.error(
-        '对不起，您的试用账号已满7天，平台将清空账号下资源。您可以选择重新注册一个账号，继续体验OpenYurt的能力。',
+        <Trans>
+          Sorry, your trial account has reached 7 days, and the platform will clear the resources
+          under the account. You can choose to register a new account to continue experiencing
+          OpenYurt capabilities.
+        </Trans>,
         5
       );
       // clear the expired user data
@@ -87,7 +92,7 @@ export function useUserProfile() {
     // if the account is about to expire
     else if (lastTime <= 3 && firstNotice) {
       firstNotice = false; // only display this msg once
-      message.warn(`您的账户将在${lastTime}日后过期`, 5);
+      message.warn(<Trans>Your account will expire in {lastTime} days</Trans>, 5);
     }
   }, [user]);
 

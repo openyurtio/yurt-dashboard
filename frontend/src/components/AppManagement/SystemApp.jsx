@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { sendUserRequest } from '../../utils/request';
 
-import { Typography, Input, Radio, List, Card, Popover, Space, Button, message } from 'antd';
 import {
-  SearchOutlined,
   CheckCircleTwoTone,
-  QuestionCircleTwoTone,
-  LoadingOutlined,
   ExclamationCircleTwoTone,
+  LoadingOutlined,
+  QuestionCircleTwoTone,
+  SearchOutlined,
   WarningTwoTone,
 } from '@ant-design/icons';
+import { Button, Card, Input, List, message, Popover, Radio, Space, Typography } from 'antd';
 
+import { getCurrentTime } from '../../utils/utils';
 import SystemAppInstallModal from './Modals/SystemAppInstall';
 import SystemAppManageModal from './Modals/SystemAppManage';
-import { getCurrentTime } from '../../utils/utils';
 
 const { Paragraph, Link } = Typography;
 
@@ -75,7 +75,7 @@ export default function SystemApp() {
   const [manageVisible, setManageVisible] = useState(false);
   const openModal = data => {
     setOperationConfig(data);
-    if (!!data.status) {
+    if (data.status) {
       switch (data.status) {
         case 'deployed':
         case 'failed':
@@ -96,7 +96,7 @@ export default function SystemApp() {
 
   // status popover
   const StatusPopover = (supported, status) => {
-    var popovers = [];
+    const popovers = [];
     if (!supported) {
       popovers.push(
         <Popover
@@ -110,7 +110,7 @@ export default function SystemApp() {
       );
     }
 
-    var statusInfoKey = '';
+    let statusInfoKey = '';
     switch (status) {
       case 'undeployed':
         break;

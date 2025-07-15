@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: {{ .Values.dashboard.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 4000
               protocol: TCP
           env:
             - name: SHOW_GUIDE_PAGE

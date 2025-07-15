@@ -1,15 +1,16 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { useUserProfile } from './hooks';
 
 // Routing page accessible only by administrators
-const AdminRoute = ({ key, path, render }) => {
-  const [userProfile] = useUserProfile();
-  return userProfile && userProfile.metadata.name === 'admin' ? (
-    <Route key={key} path={path} render={render} />
-  ) : (
-    <Redirect to="/clusterInfo" />
-  );
+const AdminRoute = ({ children }) => {
+  const userProfile = useUserProfile();
+
+  if (!userProfile || userProfile.metadata.name !== 'admin') {
+    return <Navigate to="/clusterInfo" replace />;
+  }
+
+  return children;
 };
 
 export default AdminRoute;

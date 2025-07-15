@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Button } from 'antd';
 import { copy2clipboard } from '../../utils/utils';
 
@@ -11,9 +12,9 @@ export default function Certificate({ content, time }) {
           marginBottom: 25,
         }}
       >
-        将以下内容复制到计算机 $HOME/.kube/config 文件下
+        <Trans>Copy the following content to your computer's $HOME/.kube/config file</Trans>
         <span style={{ float: 'right' }}>
-          凭证过期时间： <b>{time}</b>
+          <Trans>Certificate Expiry Time:</Trans> <b>{time}</b>
         </span>
       </div>
       <pre>

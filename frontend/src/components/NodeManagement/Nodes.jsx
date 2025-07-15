@@ -1,12 +1,13 @@
-import { Button, Input, Modal, Select, Menu, Dropdown, Switch, message, Typography } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
+import { Button, Dropdown, Input, message, Modal, Select, Switch, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { getNodes, getNodepools, sendUserRequest } from '../../utils/request';
+import { useUserProfile } from '../../utils/hooks';
+import { getNodepools, getNodes, sendUserRequest } from '../../utils/request';
+import { copy2clipboard, renderDictCell } from '../../utils/utils';
 import RSelect from '../Utils/RefreshableSelect';
 import STable from '../Utils/SelectableTable';
-import { renderDictCell, copy2clipboard } from '../../utils/utils';
 import { Status } from '../Utils/Status';
-import { useUserProfile } from '../../utils/hooks';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -17,7 +18,7 @@ export default function Nodes() {
   // table columns
   const columns = [
     {
-      title: '名称/IP地址/实例 ID',
+      title: <Trans>Name/IP Address/Instance ID</Trans>,
       dataIndex: 'title',
       render: node => {
         return (
@@ -30,11 +31,11 @@ export default function Nodes() {
       },
     },
     {
-      title: '所属节点池',
+      title: <Trans>Node Pool</Trans>,
       dataIndex: 'nodePool',
     },
     {
-      title: '角色/状态',
+      title: <Trans>Role/Status</Trans>,
       dataIndex: 'role',
       render: node => {
         return (
@@ -49,55 +50,66 @@ export default function Nodes() {
       },
     },
     {
-      title: '节点配置',
+      title: <Trans>Node Configuration</Trans>,
       dataIndex: 'config',
       render: node => renderDictCell(node),
     },
     {
-      title: '节点状态',
+      title: <Trans>Node Status</Trans>,
       dataIndex: 'status',
       render: node => renderDictCell(node),
     },
     {
-      title: 'Kubelet版本/Runtime版本/OS版本',
+      title: <Trans>Kubelet Version/Runtime Version/OS Version</Trans>,
       dataIndex: 'version',
       render: node => renderDictCell(node),
     },
     {
-      title: '创建时间',
+      title: <Trans>Creation Time</Trans>,
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
+      title: <Trans>Operations</Trans>,
       dataIndex: 'operations',
       render: ({ Autonomy, NodeName }) => (
         <Dropdown
           placement="bottomCenter"
-          overlay={
-            <Menu>
-              <Menu.Item key="1">
-                节点自治：
-                <Switch
-                  size="small"
-                  defaultChecked={Autonomy === 'true'}
-                  onChange={checked => {
-                    sendUserRequest('/setNodeAutonomy', {
-                      NodeName,
-                      Autonomy: String(checked),
-                    }).then(res => {
-                      // if autonomy set fail, refresh the whole table
-                      if (res.status === 'error') {
-                        message.info('节点自治设置失败：刷新Node列表');
-                        onRefresh();
-                      } else {
-                        message.info(`节点自治设置成功: ${checked ? 'ON' : 'OFF'}`);
-                      }
-                    });
-                  }}
-                />
-              </Menu.Item>
-            </Menu>
-          }
+          menu={{
+            items: [
+              {
+                key: '1',
+                label: (
+                  <div>
+                    <Trans>Node Autonomy:</Trans>
+                    <Switch
+                      size="small"
+                      defaultChecked={Autonomy === 'true'}
+                      onChange={checked => {
+                        sendUserRequest('/setNodeAutonomy', {
+                          NodeName,
+                          Autonomy: String(checked),
+                        }).then(res => {
+                          // if autonomy set fail, refresh the whole table
+                          if (res.status === 'error') {
+                            message.info(
+                              <Trans>Node autonomy setting failed: refresh Node list</Trans>
+                            );
+                            onRefresh();
+                          } else {
+                            message.info(
+                              <Trans>
+                                Node autonomy setting successful: {checked ? 'ON' : 'OFF'}
+                              </Trans>
+                            );
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                ),
+              },
+            ],
+          }}
         >
           <MoreOutlined style={{ cursor: 'pointer', width: '100%' }} />
         </Dropdown>
@@ -109,14 +121,14 @@ export default function Nodes() {
   // for filter components
   const [searchOption, setOption] = useState('title');
   const [searchValue, setSearchVal] = useState('');
-  const [selectedNp, setNp] = useState('所有节点池');
+  const [selectedNp, setNp] = useState(<Trans>All Node Pools</Trans>);
 
   const [allNodes, setAllNodes] = useState(null); // all nodes
   const [nodes, setNodes] = useState(allNodes); // display nodes after filtering
 
   const filterNodes = (searchContent, selectedNodePool) => {
-    let filterValue = searchContent ? searchContent : searchValue;
-    let filterNp = selectedNodePool ? selectedNodePool : selectedNp;
+    const filterValue = searchContent || searchValue;
+    const filterNp = selectedNodePool || selectedNp;
 
     setNodes(
       allNodes &&
@@ -128,7 +140,7 @@ export default function Nodes() {
           )
           .filter(
             // filter by selected nodepool
-            node => filterNp === '所有节点池' || node.nodePool === filterNp
+            node => filterNp === <Trans>All Node Pools</Trans> || node.nodePool === filterNp
           )
     );
   };
@@ -139,9 +151,9 @@ export default function Nodes() {
 
   // filter options
   const options = [
-    { content: '名称', dataIndex: 'title' },
-    { content: '标签', dataIndex: 'tag' },
-    { content: '标注', dataIndex: 'annotations' },
+    { content: <Trans>Name</Trans>, dataIndex: 'title' },
+    { content: <Trans>Labels</Trans>, dataIndex: 'tag' },
+    { content: <Trans>Annotations</Trans>, dataIndex: 'annotations' },
   ];
 
   // refresh the whole table and reset all filter options
@@ -150,7 +162,7 @@ export default function Nodes() {
     setNodes(null);
     setSearchVal('');
     setOption('title');
-    setNp('所有节点池');
+    setNp(<Trans>All Node Pools</Trans>);
     return getNodes().then(nodes => {
       setAllNodes(nodes);
       setNodes(nodes);
@@ -180,9 +192,9 @@ export default function Nodes() {
 
       <RSelect
         handleRefresh={useCallback(async () => {
-          // add "所有节点池" in select options anyway
+          // add "All Node Pools" in select options anyway
           return getNodepools().then(nps => {
-            return ['所有节点池', ...nps.map(np => np.title)];
+            return [<Trans>All Node Pools</Trans>, ...nps.map(np => np.title)];
           });
         }, [])}
         handleChange={selectedNodePool => {
@@ -200,9 +212,11 @@ export default function Nodes() {
   // nodeaddscript modal
   const [visible, setVisible] = useState(false);
   const [userProfile] = useUserProfile();
-  const nodeAddScript = userProfile
-    ? userProfile.spec.nodeAddScript
-    : '获取接入脚本失败，出现了一些问题';
+  const nodeAddScript = userProfile ? (
+    userProfile.spec.nodeAddScript
+  ) : (
+    <Trans>Failed to get join script, some issues occurred</Trans>
+  );
   const onCancel = () => {
     setVisible(false);
   };
@@ -218,21 +232,21 @@ export default function Nodes() {
             setVisible(true);
           }}
         >
-          添加已有节点
+          <Trans>Add Existing Node</Trans>
         </Button>
         {
           // display help information for users has no nodes joined
           allNodes && allNodes.length === 0 ? (
             <Paragraph>
               <blockquote>
-                不知道如何添加节点😕?参考
+                <Trans>Don't know how to add nodes😕? Refer to</Trans>
                 <Link
                   href="https://openyurt.io/docs/installation/openyurt-experience-center/web_console"
                   target="_blank"
                 >
-                  文档➡️
+                  <Trans>Documentation➡️</Trans>
                 </Link>
-                快速上手体验中心
+                <Trans>Quick Start Experience Center</Trans>
               </blockquote>
             </Paragraph>
           ) : null
@@ -241,7 +255,7 @@ export default function Nodes() {
 
       <Modal
         visible={visible}
-        title="节点接入脚本"
+        title={<Trans>Node Join Script</Trans>}
         onCancel={onCancel}
         footer={[
           <Button
@@ -251,10 +265,10 @@ export default function Nodes() {
               setVisible(false);
             }}
           >
-            复制并关闭
+            <Trans>Copy and Close</Trans>
           </Button>,
           <Button key="close" type="primary" onClick={onCancel}>
-            关闭
+            <Trans>Close</Trans>
           </Button>,
         ]}
       >

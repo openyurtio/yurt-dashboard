@@ -1,22 +1,23 @@
-import STable from '../Utils/SelectableTable';
-import { Input } from 'antd';
-import { renderDictCell } from '../../utils/utils';
-import { useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
+import { Trans } from '@lingui/react/macro';
+import { Input } from 'antd';
+import { useState } from 'react';
 import { useResourceState } from '../../utils/hooks';
+import { renderDictCell } from '../../utils/utils';
+import STable from '../Utils/SelectableTable';
 
 const columns = [
   {
-    title: '名称',
+    title: <Trans>Name</Trans>,
     dataIndex: 'title',
   },
   {
-    title: '标签',
+    title: <Trans>Labels</Trans>,
     dataIndex: 'tag',
     render: dp => renderDictCell(dp),
   },
   {
-    title: '容器组数量',
+    title: <Trans>Pod Count</Trans>,
     dataIndex: 'status',
     render: status => {
       return (
@@ -27,19 +28,19 @@ const columns = [
     },
   },
   {
-    title: '镜像',
+    title: <Trans>Image</Trans>,
     dataIndex: 'image',
   },
   {
-    title: '创建时间',
+    title: <Trans>Creation Time</Trans>,
     dataIndex: 'createTime',
   },
   // {
-  //   title: "操作",
+  //   title: <Trans>Operations</Trans>,
   //   dataIndex: "operation",
   //   render: () => (
   //     <div>
-  //       <a>详情</a> |<a>编辑</a> |<a>伸缩</a> |<a>监控</a> | <a>更多</a>
+  //       <a><Trans>Details</Trans></a> |<a><Trans>Edit</Trans></a> |<a><Trans>Scale</Trans></a> |<a><Trans>Monitor</Trans></a> | <a><Trans>More</Trans></a>
   //     </div>
   //   ),
   // },

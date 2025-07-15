@@ -1,10 +1,11 @@
 import { message, Select } from 'antd';
 import './cluster.css';
-import { Dashboard } from './Dashborad';
+import { Dashboard } from './Dashboard';
 // import { EventTable } from "./EventTable";
-import { Status } from '../Utils/Status';
+import { Trans } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
 import { useLocationMsg, useUserProfile } from '../../utils/hooks';
+import { Status } from '../Utils/Status';
 
 const { Option } = Select;
 
@@ -16,8 +17,8 @@ export default function ClusterOverview() {
   const namespace = !userProfile
     ? 'NULL'
     : userProfile.spec.namespace
-    ? userProfile.spec.namespace
-    : 'ALL';
+      ? userProfile.spec.namespace
+      : 'ALL';
 
   const [connStatus, setStatus] = useState('Loading');
   const setConnStatus = useCallback(res => {
@@ -31,7 +32,7 @@ export default function ClusterOverview() {
   return (
     <div>
       <div>
-        命名空间
+        <Trans>Namespace</Trans>
         <Select defaultValue={namespace} style={{ width: 135, margin: '0 5px' }} disabled>
           <Option value={namespace}>{namespace}</Option>
         </Select>
@@ -40,7 +41,7 @@ export default function ClusterOverview() {
         </div>
       </div>
 
-      <div style={{ margin: '20px 0' }}>
+      <div style={{ margin: '20px 20px 0' }}>
         <Dashboard setConnStatus={setConnStatus} />
         {/* <EventTable /> */}
       </div>

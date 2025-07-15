@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { Button, Checkbox, message } from 'antd';
 import { useState } from 'react';
 import { sendRequest } from '../../../utils/request';
@@ -13,7 +14,7 @@ const compareApps = (a, b) => {
 };
 
 const getAllChecked = appList => {
-  let a = [];
+  const a = [];
   appList.forEach(item => {
     a.push(item.name);
   });
@@ -21,7 +22,7 @@ const getAllChecked = appList => {
 };
 
 const getDefaultChecked = appList => {
-  let a = [];
+  const a = [];
   appList.forEach(item => {
     if (item.required) {
       a.push(item.name);
@@ -38,8 +39,8 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
   const [isErrorTip, setIsErrorTip] = useState(false);
   const [appDesc, setAppDesc] = useState('');
 
-  let allChecked = getAllChecked(guideInfo.openyurt_apps);
-  let defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
+  const allChecked = getAllChecked(guideInfo.openyurt_apps);
+  const defaultChecked = getDefaultChecked(guideInfo.openyurt_apps);
   const [checkedList, setCheckedList] = useState(defaultChecked);
   const [indeterminate, setIndeterminate] = useState(
     defaultChecked.length && defaultChecked.length < allChecked.length
@@ -69,15 +70,19 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
 
   const installOpenYurtApp = () => {
     setLoading(true);
-    setTips('安装过程受网络环境影响，预计耗时2分钟。');
+    setTips(
+      <Trans>
+        Installation process is affected by network environment, estimated to take 2 minutes.
+      </Trans>
+    );
     sendRequest('/system/appInstallFromGuide', { apps_name: checkedList }).then(
       res => {
-        message.success('安装成功！已安装组件：' + res.msg);
+        message.success(<Trans>Installation Successful! Installed Components:</Trans> + res.msg);
         onStepFinish();
       },
       err => {
         console.log(err);
-        setErrorTips('安装失败：' + err.message);
+        setErrorTips(<Trans>Installation Failed:</Trans> + err.message);
         setInstallFailed(true);
         setLoading(false);
       }
@@ -89,20 +94,37 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
       <div style={{ display: 'flex', height: 200 }}>
         <div style={{ width: 150 }}>
           <div style={{ display: 'flex' }}>
-            <p>共{guideInfo.openyurt_apps.length}项</p>
+            <p>
+              <Trans>Total</Trans>
+              {guideInfo.openyurt_apps.length}
+              <Trans>items</Trans>
+            </p>
             <Checkbox
               style={{ marginLeft: 10 }}
               indeterminate={indeterminate}
               onChange={onCheckAllChange}
               checked={checkAll}
             >
-              全选
+              <Trans>Select All</Trans>
             </Checkbox>
           </div>
           <Checkbox.Group
             style={{ display: 'grid', gridGap: '10px' }}
             options={guideInfo.openyurt_apps.sort(compareApps).map(info => ({
-              label: <label onClick={() => setAppDesc(info.desc)}>{info.name}</label>,
+              label: (
+                <button
+                  type="button"
+                  onClick={() => setAppDesc(info.desc)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setAppDesc(info.desc);
+                    }
+                  }}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                >
+                  {info.name}
+                </button>
+              ),
               value: info.name,
               disabled: info.required,
             }))}
@@ -142,13 +164,15 @@ const OpenYurtAppGuide = ({ guideInfo, onStepFinish }) => {
               onClick={installOpenYurtApp}
               loading={loading}
             >
-              重试安装
+              <Trans>Retry Installation</Trans>
             </Button>
-            <Button onClick={onStepFinish}>跳过</Button>
+            <Button onClick={onStepFinish}>
+              <Trans>Skip</Trans>
+            </Button>
           </div>
         ) : (
           <Button type="primary" loading={loading} onClick={installOpenYurtApp}>
-            安装组件
+            <Trans>Install Components</Trans>
           </Button>
         )}
       </div>

@@ -1,16 +1,20 @@
-import { sendRequest } from '../../utils/request';
-import { withRouter } from 'react-router-dom';
-import { useUserProfile } from '../../utils/hooks';
-import { useEffect, useState } from 'react';
-import Login from './Login';
-import Guide from './Guide';
 import { Spin } from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserProfile } from '../../utils/hooks';
+import { sendRequest } from '../../utils/request';
+import Guide from './Guide';
+import Login from './Login';
 
-const EntryPage = ({ history }) => {
-  const [userProfile, setUserProfile] = useUserProfile();
-  if (userProfile) {
-    history.push('/clusterInfo');
-  }
+const EntryPage = () => {
+  const navigate = useNavigate();
+  const userProfile = useUserProfile();
+
+  useEffect(() => {
+    if (userProfile) {
+      navigate('/clusterInfo');
+    }
+  }, [userProfile, navigate]);
 
   const [loading, setLoading] = useState(true);
   const [showPageLabel, setShowPageLabel] = useState('');
@@ -32,8 +36,8 @@ const EntryPage = ({ history }) => {
 
         // jump to the home page if the guidance has been completed and the user information has been obtained
         if (res.data.finish) {
-          setUserProfile(res.data.user_info);
-          history.push('/clusterInfo');
+          // setUserProfile(res.data.user_info);
+          navigate('/clusterInfo');
           return;
         } else {
           setGuideInfo(res.data.guide_info);
@@ -53,28 +57,34 @@ const EntryPage = ({ history }) => {
     if (!userProfile) {
       initEntryInfo();
     }
-  }, []);
+  }, [userProfile]);
 
-  return loading ? (
-    <div>
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <Spin size="large" />
+  if (loading) {
+    return (
+      <div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Spin size="large" />
+        </div>
       </div>
-    </div>
-  ) : showPageLabel === 'login' ? (
-    <Login></Login>
-  ) : showPageLabel === 'guide' ? (
-    <Guide history={history} guideInfo={guideInfo}></Guide>
-  ) : (
-    <div></div>
-  );
+    );
+  }
+
+  if (showPageLabel !== 'login') {
+    return <Login />;
+  }
+
+  if (showPageLabel === 'guide') {
+    return <Guide guideInfo={guideInfo} />;
+  }
+
+  return null;
 };
 
-export default withRouter(EntryPage);
+export default EntryPage;

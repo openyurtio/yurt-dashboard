@@ -12,47 +12,47 @@ import StatefulSet from './components/WorkloadManagement/StatefulSet';
 export const routes = [
   {
     path: '/clusterInfo',
-    main: () => <ClusterInfo></ClusterInfo>,
+    main: () => <ClusterInfo />,
   },
   {
     path: '/deployment',
-    main: () => <Deployment></Deployment>,
+    main: () => <Deployment />,
   },
   {
     path: '/nodes',
-    main: () => <Nodes></Nodes>,
+    main: () => <Nodes />,
   },
   {
     path: '/login',
-    main: () => <Entry></Entry>,
+    main: () => <Entry />,
   },
   {
     path: '/nodepool',
-    main: () => <NodePool></NodePool>,
+    main: () => <NodePool />,
   },
   {
     path: '/statefulset',
-    main: () => <StatefulSet></StatefulSet>,
+    main: () => <StatefulSet />,
   },
   {
     path: '/job',
-    main: () => <Job></Job>,
+    main: () => <Job />,
   },
   {
     path: '/pod',
-    main: () => <Pod></Pod>,
+    main: () => <Pod />,
   },
   {
     path: '/lab',
-    main: () => <Lab></Lab>,
+    main: () => <Lab />,
   },
   {
     path: '/systemapp',
     type: 'admin',
-    main: () => <SystemApp></SystemApp>,
+    main: () => <SystemApp />,
   },
 ];
 
-// use baseurl defined by the environment variable  (Only for debug purpose)
+// use baseurl defined by the environment variable (Only for debug purpose)
 // or use default (browser location url) if not defined
-export const baseURL = process.env.BASE_URL ? process.env.BASE_URL : window.location.origin;
+export const baseURL = import.meta.env.VITE_BASE_URL || window.location.origin;

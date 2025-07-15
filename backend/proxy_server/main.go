@@ -27,7 +27,7 @@ func main() {
 	setAPIGroup(router)
 
 	// Start and run the server
-	if err := router.Run(":80"); err != nil {
+	if err := router.Run(":4000"); err != nil {
 		logger.Error("server", "start", "Failed to start server: "+err.Error())
 		panic("gin server fail to start")
 	}

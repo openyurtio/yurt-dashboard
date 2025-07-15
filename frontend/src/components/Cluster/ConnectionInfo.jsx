@@ -1,7 +1,8 @@
+import { Trans } from '@lingui/react/macro';
 import { Tabs } from 'antd';
-import Certificate from './Certificate';
-import { getUserExpireTime } from '../../utils/utils';
 import { useUserProfile } from '../../utils/hooks';
+import { getUserExpireTime } from '../../utils/utils';
+import Certificate from './Certificate';
 
 export default function ConnectionInfo() {
   const [userProfile] = useUserProfile();
@@ -10,29 +11,41 @@ export default function ConnectionInfo() {
 
   return (
     <div>
-      <div>通过 kubectl 连接 Kubernetes 集群</div>
+      <div>
+        <Trans>Connect to Kubernetes Cluster via kubectl</Trans>
+      </div>
       <div style={{ padding: '15px', position: 'relative' }}>
         <div>
-          1. 安装和设置kubectl客户端， 有关详细信息请参考
+          1.{' '}
+          <Trans>
+            Install and configure kubectl client, for detailed information please refer to
+          </Trans>
           <a target="_blank" href="https://kubernetes.io/docs/tasks/tools/" rel="noreferrer">
-            相关文档
+            <Trans>Related Documentation</Trans>
           </a>
-          安装和设置 kubectl
+          <Trans>Install and Configure kubectl</Trans>
         </div>
-        <div>2. 配置集群凭据：</div>
+        <div>
+          2. <Trans>Configure Cluster Credentials:</Trans>
+        </div>
         <Tabs
           defaultActiveKey="1"
           onChange={e => {
             console.log(e);
           }}
-        >
-          <Tabs.TabPane tab="公网访问" key="1">
-            <Certificate
-              content={kubeConfig}
-              time={getUserExpireTime(effectiveTime, 7)}
-            ></Certificate>
-          </Tabs.TabPane>
-        </Tabs>
+          items={[
+            {
+              key: '1',
+              label: <Trans>Public Network Access</Trans>,
+              children: (
+                <Certificate
+                  content={kubeConfig}
+                  time={getUserExpireTime(effectiveTime, 7)}
+                ></Certificate>
+              ),
+            },
+          ]}
+        />
       </div>
     </div>
   );

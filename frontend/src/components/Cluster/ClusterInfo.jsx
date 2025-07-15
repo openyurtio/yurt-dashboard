@@ -1,26 +1,36 @@
+import { Trans } from '@lingui/react/macro';
 import { Tabs } from 'antd';
+import { useUserProfile } from '../../utils/hooks';
 import ConnectionInfo from './ConnectionInfo';
 import ClusterOverview from './Overview';
-import { useUserProfile } from '../../utils/hooks';
-
-const { TabPane } = Tabs;
 
 const ClusterInfo = () => {
   const [userProfile] = useUserProfile();
+
+  const tabItems = [
+    {
+      key: '1',
+      label: <Trans>Overview</Trans>,
+      children: <ClusterOverview></ClusterOverview>,
+    },
+    ...(userProfile && userProfile.metadata.name !== 'admin'
+      ? [
+          {
+            key: '3',
+            label: <Trans>Connection Information</Trans>,
+            children: <ConnectionInfo></ConnectionInfo>,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <div className="content">
-      <h2>Cluster Overview</h2>
+      <h3>
+        <Trans>Cluster Overview</Trans>
+      </h3>
       <div>
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="概览" key="1">
-            <ClusterOverview></ClusterOverview>
-          </TabPane>
-          {userProfile && userProfile.metadata.name !== 'admin' && (
-            <TabPane tab="连接信息" key="3">
-              <ConnectionInfo></ConnectionInfo>
-            </TabPane>
-          )}
-        </Tabs>
+        <Tabs defaultActiveKey="1" items={tabItems} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
-import React from 'react';
 import { Pie } from '@ant-design/charts';
+import { Trans } from '@lingui/react/macro';
+import React from 'react';
 
 const mockData = {
   HealthyNum: 0,
@@ -17,8 +18,8 @@ function getTotalNum(status) {
 function convertStatus(status) {
   return (
     status && [
-      { type: '正常', value: status.HealthyNum },
-      { type: '异常', value: status.TotalNum - status.HealthyNum },
+      { type: <Trans>Normal</Trans>, value: status.HealthyNum },
+      { type: <Trans>Abnormal</Trans>, value: status.TotalNum - status.HealthyNum },
     ]
   );
 }
@@ -44,7 +45,7 @@ const generateConfig = (data, extendConfig) => {
 };
 
 const PieChart = ({ name, status }) => {
-  let data = status ? status : mockData;
+  const data = status ? status : mockData;
 
   return (
     <div>
@@ -64,7 +65,7 @@ const PieChart = ({ name, status }) => {
                 textOverflow: 'ellipsis',
                 fontSize: 18,
               },
-              content: `${getNormalNum(data)}\n正常`,
+              content: `${getNormalNum(data)}\n<Trans>Normal</Trans>`,
             },
           },
           legend: {
@@ -78,12 +79,12 @@ const PieChart = ({ name, status }) => {
 };
 
 const HalfPieChart = ({ status }) => {
-  let data = status ? status : mockData;
+  const data = status ? status : mockData;
   return (
     <div>
       <div style={{ textAlign: 'center', margin: '20px 0' }}>
-        正常：{getNormalNum(data)} <br />
-        全部：{getTotalNum(data)}
+        <Trans>Normal</Trans>：{getNormalNum(data)} <br />
+        <Trans>All</Trans>：{getTotalNum(data)}
       </div>
       <Pie
         {...generateConfig(convertStatus(data), {
@@ -103,4 +104,4 @@ const HalfPieChart = ({ status }) => {
   );
 };
 
-export { PieChart, HalfPieChart };
+export { HalfPieChart, PieChart };
