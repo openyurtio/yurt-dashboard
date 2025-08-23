@@ -1,0 +1,96 @@
+/* Responsive styles for Nodes component */
+
+/* Mobile-first responsive utilities */
+@media (max-width: 768px) {
+    .node-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    .node-header h2 {
+        text-align: center;
+        margin-bottom: 8px !important;
+    }
+
+    .node-filters {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .node-filters .ant-select,
+    .node-filters .ant-input-search {
+        width: 100% !important;
+        margin-bottom: 8px;
+    }
+
+    /* Ensure table is horizontally scrollable on mobile */
+    .ant-table-wrapper {
+        overflow-x: auto;
+    }
+
+    /* Improve modal display on mobile */
+    .ant-modal {
+        margin: 10px !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+}
+
+@media (max-width: 576px) {
+
+    /* Extra small screens */
+    .content {
+        padding: 0 5px !important;
+    }
+
+    .node-header h2 {
+        font-size: 1.2em;
+    }
+
+    /* Stack filter components vertically on very small screens */
+    .node-filters>* {
+        width: 100% !important;
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    /* Tablet sizes */
+    .node-filters {
+        justify-content: flex-start !important;
+    }
+}
+
+/* Improve table cell content display */
+.node-name-cell {
+    max-width: 200px;
+}
+
+.node-name-cell>div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.node-name-cell>div:first-child {
+    white-space: normal;
+    font-weight: bold;
+}
+
+/* Better status display */
+.node-status-cell {
+    min-width: 120px;
+}
+
+/* Improve modal code display */
+.node-script-modal pre {
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+    .node-script-modal pre {
+        font-size: 11px;
+    }
+}
