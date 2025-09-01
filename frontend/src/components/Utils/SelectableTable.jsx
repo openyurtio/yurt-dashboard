@@ -9,6 +9,7 @@ import { RefreshButton } from './RefreshButton';
  * @param config.data       // table data
  * @param config.columns    // table columns
  * @param config.onRefresh  // refreshButton callback
+ * @param config.tableProps // additional table props
  */
 function STable({ config }) {
   const [selected, setSelected] = useState([]);
@@ -34,6 +35,7 @@ function STable({ config }) {
         columns={config.columns}
         dataSource={config.data}
         loading={config.data === null}
+        {...(config.tableProps || {})}
       />
 
       {config.data && config.data.length > 0 ? (
