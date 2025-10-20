@@ -1,0 +1,30 @@
+# UI Build artifacts
+ui/build/
+ui/node_modules/
+ui/npm-debug.log*
+ui/yarn-debug.log*
+ui/yarn-error.log*
+ui/.DS_Store
+
+# Backend build artifacts
+backend/bin/
+backend/*.exe
+backend/*.test
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+.env
