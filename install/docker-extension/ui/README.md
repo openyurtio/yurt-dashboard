@@ -1,6 +1,6 @@
-# Docker Extension UI
+# OpenYurt Docker Extension UI
 
-This is the frontend React application for the Docker Extension.
+This is the frontend React application for the OpenYurt Docker Extension, providing a beautiful dashboard to monitor and manage OpenYurt services.
 
 ## 🛠️ Technology Stack
 
@@ -17,6 +17,7 @@ src/
 │   ├── BackendStatus.tsx    # Backend connection status card
 │   ├── ContainerCard.tsx     # Individual container display card
 │   ├── Header.tsx            # Page header with branding
+│   ├── ServiceCard.tsx       # OpenYurt service status card
 │   └── index.ts              # Component exports
 ├── App.tsx                   # Main application component
 ├── index.tsx                 # Application entry point
@@ -87,6 +88,22 @@ const result = await ddClient.extension.vm?.service?.get('/hello');
 ```
 
 ## 📦 Components
+
+### ServiceCard
+
+Displays OpenYurt service status with icon, name, description, and health status.
+
+```typescript
+import { ServiceCard } from './components';
+
+<ServiceCard service={{
+  id: 'yurt-manager',
+  name: 'Yurt Manager',
+  description: 'Node lifecycle & CSR management',
+  icon: 'manager',
+  status: 'healthy'
+}} />
+```
 
 ### Header
 
@@ -165,11 +182,26 @@ Using npm with `package-lock.json` for consistent installs.
 
 ## 🎯 Key Features
 
-- **Real-time Updates**: Automatically fetches container data
+- **Service Monitoring**: Real-time OpenYurt service status tracking
+- **Visual Status Indicators**: Clear icons showing service health (healthy, warning, error)
+- **Service Count Display**: Shows healthy vs total services at a glance
+- **Quick Actions**: Reinstall all services or open dashboard with one click
 - **Responsive Design**: Works on all screen sizes
-- **Modern UI**: Material Design principles
+- **Modern UI**: Material Design principles with dark theme
 - **Type Safety**: Full TypeScript coverage
 - **Component-Based**: Reusable, modular components
+
+## 🔧 OpenYurt Services Tracked
+
+The extension monitors these core OpenYurt services:
+
+1. **Yurt Manager** - Node lifecycle & CSR management
+2. **YurtHub** - Edge-cloud communication proxy
+3. **Raven Agent** - Cross-network connectivity
+4. **Kubelet** - Container runtime management
+5. **Kube Proxy** - Service load balancing
+6. **CoreDNS** - DNS resolution service
+7. **Dashboard** - Web management interface
 
 ## 📚 Resources
 

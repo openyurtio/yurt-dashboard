@@ -23,17 +23,17 @@ COPY ui /ui
 RUN npm run build
 
 FROM alpine
-LABEL org.opencontainers.image.title="Docker Dashboard Extension" \
-    org.opencontainers.image.description="A modern Docker extension for monitoring and managing containers" \
-    org.opencontainers.image.vendor="Yurt Dashboard" \
+LABEL org.opencontainers.image.title="OpenYurt Dashboard Extension" \
+    org.opencontainers.image.description="Monitor and manage OpenYurt services from Docker Desktop" \
+    org.opencontainers.image.vendor="OpenYurt" \
     com.docker.desktop.extension.api.version="0.2.3" \
     com.docker.extension.screenshots="" \
     com.docker.desktop.extension.icon="docker.svg" \
-    com.docker.extension.detailed-description="A beautiful and modern Docker extension that provides real-time monitoring and management of Docker containers with an intuitive UI" \
-    com.docker.extension.publisher-url="" \
+    com.docker.extension.detailed-description="A beautiful Docker extension for monitoring OpenYurt services including Yurt Manager, YurtHub, Raven Agent, Kubelet, Kube Proxy, CoreDNS, and Dashboard with real-time health status" \
+    com.docker.extension.publisher-url="https://openyurt.io" \
     com.docker.extension.additional-urls="" \
-    com.docker.extension.categories="utility" \
-    com.docker.extension.changelog=""
+    com.docker.extension.categories="kubernetes,utility,monitoring" \
+    com.docker.extension.changelog="Initial release with service monitoring dashboard"
 
 COPY --from=builder /backend/bin/service /
 COPY docker-compose.yaml .
