@@ -3,6 +3,7 @@ module my-extension
 go 1.21.13
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/sirupsen/logrus v1.9.3
 )

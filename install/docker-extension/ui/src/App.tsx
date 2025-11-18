@@ -2,6 +2,7 @@ import { createDockerDesktopClient } from '@docker/extension-api-client';
 import {
     Dashboard as DashboardIcon,
     Refresh as RefreshIcon,
+    Download as DownloadIcon,
 } from '@mui/icons-material';
 import {
     Alert,
@@ -13,7 +14,9 @@ import {
     Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Service, ServiceCard } from './components';
+import { Service, ServiceCard, InstallationDialog } from './components';
+
+const ddClient = createDockerDesktopClient();
 
 // const client = createDockerDesktopClient();
 
@@ -184,7 +187,8 @@ const sampleServices: Service[] = [
 function App() {
     const [services, setServices] = useState<Service[]>(sampleServices);
     const [loading, setLoading] = useState<boolean>(false);
-    // const ddClient = useDockerDesktopClient();
+    const [installationDialogOpen, setInstallationDialogOpen] = useState<boolean>(false);
+    const [isInstalled, setIsInstalled] = useState<boolean | null>(null);
 
     const healthyCount = services.filter((s) => s.status === 'healthy').length;
     const totalCount = services.length;
@@ -196,33 +200,56 @@ function App() {
         setLoading(true);
         try {
             // Try to fetch service status from backend
-            // const result = await ddClient.extension.vm?.service?.get('/services/status');
-            // if (result && Array.isArray(result)) {
-            //     setServices(result);
-            // }
+            const result = await ddClient.extension.vm?.service?.get('/services/status');
+            if (result && Array.isArray(result)) {
+                setServices(result);
+                // Check if OpenYurt is installed
+                const openyurtServices = result.filter(
+                    (s: Service) => ['yurt-manager', 'yurthub', 'raven-agent'].includes(s.id)
+                );
+                const installedCount = openyurtServices.filter(
+                    (s: Service) => s.status === 'healthy' || s.status === 'warning'
+                ).length;
+                setIsInstalled(installedCount > 0);
+            } else {
+                // Check installation status via dedicated endpoint
+                const installCheck = await ddClient.extension.vm?.service?.get('/api/install/check');
+                if (installCheck && installCheck.installed) {
+                    setIsInstalled(true);
+                } else {
+                    setIsInstalled(false);
+                }
+            }
         } catch (err: any) {
             console.log('Using sample service data:', err.message);
             // Keep using the sample services data for demo purposes
+            setIsInstalled(false);
         } finally {
             setLoading(false);
         }
     };
 
     const handleReinstallAll = async () => {
-        // await ddClient.desktopUI.toast.success('Reinstalling all services...');
-        // // In a real implementation, this would trigger reinstallation
-        // setTimeout(() => {
-        //     ddClient.desktopUI.toast.success('Services reinstalled successfully!');
-        // }, 2000);
+        setInstallationDialogOpen(true);
     };
 
     const handleOpenDashboard = async () => {
         // Open the dashboard in browser
-        // await ddClient.host.openExternal('http://localhost:8080');
+        await ddClient.host.openExternal('http://localhost:8080');
+    };
+
+    const handleInstallationComplete = () => {
+        setInstallationDialogOpen(false);
+        fetchServiceStatus(); // Refresh service status
     };
 
     useEffect(() => {
         fetchServiceStatus();
+        // Poll for service status every 30 seconds
+        const interval = setInterval(() => {
+            fetchServiceStatus();
+        }, 30000);
+        return () => clearInterval(interval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -287,11 +314,49 @@ function App() {
                         spacing={2}
                         sx={{ mb: 2 }}
                         justifyContent="center"
+                        flexWrap="wrap"
                     >
+                        {isInstalled === false && (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<DownloadIcon />}
+                                onClick={() => setInstallationDialogOpen(true)}
+                                disabled={loading}
+                                sx={{
+                                    borderRadius: 2,
+                                    px: 3,
+                                    py: 1,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Install OpenYurt
+                            </Button>
+                        )}
+                        {isInstalled === true && (
+                            <Button
+                                variant="outlined"
+                                startIcon={<RefreshIcon />}
+                                onClick={handleReinstallAll}
+                                disabled={loading}
+                                sx={{
+                                    borderRadius: 2,
+                                    px: 3,
+                                    py: 1,
+                                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                                    '&:hover': {
+                                        borderColor: 'primary.main',
+                                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                                    },
+                                }}
+                            >
+                                Reinstall All
+                            </Button>
+                        )}
                         <Button
                             variant="outlined"
                             startIcon={<RefreshIcon />}
-                            onClick={handleReinstallAll}
+                            onClick={fetchServiceStatus}
                             disabled={loading}
                             sx={{
                                 borderRadius: 2,
@@ -304,7 +369,7 @@ function App() {
                                 },
                             }}
                         >
-                            Reinstall All
+                            Refresh
                         </Button>
                         <Button
                             variant="outlined"
@@ -348,6 +413,13 @@ function App() {
                     </Typography>
                 </Box>
             </Container>
+
+            {/* Installation Dialog */}
+            <InstallationDialog
+                open={installationDialogOpen}
+                onClose={() => setInstallationDialogOpen(false)}
+                onInstallationComplete={handleInstallationComplete}
+            />
         </Box>
     );
 }

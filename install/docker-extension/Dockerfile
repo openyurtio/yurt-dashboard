@@ -33,7 +33,22 @@ LABEL org.opencontainers.image.title="OpenYurt Dashboard Extension" \
     com.docker.extension.publisher-url="https://openyurt.io" \
     com.docker.extension.additional-urls="" \
     com.docker.extension.categories="kubernetes,utility,monitoring" \
-    com.docker.extension.changelog="Initial release with service monitoring dashboard"
+    com.docker.extension.changelog="Initial release with service monitoring dashboard and one-click installation"
+
+# Install required tools
+RUN apk add --no-cache \
+    curl \
+    ca-certificates \
+    bash \
+    git
+
+# Install kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod +x kubectl && \
+    mv kubectl /usr/local/bin/
+
+# Install helm
+RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 COPY --from=builder /backend/bin/service /
 COPY docker-compose.yaml .
